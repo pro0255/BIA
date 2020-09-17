@@ -1,2 +1,2 @@
 def blind():
-    print('IAM BLIND WHO ARE U??')
+    print("IAM BLIND WHO ARE U??")

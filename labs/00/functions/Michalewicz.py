@@ -1,5 +1,7 @@
 import math
-class Michalewicz():
+
+
+class Michalewicz:
     def __init__(self):
         self.left = 0
         self.right = math.pi
@@ -10,6 +12,8 @@ class Michalewicz():
         sum = 0
         d = len(vector)
         for i in range(d):
-            sum += math.sin(vector[i]*pow(math.sin((i*(vector[i]**2)) / math.pi), self.m*2))
+            sum += math.sin(
+                vector[i] * pow(math.sin((i * (vector[i] ** 2)) / math.pi), self.m * 2)
+            )
         result = sum
         return -result

@@ -1,6 +1,7 @@
-#https://www.sfu.ca/~ssurjano/spheref.html
+# https://www.sfu.ca/~ssurjano/spheref.html
 
-class Sphere():
+
+class Sphere:
     def __init__(self):
         self.left = -5.12
         self.right = 5.12
@@ -10,4 +11,3 @@ class Sphere():
         for i in range(len(vector)):
             sum += pow(vector[i], 2)
         return sum
-

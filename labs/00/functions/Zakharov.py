@@ -1,6 +1,7 @@
 import math
 
-class Zakharov():
+
+class Zakharov:
     def __init__(self):
         self.left = -5
         self.right = 10
@@ -13,6 +14,6 @@ class Zakharov():
         for i in range(d):
             sum1 += vector[i] ** 2
         for i in range(d):
-            sum2 += 0.5 * i * vector[i] ##same as next
+            sum2 += 0.5 * i * vector[i]  ##same as next
         result = sum1 + pow(sum2, 2) + pow(sum2, 4)
         return result

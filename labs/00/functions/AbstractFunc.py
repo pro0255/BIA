@@ -1,8 +1,7 @@
-
 from abc import ABC, abstractmethod
 
-class AbstractFunc(ABC):
 
+class AbstractFunc(ABC):
     @abstractmethod
     def run(self, vector):
-        print('Running method')
+        print("Running method")

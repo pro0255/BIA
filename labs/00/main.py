@@ -1,17 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from functions.Sphere import Sphere 
-from functions.Schwefel import Schwefel 
+from functions.Sphere import Sphere
+from functions.Schwefel import Schwefel
 from functions.Rosenbrock import Rosenbrock
-from functions.Rastrigin import Rastrigin 
-from functions.Griewangk import Griewangk 
-from functions.Levy import Levy 
-from functions.Michalewicz import Michalewicz 
-from functions.Zakharov import Zakharov 
-from functions.Ackley import Ackley 
+from functions.Rastrigin import Rastrigin
+from functions.Griewangk import Griewangk
+from functions.Levy import Levy
+from functions.Michalewicz import Michalewicz
+from functions.Zakharov import Zakharov
+from functions.Ackley import Ackley
 from blind.Blind import blind
 import math
-
 
 
 def draw_fig(Func):
@@ -20,14 +19,14 @@ def draw_fig(Func):
     X, Y = np.meshgrid(x, y)
     Z = run_func(X, Y, Func)
 
-    ax = plt.axes(projection='3d')
-    ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
-                    cmap='viridis', edgecolor='none')
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-    ax.set_zlabel('z')
+    ax = plt.axes(projection="3d")
+    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap="viridis", edgecolor="none")
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
 
     plt.show()
+
 
 def run_func(X, Y, Func):
     flat_X = X.reshape(X.shape[0] * X.shape[1], -1)
@@ -48,7 +47,7 @@ rosenbrock = Rosenbrock()
 rastrigin = Rastrigin()
 griewangk = Griewangk()
 levy = Levy()
-michalewicz =  Michalewicz()
+michalewicz = Michalewicz()
 zakharov = Zakharov()
 ackley = Ackley()
 ##
@@ -56,4 +55,3 @@ ackley = Ackley()
 
 blind()
 draw_fig(ackley)
-
