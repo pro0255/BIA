@@ -9,7 +9,7 @@ from functions.Levy import Levy
 from functions.Michalewicz import Michalewicz
 from functions.Zakharov import Zakharov
 from functions.Ackley import Ackley
-from blind.Blind import blind
+from blind.Blind import BlindAgorithm
 import math
 
 
@@ -20,12 +20,11 @@ def draw_fig(Func):
     Z = run_func(X, Y, Func)
 
     ax = plt.axes(projection="3d")
-    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap="viridis", edgecolor="none")
+    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap="viridis", edgecolor="none", alpha=0.1)
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
-
-    plt.show()
+    return ax
 
 
 def run_func(X, Y, Func):
@@ -53,5 +52,41 @@ ackley = Ackley()
 ##
 
 
-blind()
-draw_fig(ackley)
+
+function_global = michalewicz
+number_of_records_global = 3
+number_of_iterations_global = 100
+
+
+def run_blind_in_iterations(number_of_iterations, ax):
+    blind_alg = BlindAgorithm()
+    min_vector = None
+    lst_point = None
+    for i in range(number_of_iterations):
+        if lst_point != None:
+            lst_point.remove()
+        min_vector = blind_alg.run(number_of_records_global, function_global, min_vector)
+        lst_point = ax.scatter(min_vector[0], min_vector[1], min_vector[2], s=40, alpha=1, c='red', marker='o')
+        print(f'Drawing min in generation number -> {i}')
+        plt.draw() 
+        plt.pause(0.08) #is necessary for the plot to update for some reason
+
+
+
+
+
+
+ax = draw_fig(function_global)
+run_blind_in_iterations(number_of_iterations_global, ax)
+
+
+
+
+# plt.show()
+
+
+
+
+
+
+
