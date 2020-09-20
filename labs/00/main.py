@@ -51,10 +51,8 @@ zakharov = Zakharov()
 ackley = Ackley()
 ##
 
-
-
-function_global = michalewicz
-number_of_records_global = 3
+function_global = rastrigin
+number_of_records_global = 10
 number_of_iterations_global = 100
 
 
@@ -65,11 +63,17 @@ def run_blind_in_iterations(number_of_iterations, ax):
     for i in range(number_of_iterations):
         if lst_point != None:
             lst_point.remove()
-        min_vector = blind_alg.run(number_of_records_global, function_global, min_vector)
-        lst_point = ax.scatter(min_vector[0], min_vector[1], min_vector[2], s=40, alpha=1, c='red', marker='o')
+        [min_vector, all_points_generation] = blind_alg.run(number_of_records_global, function_global, min_vector)
+
+        lst_point = ax.scatter(min_vector[0], min_vector[1], min_vector[2], s=10, alpha=1, c='red', marker="^")
+        all_points = ax.scatter(all_points_generation[0], all_points_generation[1], all_points_generation[2], s=2, alpha=1, c='blue', marker="o")
+        plt.draw() 
+        plt.pause(0.10) #is necessary for the plot to update for some reason
+        all_points.remove()
+
         print(f'Drawing min in generation number -> {i}')
         plt.draw() 
-        plt.pause(0.08) #is necessary for the plot to update for some reason
+        plt.pause(0.10) #is necessary for the plot to update for some reason
 
 
 
