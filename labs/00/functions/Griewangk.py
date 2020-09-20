@@ -13,6 +13,12 @@ class Griewangk:
         product = 0
         for i in range(d):
             sum += pow(vector[i], 2) / 4000
-            product += math.cos(vector[i] / math.sqrt(i))
+            product_value = 0
+            try:
+                product_value = math.cos(vector[i] / math.sqrt(i))
+            except:
+                product_value = 0 
+
+            product += product_value        
         result = sum - product + 1
         return result

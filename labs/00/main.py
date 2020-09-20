@@ -51,7 +51,7 @@ zakharov = Zakharov()
 ackley = Ackley()
 ##
 
-function_global = rastrigin
+function_global = griewangk
 number_of_records_global = 10
 number_of_iterations_global = 100
 
