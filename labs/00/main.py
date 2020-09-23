@@ -26,7 +26,7 @@ def draw_fig(Func):
     X, Y = np.meshgrid(x, y)
     Z = run_func(X, Y, Func)
 
-    ax = plt.axes(projection="3d", title="ahoj")
+    ax = plt.axes(projection="3d", title=type(Func).__name__)
     ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=cm.coolwarm, linewidth=0, alpha=0.4)
     ax.set_xlabel("x")
     ax.set_ylabel("y")
