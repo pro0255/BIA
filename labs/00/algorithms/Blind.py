@@ -2,10 +2,11 @@ import random
 import numpy as np
 
 
+
+
 def generate_in_bounderies(number_of_records, Func):
     records = []
     for _ in range(number_of_records):
-        # records.append([random.uniform(-1000, 1000), random.uniform(-1000, 1000)])
         records.append(
             [
                 random.uniform(Func.left, Func.right),
@@ -16,6 +17,14 @@ def generate_in_bounderies(number_of_records, Func):
 
 
 class BlindAgorithm:
+    """
+        Blind algorithm tries to find global min/max.
+    
+        In n generated records tries to find min/max. Also takes to consideration min/max founded in last run. If current generation founded better results replace old one.
+
+        For every record get Z value and after tries to find min/max.
+        As return value is returned min/max vector with vectors of all generation values.
+    """
     def __init__(self):
         pass
 

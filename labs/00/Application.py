@@ -9,7 +9,6 @@ from functions.Michalewicz import Michalewicz
 from functions.Zakharov import Zakharov
 from functions.Ackley import Ackley
 
-
 functions = {
     "Sphere": Sphere(),
     "Schwefel": Schwefel(),
@@ -24,6 +23,9 @@ functions = {
 
 
 class Application:
+    """
+        Represents GUI
+    """
     def __init__(self):
         self.root = Tk()
         self.root.title("BIA course")
@@ -34,10 +36,17 @@ class Application:
     
 
     def select_function(self, value):
-        print(value)
+        """Action binded to selection of Test function
+
+        Args:
+            value (string): Key of Test function which targets to functions object defined in global scope
+        """
         self.selected_function = functions[value]
 
     def create_combo_box(self):
+        """
+            Creation of combo box with Test functions
+        """
         choices = list(functions.keys())
         variable = StringVar(self.root)
         init_function = choices[0]
@@ -46,11 +55,11 @@ class Application:
         menu = OptionMenu(self.root, variable, *choices, command=self.select_function)
         menu.pack()
 
-    def idk(self, value):
-        print(value)
-
 
     def create_input_size_generation(self):
+        """
+            Creation of GUI tuple (label, input) for size generation
+        """
         self.size_generation = StringVar()
         size_generation_label = Label(self.root, text="Size generation")
         size_generation_label.pack()
@@ -58,6 +67,9 @@ class Application:
         size_generation.pack()
 
     def create_input_number_of_iterations(self):
+        """
+            Creation of GUI tuple (label, input) for number of iterations
+        """
         self.number_of_iterations = StringVar()
         number_of_iterations_label = Label(self.root, text="Number of iterations")
         number_of_iterations_label.pack()
@@ -66,4 +78,14 @@ class Application:
 
 
     def start(self):
+        """
+            Starts GUI
+        """
         self.root.mainloop()
+
+    def stop(self):
+        """
+            Stops GUI
+        """
+        self.root.destroy()
+
