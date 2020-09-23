@@ -17,8 +17,8 @@ class Griewangk:
             try:
                 product_value = math.cos(vector[i] / math.sqrt(i))
             except:
-                product_value = 0 
+                product_value = 0
 
-            product += product_value        
+            product += product_value
         result = sum - product + 1
         return result

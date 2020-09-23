@@ -10,7 +10,9 @@ from functions.Michalewicz import Michalewicz
 from functions.Zakharov import Zakharov
 from functions.Ackley import Ackley
 from blind.Blind import BlindAgorithm
+from Application import Application
 import math
+from tkinter import *
 
 
 def draw_fig(Func):
@@ -20,7 +22,9 @@ def draw_fig(Func):
     Z = run_func(X, Y, Func)
 
     ax = plt.axes(projection="3d")
-    ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap="viridis", edgecolor="none", alpha=0.1)
+    ax.plot_surface(
+        X, Y, Z, rstride=1, cstride=1, cmap="viridis", edgecolor="none", alpha=0.1
+    )
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
@@ -56,41 +60,58 @@ number_of_records_global = 10
 number_of_iterations_global = 100
 
 
-def run_blind_in_iterations(number_of_iterations, ax):
+def run_blind_in_iterations(number_of_iterations, ax, Func):
     blind_alg = BlindAgorithm()
     min_vector = None
     lst_point = None
     for i in range(number_of_iterations):
         if lst_point != None:
             lst_point.remove()
-        [min_vector, all_points_generation] = blind_alg.run(number_of_records_global, function_global, min_vector)
+        [min_vector, all_points_generation] = blind_alg.run(
+            number_of_records_global, Func, min_vector
+        )
 
-        lst_point = ax.scatter(min_vector[0], min_vector[1], min_vector[2], s=10, alpha=1, c='red', marker="^")
-        all_points = ax.scatter(all_points_generation[0], all_points_generation[1], all_points_generation[2], s=2, alpha=1, c='blue', marker="o")
-        plt.draw() 
-        plt.pause(0.10) #is necessary for the plot to update for some reason
+        lst_point = ax.scatter(
+            min_vector[0],
+            min_vector[1],
+            min_vector[2],
+            s=10,
+            alpha=1,
+            c="red",
+            marker="^",
+        )
+        all_points = ax.scatter(
+            all_points_generation[0],
+            all_points_generation[1],
+            all_points_generation[2],
+            s=2,
+            alpha=1,
+            c="blue",
+            marker="o",
+        )
+        plt.draw()
+        plt.pause(0.10)  # is necessary for the plot to update for some reason
         all_points.remove()
 
-        print(f'Drawing min in generation number -> {i}')
-        plt.draw() 
-        plt.pause(0.10) #is necessary for the plot to update for some reason
+        print(f"Drawing min in generation number -> {i}")
+        plt.draw()
+        plt.pause(0.10)  # is necessary for the plot to update for some reason
 
 
+# ax = draw_fig(function_global)
+# run_blind_in_iterations(number_of_iterations_global, ax)
 
 
+app = Application()
 
 
-ax = draw_fig(function_global)
-run_blind_in_iterations(number_of_iterations_global, ax)
+def run():
+    ax = draw_fig(app.selected_function)
+    run_blind_in_iterations(number_of_iterations_global, ax, app.selected_function)
 
 
+run_button = Button(app.root, text="Run alg", command=run)
+run_button.pack()
 
-
-# plt.show()
-
-
-
-
-
-
+app.start()
 
