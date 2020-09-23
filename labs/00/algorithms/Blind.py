@@ -24,6 +24,9 @@ class BlindAgorithm:
 
         For every record get Z value and after tries to find min/max.
         As return value is returned min/max vector with vectors of all generation values.
+
+        Generation does not optimizes move.
+        It remembers previous state. 
     """
     def __init__(self):
         pass
