@@ -1,5 +1,6 @@
 import random
 
+
 def generate_in_bounderies(size_of_generation, Func):
     records = []
     for _ in range(size_of_generation):
@@ -11,4 +12,3 @@ def generate_in_bounderies(size_of_generation, Func):
             ]
         )
     return records
-

@@ -24,8 +24,9 @@ functions = {
 
 class Application:
     """
-        Represents GUI
+    Represents GUI
     """
+
     def __init__(self):
         self.root = Tk()
         self.root.title("BIA course")
@@ -33,7 +34,6 @@ class Application:
         self.create_input_size_generation()
         self.create_input_number_of_iterations()
         self.create_combo_box()
-    
 
     def select_function(self, value):
         """Action binded to selection of Test function
@@ -45,7 +45,7 @@ class Application:
 
     def create_combo_box(self):
         """
-            Creation of combo box with Test functions
+        Creation of combo box with Test functions
         """
         choices = list(functions.keys())
         variable = StringVar(self.root)
@@ -55,10 +55,9 @@ class Application:
         menu = OptionMenu(self.root, variable, *choices, command=self.select_function)
         menu.pack()
 
-
     def create_input_size_generation(self):
         """
-            Creation of GUI tuple (label, input) for size generation
+        Creation of GUI tuple (label, input) for size generation
         """
         self.size_generation = StringVar()
         size_generation_label = Label(self.root, text="Size generation")
@@ -68,7 +67,7 @@ class Application:
 
     def create_input_number_of_iterations(self):
         """
-            Creation of GUI tuple (label, input) for number of iterations
+        Creation of GUI tuple (label, input) for number of iterations
         """
         self.number_of_iterations = StringVar()
         number_of_iterations_label = Label(self.root, text="Number of iterations")
@@ -76,16 +75,14 @@ class Application:
         number_of_iterations = Entry(self.root, textvariable=self.number_of_iterations)
         number_of_iterations.pack()
 
-
     def start(self):
         """
-            Starts GUI
+        Starts GUI
         """
         self.root.mainloop()
 
     def stop(self):
         """
-            Stops GUI
+        Stops GUI
         """
         self.root.destroy()
-

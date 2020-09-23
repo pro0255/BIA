@@ -15,7 +15,8 @@ import math
 from tkinter import *
 
 SIZE_OF_GENERATION_GLOBAL = 10
-NUMBER_OF_INTERATIONS_GLOBAL = 100 
+NUMBER_OF_INTERATIONS_GLOBAL = 100
+
 
 def draw_fig(Func):
     """Function which generates graph with specified meshgrid according to Func Args
@@ -30,9 +31,9 @@ def draw_fig(Func):
     y = np.linspace(Func.left, Func.right, 30)
     X, Y = np.meshgrid(x, y)
     Z = run_func(X, Y, Func)
-    my_col = plt.cm.jet(Z/np.amax(Z))
+    my_col = plt.cm.jet(Z / np.amax(Z))
     ax = plt.axes(projection="3d", title=type(Func).__name__)
-    ax.plot_surface(X, Y, Z, facecolors=my_col,linewidth=0, alpha=0.4)
+    ax.plot_surface(X, Y, Z, facecolors=my_col, linewidth=0, alpha=0.4)
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
@@ -66,8 +67,6 @@ def run_func(X, Y, Func):
     return numpyArray.reshape(X.shape[0], -1)
 
 
-
-
 def draw_alg_iteration_MIN(min_vector, ax):
     """Draws to graph current best point [min/max]
 
@@ -79,13 +78,13 @@ def draw_alg_iteration_MIN(min_vector, ax):
         class: Created point
     """
     return ax.scatter(
-            min_vector[0],
-            min_vector[1],
-            min_vector[2],
-            s=20,
-            alpha=1,
-            c="red",
-            marker="^",
+        min_vector[0],
+        min_vector[1],
+        min_vector[2],
+        s=20,
+        alpha=1,
+        c="red",
+        marker="^",
     )
 
 
@@ -110,7 +109,12 @@ def draw_generation(generation, ax):
     )
 
 
-def run_blind_in_iterations(ax, Func,size_of_generation = SIZE_OF_GENERATION_GLOBAL, number_of_iterations = NUMBER_OF_INTERATIONS_GLOBAL):
+def run_blind_in_iterations(
+    ax,
+    Func,
+    size_of_generation=SIZE_OF_GENERATION_GLOBAL,
+    number_of_iterations=NUMBER_OF_INTERATIONS_GLOBAL,
+):
     """Runs blind alg according to Args
 
     Args:
@@ -144,24 +148,31 @@ app = Application()
 
 def run():
     """
-        Action binded to GUI button which starts Algorithm in selected Test function
+    Action binded to GUI button which starts Algorithm in selected Test function
 
-        Firstly tries to get values from GUI inputs 
+    Firstly tries to get values from GUI inputs
     """
     try:
         size_generation = 0
         size_generation = int(app.size_generation.get().strip())
         number_of_iterations = int(app.number_of_iterations.get().strip())
         ax = draw_fig(app.selected_function)
-        run_blind_in_iterations(ax, app.selected_function, size_generation, number_of_iterations)
+        run_blind_in_iterations(
+            ax, app.selected_function, size_generation, number_of_iterations
+        )
     except:
         app.stop()
-        print('Cannot start animation - args are not as expected')
+        print("Cannot start animation - args are not as expected")
 
 
-
-
-run_button = Button(app.root, text="START ANIMATION", bg='brown', fg='white', font=('helvetica', 9, 'bold'), command=run)
+run_button = Button(
+    app.root,
+    text="START ANIMATION",
+    bg="brown",
+    fg="white",
+    font=("helvetica", 9, "bold"),
+    command=run,
+)
 run_button.pack()
 
 app.start()

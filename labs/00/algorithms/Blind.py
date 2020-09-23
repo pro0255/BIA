@@ -2,8 +2,6 @@ import random
 import numpy as np
 
 
-
-
 def generate_in_bounderies(number_of_records, Func):
     records = []
     for _ in range(number_of_records):
@@ -18,16 +16,17 @@ def generate_in_bounderies(number_of_records, Func):
 
 class BlindAgorithm:
     """
-        Blind algorithm tries to find global min/max.
-    
-        In n generated records tries to find min/max. Also takes to consideration min/max founded in last run. If current generation founded better results replace old one.
+    Blind algorithm tries to find global min/max.
 
-        For every record get Z value and after tries to find min/max.
-        As return value is returned min/max vector with vectors of all generation values.
+    In n generated records tries to find min/max. Also takes to consideration min/max founded in last run. If current generation founded better results replace old one.
 
-        Generation does not optimizes move.
-        It remembers previous state. 
+    For every record get Z value and after tries to find min/max.
+    As return value is returned min/max vector with vectors of all generation values.
+
+    Generation does not optimizes move.
+    It remembers previous state.
     """
+
     def __init__(self):
         pass
 
