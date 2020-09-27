@@ -1,3 +1,4 @@
+import numpy as np
 # https://www.sfu.ca/~ssurjano/spheref.html
 
 
@@ -7,7 +8,5 @@ class Sphere:
         self.right = 5.12
 
     def run(self, vector):
-        sum = 0
-        for i in range(len(vector)):
-            sum += pow(vector[i], 2)
-        return sum
+        result = np.sum(np.power(vector, 2))
+        return result

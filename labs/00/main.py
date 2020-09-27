@@ -14,6 +14,7 @@ from Application import Application
 import math
 from tkinter import *
 from algorithms.HillClimb import HillClimb
+from Graph import Graph
 
 
 SIZE_OF_GENERATION_GLOBAL = 10
@@ -178,9 +179,20 @@ run_button = Button(
 )
 run_button.pack()
 
-app.start()
+ackley = Ackley()
+griewangk = Griewangk()
+levy = Levy()
+michalewicz = Michalewicz() 
+zakharov = Zakharov()
+sphere = Sphere()
+schwefel = Schwefel()
+rosenbrock = Rosenbrock()
+rastrigin = Rastrigin()
 
+graph = Graph(levy.left, levy.right, levy)
+plt.show()
 
+# app.start()
 # sphere = Sphere()
 # graph = draw_fig(sphere)
 # hc = HillClimb(0.1, graph=graph, max_generation=5)

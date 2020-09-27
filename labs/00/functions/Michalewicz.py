@@ -1,5 +1,5 @@
 import math
-
+import numpy as np
 
 class Michalewicz:
     def __init__(self):
@@ -9,11 +9,8 @@ class Michalewicz:
 
     def run(self, vector):
         result = 0
-        sum = 0
         d = len(vector)
-        for i in range(d):
-            sum += math.sin(
-                vector[i] * pow(math.sin((i * (vector[i] ** 2)) / math.pi), self.m * 2)
-            )
+        i_vector = np.arange(1, d + 1)
+        sum = np.sum(np.sin(vector)*np.power(np.sin((np.power(vector, 2) * i_vector) / np.pi), 2*self.m))
         result = sum
         return -result

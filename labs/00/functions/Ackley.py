@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 class Ackley:
@@ -8,16 +9,13 @@ class Ackley:
         self.a = 20
         self.b = 0.2
         self.c = 2 * math.pi
-
+        
     def run(self, vector):
         result = 0
-        sum1 = 0
-        sum2 = 0
+        sum1 = np.sum(np.power(vector, 2))
+        sum2 = np.sum(np.cos(self.c * vector))
+
         d = len(vector)
-        for i in range(d):
-            sum1 += vector[i] ** 2
-        for i in range(d):
-            sum2 += math.cos(self.c * vector[i])
 
         result = (
             -self.a * math.exp(-self.b * math.sqrt(((1 / (d - 1)) * sum1)))

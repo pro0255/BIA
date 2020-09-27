@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 class Zakharov:
@@ -8,12 +9,9 @@ class Zakharov:
 
     def run(self, vector):
         result = 0
-        sum1 = 0
-        sum2 = 0
         d = len(vector)
-        for i in range(d):
-            sum1 += vector[i] ** 2
-        for i in range(d):
-            sum2 += 0.5 * i * vector[i]  ##same as next
-        result = sum1 + pow(sum2, 2) + pow(sum2, 4)
+        i_vector = np.arange(1, d + 1)
+        sum1 = np.sum(np.power(vector, 2))
+        sum2 = np.sum(0.5 * i_vector * vector )
+        result = sum1 + math.pow(sum2, 2) + math.pow(sum2, 4)
         return result

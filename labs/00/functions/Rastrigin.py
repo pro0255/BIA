@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 # https://www.sfu.ca/~ssurjano/rastr.html
 class Rastrigin:
@@ -7,8 +8,6 @@ class Rastrigin:
         self.right = 5.12
 
     def run(self, vector):
-        sum = 0
+        sum = np.sum(np.power(vector, 2) - 10*np.cos(2*np.pi*vector))
         d = len(vector)
-        for i in range(d):
-            sum += pow(vector[i], 2) - 10 * math.cos(2 * math.pi * vector[i])
         return 10 * d + sum

@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 # https://www.sfu.ca/~ssurjano/griewank.html
 class Griewangk:
@@ -9,16 +10,7 @@ class Griewangk:
     def run(self, vector):
         result = 0
         d = len(vector)
-        sum = 0
-        product = 0
-        for i in range(d):
-            sum += pow(vector[i], 2) / 4000
-            product_value = 0
-            try:
-                product_value = math.cos(vector[i] / math.sqrt(i))
-            except:
-                product_value = 0
-
-            product += product_value
+        sum = np.sum(np.power(vector, 2)/4000)
+        product = np.product(np.cos(vector/np.sqrt(2)))
         result = sum - product + 1
         return result

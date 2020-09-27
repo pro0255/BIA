@@ -4,8 +4,8 @@
 class Rosenbrock:
     def __init__(self):
         # -5, 10
-        self.left = -2.048
-        self.right = 2.048
+        self.left = -5
+        self.right = 10
 
     def run(self, vector):
         sum = 0
