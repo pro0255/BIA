@@ -13,6 +13,8 @@ from algorithms.Blind import BlindAgorithm
 from Application import Application
 import math
 from tkinter import *
+from algorithms.HillClimb import HillClimb
+
 
 SIZE_OF_GENERATION_GLOBAL = 10
 NUMBER_OF_INTERATIONS_GLOBAL = 100
@@ -25,10 +27,10 @@ def draw_fig(Func):
         Func (class): Test function
 
     Returns:
-        class: Initialized graph
+        class: Initialized graph 
     """
-    x = np.linspace(Func.left, Func.right, 30)
-    y = np.linspace(Func.left, Func.right, 30)
+    x = np.linspace(Func.left, Func.right, 100)
+    y = np.linspace(Func.left, Func.right, 100)
     X, Y = np.meshgrid(x, y)
     Z = run_func(X, Y, Func)
     my_col = plt.cm.jet(Z / np.amax(Z))
@@ -160,6 +162,7 @@ def run():
         run_blind_in_iterations(
             ax, app.selected_function, size_generation, number_of_iterations
         )
+
     except:
         app.stop()
         print("Cannot start animation - args are not as expected")
@@ -176,3 +179,13 @@ run_button = Button(
 run_button.pack()
 
 app.start()
+
+
+# sphere = Sphere()
+# graph = draw_fig(sphere)
+# hc = HillClimb(0.1, graph=graph, max_generation=5)
+# hc.run(sphere)
+
+
+
+
