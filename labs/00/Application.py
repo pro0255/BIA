@@ -27,13 +27,23 @@ class Application:
     Represents GUI
     """
 
-    def __init__(self):
+    def __init__(self, run_action):
         self.root = Tk()
         self.root.title("BIA course")
         self.root.geometry("400x200")
         self.create_input_size_generation()
         self.create_input_number_of_iterations()
         self.create_combo_box()
+
+        run_button = Button(
+            self.root,
+            text="START ANIMATION",
+            bg="brown",
+            fg="white",
+            font=("helvetica", 9, "bold"),
+            command=run_action,
+        )
+        run_button.pack()
 
     def select_function(self, value):
         """Action binded to selection of Test function
