@@ -20,7 +20,7 @@ class Graph():
 
         varidis = cm.get_cmap('viridis', 12)
         ax = plt.axes(projection="3d", title=type(Function).__name__)
-        ax.plot_surface(X, Y, Z, cmap=varidis, linewidth=0, alpha=0.4)
+        ax.plot_surface(X, Y, Z, cmap=varidis,rstride=1, cstride=1, linewidth=0, alpha=0.4, antialiased=False)
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("z")

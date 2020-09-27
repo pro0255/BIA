@@ -179,17 +179,17 @@ run_button = Button(
 )
 run_button.pack()
 
-ackley = Ackley()
-griewangk = Griewangk()
-levy = Levy()
-michalewicz = Michalewicz() 
-zakharov = Zakharov()
-sphere = Sphere()
-schwefel = Schwefel()
-rosenbrock = Rosenbrock()
-rastrigin = Rastrigin()
+sphere = Sphere() #
+schwefel = Schwefel() #
+rosenbrock = Rosenbrock() #
+rastrigin = Rastrigin() #
+griewangk = Griewangk() #
+levy = Levy() #
+michalewicz = Michalewicz() #
+zakharov = Zakharov() #
+ackley = Ackley() #
 
-graph = Graph(levy.left, levy.right, levy)
+graph = Graph(ackley.left, ackley.right, ackley)
 plt.show()
 
 # app.start()

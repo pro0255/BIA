@@ -67,3 +67,4 @@ class BlindAgorithm:
             y.append(vector[1])
             z.append(vector[2])
         return [min_result_vector, [x, y, z]]
+
