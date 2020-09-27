@@ -2,7 +2,6 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 class Solution:
     def __init__(self, dimension = 2, lower_bound = 0, upper_bound = 0):
         self.dimension = dimension
@@ -12,12 +11,36 @@ class Solution:
         self.fitness_value = np.inf #z..
 
     def fill_vector_with_random(self):
+        """
+            Sets random vector with specified bounds
+        """
         self.vector = np.random.uniform(low=self.lower_bound, high=self.upper_bound, size=self.dimension)
     
     def fill_vector_with_gaussian(self, individual, sigma = 1):
-        self.vector = np.random.normal(individual.vector, sigma)
+        """Sets vector using NORMAL (Gaussian) distribution with specified bounds
 
+        Args:
+            individual (class Solution): individual input
+            sigma (int, optional): scale, Defaults to 1.
+        """
+        result = []
+        print()
+        for i in range(len(self.vector)):
+            while True:
+                generated_value = np.random.normal(individual.vector[i], sigma)
+                if generated_value >= individual.lower_bound and generated_value <= individual.upper_bound:
+                    result.append(generated_value)
+                    break
+        self.vector = np.array(result)
+
+                
+    
     def __str__(self):
+        """ToString
+
+        Returns:
+            string: Solution.toString() --> print(Solution)
+        """
         return f'Solution with\n Vector ->> {self.vector}\n Fitness ->> {self.fitness_value}'
 
 
@@ -31,13 +54,33 @@ class AbstractAlgorithm():
         self.best_solution = Solution()
 
     def evaluate(self, solution, Function):
+        """Sets z (fitness) value according to Function
+
+        Args:
+            solution (class Solution): input with specified vector as prop
+            Function (class Function): specific Function (Sphere || Ackley..)
+        """
         solution.fitness_value = Function.run(solution.vector)
 
     def evalute_population(self, population, Function):
+        """Runs over population and evaluate every solution
+
+        Args:
+            population (Solution[])
+            Function (class Function): specific Function (Sphere || Ackley..)
+        """
         for solution in population:
             self.evaluate(solution, Function)
 
     def select_best_solution(self, population):
+        """Runs over whole population and returns one with best fitness
+
+        Args:
+            population (Solution[]): whole population len(population)=self.size_of_population
+
+        Returns:
+            Solution: Solution with best fitness value
+        """
         best_in_population = Solution()
         for solution in population:
             if solution.fitness_value < best_in_population.fitness_value:
@@ -45,11 +88,23 @@ class AbstractAlgorithm():
         return best_in_population
 
     def generate_random_solution(self, lower_bound, upper_bound, dimension = 2):
+        """Generates random solution according to bounds
+
+        Args:
+            lower_bound (float) 
+            upper_bound (float)
+            dimension (int, optional) Defaults to 2.
+
+        Returns:
+            Solution: generated Solution with inicialized random vector
+        """
         random_solution = Solution(dimension, lower_bound, upper_bound)
         random_solution.fill_vector_with_random()
         return random_solution
 
     def generate_population(self):
+        """Adds 1 to prop index_of_generation. It is used in alg as condition.
+        """
         self.index_of_generation += 1
 
 
@@ -69,6 +124,15 @@ class BlindAgorithm(AbstractAlgorithm):
          super().__init__(**kwds)
 
     def generate_population(self, Function, dimension = 2):
+        """Generates population for BlindAlgorithm with random individuals
+
+        Args:
+            Function (class Function): specific Function (Sphere || Ackley..)
+            dimension (int, optional): Defaults to 2.
+
+        Returns:
+            [Solution[]]: generated population as specific generation
+        """
         super().generate_population()
         population = []
         for _ in range(self.size_of_population):
@@ -76,6 +140,11 @@ class BlindAgorithm(AbstractAlgorithm):
         return population
 
     def start(self, Function):
+        """Runs Blind Algorithm on specified Function 
+
+        Args:
+            Function (class Function): specific Function (Sphere || Ackley..)
+        """
         first_solution = self.generate_random_solution(Function.left, Function.right)
         self.evaluate(first_solution, Function)
         self.best_solution = first_solution
@@ -98,15 +167,29 @@ class HillClimbAlgorithm(AbstractAlgorithm):
 
 
     def generate_population(self, Function, dimension = 2):
+        """Generates population for HillClimbAlgorithm with np.random.normal
+
+        Args:
+            Function (class Function): specific Function (Sphere || Ackley..)
+            dimension (int, optional): Defaults to 2.
+
+        Returns:
+            [Solution[]]: generated population as specific generation
+        """
         super().generate_population()
         population = []
         for _ in range(self.size_of_population):
-            neighbor = Solution()
+            neighbor = Solution(lower_bound=Function.left, upper_bound=Function.right)
             neighbor.fill_vector_with_gaussian(self.best_solution, self.sigma)
             population.append(neighbor)
         return population
 
     def start(self, Function):
+        """Runs HillClimb Algorithm on specified Function, with specified args. 
+
+        Args:
+            Function (class Function): specific Function (Sphere || Ackley..)
+        """
         first_solution = self.generate_random_solution(Function.left, Function.right)
         self.evaluate(first_solution, Function)
         self.best_solution = first_solution
@@ -118,7 +201,5 @@ class HillClimbAlgorithm(AbstractAlgorithm):
             best_in_neighborhood = self.select_best_solution(neighborhood)
             if best_in_neighborhood.fitness_value < self.best_solution.fitness_value:
                 self.best_solution = best_in_neighborhood
-
-            print(self.index_of_generation)
 
             self.graph.draw(self.best_solution, neighborhood)
