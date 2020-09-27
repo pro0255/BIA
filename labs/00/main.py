@@ -10,10 +10,10 @@ from functions.Michalewicz import Michalewicz
 from functions.Zakharov import Zakharov
 from functions.Ackley import Ackley
 from algorithms.Blind import BlindAgorithm
+from algorithms.Blind import HillClimbAlgorithm
 from Application import Application
 import math
 from tkinter import *
-from algorithms.HillClimb import HillClimb
 from Graph import Graph
 
 
@@ -189,11 +189,11 @@ michalewicz = Michalewicz() #
 zakharov = Zakharov() #
 ackley = Ackley() #
 
-active_function = michalewicz
+active_function = sphere
 
 graph = Graph(active_function.left, active_function.right, active_function)
-blind = BlindAgorithm(graph=graph, size_of_population=10, max_generation=100)
-blind.start(active_function)
+algorithm = BlindAgorithm(graph=graph, size_of_population=10, max_generation=10)
+algorithm.start(active_function)
 
 # app.start()
 # sphere = Sphere()

@@ -41,7 +41,7 @@ class AbstractAlgorithm():
             self.evaluate(item)
 
 
-class HillClimb(AbstractAlgorithm):
+class HillClimbAlgorithm(AbstractAlgorithm):
  
     def __init__(self, r, **kwds):
         self.r = r
