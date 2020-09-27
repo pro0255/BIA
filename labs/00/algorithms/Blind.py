@@ -1,20 +1,53 @@
 import random
 import numpy as np
+import matplotlib.pyplot as plt
 
 
-def generate_in_bounderies(number_of_records, Func):
-    records = []
-    for _ in range(number_of_records):
-        records.append(
-            [
-                random.uniform(Func.left, Func.right),
-                random.uniform(Func.left, Func.right),
-            ]
-        )
-    return records
+class Solution:
+    def __init__(self, dimension = 2, lower_bound = 0, upper_bound = 0):
+        self.dimension = dimension
+        self.lower_bound = lower_bound
+        self.upper_bound = upper_bound
+        self.vector = np.zeros(dimension) #x,y..
+        self.fitness_value = np.inf #z..
+
+    def fill_vector_with_random(self):
+        self.vector = np.random.uniform(low=self.lower_bound, high=self.upper_bound, size=self.dimension)
 
 
-class BlindAgorithm:
+
+class AbstractAlgorithm():
+    def __init__(self, graph, size_of_population = 1000, max_generation = 20):
+        self.size_of_population = size_of_population
+        self.max_generation = max_generation
+        self.graph = graph
+        self.index_of_generation = 0
+        self.best_solution = Solution()
+
+    def evaluate(self, solution, Function):
+        solution.fitness_value = Function.run(solution.vector)
+
+    def evalute_population(self, population, Function):
+        for solution in population:
+            self.evaluate(solution, Function)
+
+    def select_best_solution(self, population):
+        best_in_population = Solution()
+        for solution in population:
+            if solution.fitness_value < best_in_population.fitness_value:
+                best_in_population = solution
+        return best_in_population
+
+    def generate_random_solution(self, lower_bound, upper_bound, dimension = 2):
+        random_solution = Solution(dimension, lower_bound, upper_bound)
+        random_solution.fill_vector_with_random()
+        return random_solution
+
+    def generate_population(self):
+        self.index_of_generation += 1
+
+
+class BlindAgorithm(AbstractAlgorithm):
     """
     Blind algorithm tries to find global min/max.
 
@@ -26,45 +59,27 @@ class BlindAgorithm:
     Generation does not optimizes move.
     It remembers previous state.
     """
+    def __init__(self, **kwds):
+         super().__init__(**kwds)
 
-    def __init__(self):
-        pass
+    def generate_population(self, Function, dimension = 2):
+        super().generate_population()
+        population = []
+        for _ in range(self.size_of_population):
+            population.append(self.generate_random_solution(Function.left, Function.right, dimension))
+        return population
 
-    def run(self, number_of_records, Func, min_vector_input=None):
-        generation = generate_in_bounderies(number_of_records, Func)
-        z_vector = []
-        for value in generation:
-            z = Func.run([value[0], value[1]])
-            z_vector.append(z)
+    def start(self, Function):
+        first_solution = self.generate_random_solution(Function.left, Function.right)
+        self.evaluate(first_solution, Function)
+        self.best_solution = first_solution
 
-        min_index = np.argmin(z_vector)
-        x = generation[min_index][0]
-        y = generation[min_index][1]
-
-        generation_min_vector = [x, y, z_vector[min_index]]
-
-        min_result_vector = []
-
-        if min_vector_input == None:
-            min_result_vector = generation_min_vector
-        else:
-            min_result_vector = (
-                generation_min_vector
-                if generation_min_vector[2] < min_vector_input[2]
-                else min_vector_input
-            )
-
-        generation_all_vectors = [
-            [value[0], value[1], z_vector[index]]
-            for index, value in enumerate(generation)
-            if min_result_vector[2] != z_vector[index]
-        ]
-        x = []
-        y = []
-        z = []
-        for vector in generation_all_vectors:
-            x.append(vector[0])
-            y.append(vector[1])
-            z.append(vector[2])
-        return [min_result_vector, [x, y, z]]
-
+        while self.index_of_generation < self.max_generation:
+            population = self.generate_population(Function)
+            self.evalute_population(population, Function)
+            best_in_population = self.select_best_solution(population)
+            if best_in_population.fitness_value < self.best_solution.fitness_value:
+                self.best_solution = best_in_population
+        
+            print(self.index_of_generation)
+            self.graph.draw(self.best_solution, population)

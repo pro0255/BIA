@@ -20,9 +20,63 @@ class Graph():
 
         varidis = cm.get_cmap('viridis', 12)
         ax = plt.axes(projection="3d", title=type(Function).__name__)
-        ax.plot_surface(X, Y, Z, cmap=varidis,rstride=1, cstride=1, linewidth=0, alpha=0.4, antialiased=False)
+        ax.plot_surface(X, Y, Z, cmap=varidis,rstride=1, cstride=1, linewidth=0, alpha=0.1, antialiased=False)
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("z")
 
+        self.best = None
+        self.population = None
+
         self.plot = ax
+
+    def draw_population(self, population):
+        X = []
+        Y = []
+        Z = []
+
+        for solution in population:
+            X.append(solution.vector[0])
+            Y.append(solution.vector[1])
+            Z.append(solution.fitness_value)
+
+        self.population = self.plot.scatter(
+            X,
+            Y,
+            Z,
+            s=5,
+            alpha=1,
+            c="blue",
+            marker="o",
+        )
+
+        plt.pause(0.1)
+        plt.draw()
+
+        if self.population:
+            self.population.remove()
+
+
+
+    def draw(self, best_solution, population = None):
+
+        if self.best:
+            self.best.remove()
+
+
+
+        self.best = self.plot.scatter(
+            best_solution.vector[0],
+            best_solution.vector[1],
+            best_solution.fitness_value,
+            s=40,
+            alpha=1,
+            c="red",
+            marker="o",
+        )
+
+        plt.pause(0.1)
+        plt.draw()
+
+        if population:
+            self.draw_population(population)
