@@ -59,10 +59,8 @@ class Graph():
 
 
     def draw(self, best_solution, population = None):
-
         if self.best:
             self.best.remove()
-
 
 
         self.best = self.plot.scatter(

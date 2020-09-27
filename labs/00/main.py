@@ -9,8 +9,8 @@ from functions.Levy import Levy
 from functions.Michalewicz import Michalewicz
 from functions.Zakharov import Zakharov
 from functions.Ackley import Ackley
-from algorithms.Blind import BlindAgorithm
-from algorithms.Blind import HillClimbAlgorithm
+from algorithms.Algorithms import BlindAgorithm
+from algorithms.Algorithms import HillClimbAlgorithm
 from Application import Application
 import math
 from tkinter import *
