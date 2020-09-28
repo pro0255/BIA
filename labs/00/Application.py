@@ -56,6 +56,7 @@ class Application:
         self.create_run_button()
 
         self.run_disabled_entries_action()
+        self.change_text_button_action()
 
     def create_run_button(self):
         self.run_button = Button(
@@ -74,6 +75,7 @@ class Application:
             value (string): Key of Test function which targets to functions object defined in global scope
         """
         self.selected_function = functions[value]
+        self.change_text_button_action()
 
     def select_algorithm_action(self, value):
         """Action binded to selection of Algorithm
@@ -82,6 +84,7 @@ class Application:
         """
         self.selected_algorithm = algorithms[value]
         self.run_disabled_entries_action()
+        self.change_text_button_action()
 
     def create_combo_box_function(self):
         """Creation of combo box with Test functions
@@ -149,6 +152,26 @@ class Application:
         else:
             entry['state'] = 'disabled'
 
+    def change_text_button_action(self):
+        """Action triggers change of run_button text according to selected algorithm
+        """
+        constant_text = "Start Animation"
+        var_text_function = ''
+        var_text_algorithm = ''
+        try: 
+            var_text_function = type(self.selected_function).__name__
+        except:
+            print('no selected function')
+
+        try: 
+            var_text_algorithm = type(self.selected_algorithm).__name__
+        except:
+            print('no selected algorithm')
+        try:
+            self.run_button['text'] = f'{constant_text} on {var_text_function} with {var_text_algorithm}'
+        except:
+            print('no button now')
+
     def run_disabled_entries_action(self):
         """According to selected algorithm disable || enable GUI entries
         """
@@ -169,11 +192,21 @@ class Application:
 
 
     def run_action(self):
+        """Actions binded to click on start algorithm with specified args
+        """
         graph = Graph(self.selected_function.left, self.selected_function.right, self.selected_function)
         algorithm = self.build_algorithm(graph)
         algorithm.start(self.selected_function)
 
     def build_algorithm(self, graph):
+        """Function which sets all args to selected algorithm
+
+        Args:
+            graph (class Graph)
+
+        Returns:
+            class Algorithm: builded Algorithm with all args according to GUI inputs
+        """
         algorithm = self.selected_algorithm
         algorithm.graph = graph
 
@@ -188,7 +221,6 @@ class Application:
         if algorithm.has_attribute('sigma'):
             sigma = float(self.sigma.get().strip())
             algorithm.sigma = sigma 
-
 
         return algorithm
 
