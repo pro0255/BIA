@@ -38,13 +38,13 @@ class Application:
 
         self.all_entries = {}
 
+        self.create_run_button()
         self.create_combo_box_function()
         self.create_combo_box_algorithm()
         self.create_input_size_generation()
         self.create_input_number_of_iterations()
         self.create_input_sigma()
 
-        self.create_run_button()
 
         self.run_disabled_entries_action()
         self.change_text_button_action()
@@ -107,7 +107,7 @@ class Application:
         size_generation_label = Label(self.root, text="Size generation")
         size_generation_label.pack()
         size_generation = Entry(self.root, textvariable=self.size_generation)
-        self.all_entries["size_of_population"] = size_generation
+        self.all_entries["size_of_population"] = (size_generation_label, size_generation)
         size_generation.pack()
 
     def create_input_number_of_iterations(self):
@@ -116,7 +116,7 @@ class Application:
         number_of_iterations_label = Label(self.root, text="Number of iterations")
         number_of_iterations_label.pack()
         number_of_iterations = Entry(self.root, textvariable=self.number_of_iterations)
-        self.all_entries["max_generation"] = number_of_iterations
+        self.all_entries["max_generation"] = (number_of_iterations_label,number_of_iterations)
         number_of_iterations.pack()
 
     def create_input_sigma(self):
@@ -125,20 +125,24 @@ class Application:
         sigma_label = Label(self.root, text="Sigma")
         sigma_label.pack()
         sigma = Entry(self.root, textvariable=self.sigma)
-        self.all_entries["sigma"] = sigma
+        self.all_entries["sigma"] = (sigma_label, sigma)
         sigma.pack()
 
-    def toggle_entry(self, entry, enable=True):
+    def toggle_entry(self, entry_tuple, enable=True):
         """Toggle state of entry
 
         Args:
-            entry (class Entry): input
+            entry ((class Entry, class Label)): input
             enable (bool, optional): state of Entry. Defaults to True.
         """
         if enable:
-            entry["state"] = "normal"
+            for item in entry_tuple:
+                item.pack()
+            # entry["state"] = "normal"
         else:
-            entry["state"] = "disabled"
+            for item in entry_tuple:
+                item.pack_forget()
+            # entry["state"] = "disabled"
 
     def change_text_button_action(self):
         """Action triggers change of run_button text according to selected algorithm"""

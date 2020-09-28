@@ -209,3 +209,12 @@ class HillClimbAlgorithm(AbstractAlgorithm):
 
             if self.graph:
                 self.graph.draw(self.best_solution, neighborhood)
+
+
+
+class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
+    def __init__(self, initial_temperature=100, minimal_temperature = 0, cooling_constant = 0.9, **kwds):
+        super().__init__(**kwds)
+        self.initial_temperature = initial_temperature
+        self.minimal_temperature = minimal_temperature
+        self.cooling_constant = cooling_constant
