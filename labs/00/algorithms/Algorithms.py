@@ -52,6 +52,13 @@ class AbstractAlgorithm():
         self.index_of_generation = 0
         self.best_solution = Solution()
 
+
+    def has_attribute(self, attribute):
+        if hasattr(self, attribute):
+            return True
+        return False
+
+
     def evaluate(self, solution, Function):
         """Sets z (fitness) value according to Function
 

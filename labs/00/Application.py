@@ -42,22 +42,44 @@ class Application:
     def __init__(self, run_action):
         self.root = Tk()
         self.root.title("BIA course")
-        self.root.geometry("400x200")
+        self.root.geometry("400x600")
+
+
+        self.all_entries = {}
+
+        self.create_combo_box_function()
+        self.create_combo_box_algorithm()
         self.create_input_size_generation()
         self.create_input_number_of_iterations()
-        self.create_combo_box_function()
+        self.create_input_sigma()        
+        
 
-        run_button = Button(
+        self.create_run_button()
+
+        self.run_disabled_entries_action()
+
+        # run_button = Button(
+        #     self.root,
+        #     text="START ANIMATION",
+        #     bg="brown",
+        #     fg="white",
+        #     font=("helvetica", 9, "bold"),
+        #     command=run_action,
+        # )
+        # run_button.pack()
+
+    def create_run_button(self):
+        self.run_button = Button(
             self.root,
             text="START ANIMATION",
             bg="brown",
             fg="white",
             font=("helvetica", 9, "bold"),
-            command=run_action,
+            command=self.run_action,
         )
-        run_button.pack()
+        self.run_button.pack()
 
-    def select_function(self, value):
+    def select_function_action(self, value):
         """Action binded to selection of Test function
         Args:
             value (string): Key of Test function which targets to functions object defined in global scope
@@ -70,6 +92,7 @@ class Application:
             value (string): Key of Algortihm which targets to algorithms object defined in global scope
         """
         self.selected_algorithm = algorithms[value]
+        self.run_disabled_entries_action()
 
     def create_combo_box_function(self):
         """Creation of combo box with Test functions
@@ -78,8 +101,8 @@ class Application:
         variable = StringVar(self.root)
         init_function = choices[0]
         variable.set(init_function)
-        self.select_function(init_function)
-        menu = OptionMenu(self.root, variable, *choices, command=self.select_function)
+        self.select_function_action(init_function)
+        menu = OptionMenu(self.root, variable, *choices, command=self.select_function_action)
         menu.pack()
 
     def create_combo_box_algorithm(self):
@@ -89,10 +112,9 @@ class Application:
         variable = StringVar(self.root)
         init_algorithm = choices[0]
         variable.set(init_algorithm)
-        self.select_algorithm_action(init_algorithm)
+        self.selected_algorithm = algorithms[init_algorithm]
         menu = OptionMenu(self.root, variable, *choices, command=self.select_algorithm_action)
         menu.pack()
-
 
 
     def create_input_size_generation(self):
@@ -102,6 +124,7 @@ class Application:
         size_generation_label = Label(self.root, text="Size generation")
         size_generation_label.pack()
         size_generation = Entry(self.root, textvariable=self.size_generation)
+        self.all_entries['size_of_population'] = size_generation 
         size_generation.pack()
 
     def create_input_number_of_iterations(self):
@@ -111,6 +134,7 @@ class Application:
         number_of_iterations_label = Label(self.root, text="Number of iterations")
         number_of_iterations_label.pack()
         number_of_iterations = Entry(self.root, textvariable=self.number_of_iterations)
+        self.all_entries['max_generation'] = number_of_iterations 
         number_of_iterations.pack()
 
     def create_input_sigma(self):  
@@ -119,30 +143,73 @@ class Application:
         self.sigma = StringVar()
         sigma_label = Label(self.root, text="Sigma")
         sigma_label.pack()
-        sigma = Entry(self.root, textvariable=self.number_of_iterations)
+        sigma = Entry(self.root, textvariable=self.sigma)
+        self.all_entries['sigma'] = sigma
         sigma.pack()
+    
 
-    def run_event(self):
+    def toggle_entry(self, entry, enable = True):
+        """Toggle state of entry
+
+        Args:
+            entry (class Entry): input
+            enable (bool, optional): state of Entry. Defaults to True.
+        """
+        if enable:
+            entry['state'] = 'normal'
+        else:
+            entry['state'] = 'disabled'
+
+    def run_disabled_entries_action(self):
+        """According to selected algorithm disable || enable GUI entries
+        """
+        if self.selected_algorithm.has_attribute('size_of_population'):
+            self.toggle_entry(self.all_entries['size_of_population'])
+        else:
+            self.toggle_entry(self.all_entries['size_of_population'], False)
+
+        if self.selected_algorithm.has_attribute('max_generation'):
+            self.toggle_entry(self.all_entries['max_generation'])
+        else:
+            self.toggle_entry(self.all_entries['max_generation'], False)
+
+        if self.selected_algorithm.has_attribute('sigma'):
+            self.toggle_entry(self.all_entries['sigma'])
+        else:
+            self.toggle_entry(self.all_entries['sigma'], False)
+
+
+    def run_action(self):
         graph = Graph(self.selected_function.left, self.selected_function.right, self.selected_function)
         algorithm = self.build_algorithm(graph)
         algorithm.start(self.selected_function)
 
     def build_algorithm(self, graph):
         algorithm = self.selected_algorithm
-        
+        algorithm.graph = graph
+
+        if algorithm.has_attribute('size_of_population'):
+            size_of_population = int(self.size_generation.get().strip())
+            algorithm.size_of_population = size_of_population 
+
+        if algorithm.has_attribute('max_generation'):
+            max_generation = int(self.number_of_iterations.get().strip())
+            algorithm.max_generation = max_generation 
+
+        if algorithm.has_attribute('sigma'):
+            sigma = float(self.sigma.get().strip())
+            algorithm.sigma = sigma 
 
 
         return algorithm
 
 
     def start(self):
-        """
-        Starts GUI
+        """Starts GUI
         """
         self.root.mainloop()
 
     def stop(self):
-        """
-        Stops GUI
+        """Stops GUI
         """
         self.root.destroy()
