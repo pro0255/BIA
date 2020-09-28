@@ -10,6 +10,7 @@ from functions.Zakharov import Zakharov
 from functions.Ackley import Ackley
 from algorithms.Algorithms import BlindAgorithm
 from algorithms.Algorithms import HillClimbAlgorithm
+from algorithms.Algorithms import SimulatedAnnealingAlgorithm
 from Graph import Graph
 import matplotlib.pyplot as plt
 
@@ -25,9 +26,9 @@ functions = {
     "Ackley": Ackley(),
 }
 
-algorithms = {"Blind": BlindAgorithm(), "HillClimb": HillClimbAlgorithm()}
+algorithms = {"Blind": BlindAgorithm(), "HillClimb": HillClimbAlgorithm(), "SimulatedAnnealing": SimulatedAnnealingAlgorithm()}
 
-
+#TODO!: automatic generation of (label, input)
 class Application:
     """Represents GUI"""
 
@@ -44,6 +45,9 @@ class Application:
         self.create_input_size_generation()
         self.create_input_number_of_iterations()
         self.create_input_sigma()
+        self.create_input_initial_temperature()
+        self.create_input_minimal_temperature()
+        self.create_input_cooling_constant()
 
 
         self.run_disabled_entries_action()
@@ -128,6 +132,34 @@ class Application:
         self.all_entries["sigma"] = (sigma_label, sigma)
         sigma.pack()
 
+    def create_input_initial_temperature(self):
+        """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
+        self.initial_temperature = StringVar()
+        initial_temperature_label = Label(self.root, text="Initial Temperature")
+        initial_temperature_label.pack()
+        initial_temperature = Entry(self.root, textvariable=self.initial_temperature)
+        self.all_entries["initial_temperature"] = (initial_temperature_label, initial_temperature)
+        initial_temperature.pack()
+    
+    def create_input_minimal_temperature(self):
+        """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
+        self.minimal_temperature = StringVar()
+        minimal_temperature_label = Label(self.root, text="Minimal Temperature")
+        minimal_temperature_label.pack()
+        minimal_temperature = Entry(self.root, textvariable=self.minimal_temperature)
+        self.all_entries["minimal_temperature"] = (minimal_temperature_label, minimal_temperature)
+        minimal_temperature.pack()
+
+    def create_input_cooling_constant(self):
+        """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
+        self.cooling_constant = StringVar()
+        cooling_constant_label = Label(self.root, text="Cooling Constant")
+        cooling_constant_label.pack()
+        cooling_constant = Entry(self.root, textvariable=self.cooling_constant)
+        self.all_entries["cooling_constant"] = (cooling_constant_label, cooling_constant)
+        cooling_constant.pack()
+    
+
     def toggle_entry(self, entry_tuple, enable=True):
         """Toggle state of entry
 
@@ -182,6 +214,21 @@ class Application:
         else:
             self.toggle_entry(self.all_entries["sigma"], False)
 
+        if self.selected_algorithm.has_attribute("initial_temperature"):
+            self.toggle_entry(self.all_entries["initial_temperature"])
+        else:
+            self.toggle_entry(self.all_entries["initial_temperature"], False)
+
+        if self.selected_algorithm.has_attribute("minimal_temperature"):
+            self.toggle_entry(self.all_entries["minimal_temperature"])
+        else:
+            self.toggle_entry(self.all_entries["minimal_temperature"], False)
+
+        if self.selected_algorithm.has_attribute("cooling_constant"):
+            self.toggle_entry(self.all_entries["cooling_constant"])
+        else:
+            self.toggle_entry(self.all_entries["cooling_constant"], False)
+
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
         graph = Graph(
@@ -227,6 +274,28 @@ class Application:
                 algorithm.sigma = sigma
             except:
                 print("wrong input for sigma")
+        
+        if algorithm.has_attribute("initial_temperature"):
+            try:
+                initial_temperature = float(self.initial_temperature.get().strip())
+                algorithm.initial_temperature = initial_temperature
+            except:
+                print("wrong input for initial_temperature")
+
+        if algorithm.has_attribute("minimal_temperature"):
+            try:
+                minimal_temperature = float(self.minimal_temperature.get().strip())
+                algorithm.minimal_temperature = minimal_temperature
+            except:
+                print("wrong input for minimal_temperature")
+
+        if algorithm.has_attribute("cooling_constant"):
+            try:
+                cooling_constant = float(self.cooling_constant.get().strip())
+                algorithm.cooling_constant = cooling_constant
+            except:
+                print("wrong input for cooling_constant")
+
 
         return algorithm
 

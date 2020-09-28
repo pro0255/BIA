@@ -218,3 +218,14 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         self.initial_temperature = initial_temperature
         self.minimal_temperature = minimal_temperature
         self.cooling_constant = cooling_constant
+        delattr(self, 'size_of_population')
+        delattr(self, 'max_generation')
+
+
+    def start(self, Function):
+        """Runs Simulated Annealing Algorithm on specified Function, with specified args.
+
+        Args:
+            Function (class Function): specific Function (Sphere || Ackley..)
+        """
+        print('running algorithm')
