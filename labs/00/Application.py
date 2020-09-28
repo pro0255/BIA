@@ -135,7 +135,7 @@ class Application:
     def create_input_initial_temperature(self):
         """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
         self.initial_temperature = StringVar()
-        initial_temperature_label = Label(self.root, text="Initial Temperature")
+        initial_temperature_label = Label(self.root, text="Initial Temperature - T_0")
         initial_temperature_label.pack()
         initial_temperature = Entry(self.root, textvariable=self.initial_temperature)
         self.all_entries["initial_temperature"] = (initial_temperature_label, initial_temperature)
@@ -144,7 +144,7 @@ class Application:
     def create_input_minimal_temperature(self):
         """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
         self.minimal_temperature = StringVar()
-        minimal_temperature_label = Label(self.root, text="Minimal Temperature")
+        minimal_temperature_label = Label(self.root, text="Minimal Temperature - T_min")
         minimal_temperature_label.pack()
         minimal_temperature = Entry(self.root, textvariable=self.minimal_temperature)
         self.all_entries["minimal_temperature"] = (minimal_temperature_label, minimal_temperature)
@@ -153,7 +153,7 @@ class Application:
     def create_input_cooling_constant(self):
         """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
         self.cooling_constant = StringVar()
-        cooling_constant_label = Label(self.root, text="Cooling Constant")
+        cooling_constant_label = Label(self.root, text="Cooling Constant - alpha")
         cooling_constant_label.pack()
         cooling_constant = Entry(self.root, textvariable=self.cooling_constant)
         self.all_entries["cooling_constant"] = (cooling_constant_label, cooling_constant)

@@ -221,6 +221,13 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         delattr(self, 'size_of_population')
         delattr(self, 'max_generation')
 
+    def generate_population(self, Function, dimension = 2):
+        super().generate_population()
+        population = []
+        neighbor = Solution(lower_bound=Function.left, upper_bound=Function.right)
+        neighbor.fill_vector_with_gaussian(self.best_solution, self.sigma)
+        population.append(neighbor)
+        return population
 
     def start(self, Function):
         """Runs Simulated Annealing Algorithm on specified Function, with specified args.
@@ -229,3 +236,20 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         print('running algorithm')
+        first_solution = self.generate_random_solution(Function.left, Function.right)
+        self.evaluate(first_solution, Function)
+        self.best_solution = first_solution
+        print(self.initial_temperature, self.minimal_temperature)
+        while self.initial_temperature > self.minimal_temperature:
+            neighbour = self.generate_population(Function)
+            self.evaluate(neighbour[0], Function)
+            if neighbour[0].fitness_value < self.best_solution:
+                self.best_solution = neighbour[0]
+            else:
+                r = np.random.uniform(Function.left, Function.right)
+                if r < np.exp(-((neighbour[0].fitness_value - self.best_solution.fitness_value)/self.initial_temperature)):
+                    self.best_solution = neighbour[0]
+            self.initial_temperature = self.initial_temperature * self.cooling_constant
+
+            if self.graph:
+                self.graph.draw(self.best_solution, neighbour)
