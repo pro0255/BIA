@@ -35,11 +35,10 @@ algorithms = {
 
 
 class Application:
-    """
-    Represents GUI
+    """Represents GUI
     """
 
-    def __init__(self, run_action):
+    def __init__(self):
         self.root = Tk()
         self.root.title("BIA course")
         self.root.geometry("400x600")
@@ -57,16 +56,6 @@ class Application:
         self.create_run_button()
 
         self.run_disabled_entries_action()
-
-        # run_button = Button(
-        #     self.root,
-        #     text="START ANIMATION",
-        #     bg="brown",
-        #     fg="white",
-        #     font=("helvetica", 9, "bold"),
-        #     command=run_action,
-        # )
-        # run_button.pack()
 
     def create_run_button(self):
         self.run_button = Button(
