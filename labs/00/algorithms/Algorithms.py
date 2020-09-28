@@ -11,8 +11,7 @@ class Solution:
         self.fitness_value = np.inf #z..
 
     def fill_vector_with_random(self):
-        """
-            Sets random vector with specified bounds
+        """Sets random vector with specified bounds
         """
         self.vector = np.random.uniform(low=self.lower_bound, high=self.upper_bound, size=self.dimension)
     
@@ -46,7 +45,7 @@ class Solution:
 
 
 class AbstractAlgorithm():
-    def __init__(self, graph, size_of_population = 1000, max_generation = 20):
+    def __init__(self, graph = None, size_of_population = 1000, max_generation = 20):
         self.size_of_population = size_of_population
         self.max_generation = max_generation
         self.graph = graph
@@ -109,8 +108,7 @@ class AbstractAlgorithm():
 
 
 class BlindAgorithm(AbstractAlgorithm):
-    """
-    Blind algorithm tries to find global min/max.
+    """Blind algorithm tries to find global min/max.
 
     In n generated records tries to find min/max. Also takes to consideration min/max founded in last run. If current generation founded better results replace old one.
 
@@ -156,12 +154,12 @@ class BlindAgorithm(AbstractAlgorithm):
             if best_in_population.fitness_value < self.best_solution.fitness_value:
                 self.best_solution = best_in_population
         
-            print(self.index_of_generation)
-            self.graph.draw(self.best_solution, population)
+            if self.graph:
+                self.graph.draw(self.best_solution, population)
 
 
 class HillClimbAlgorithm(AbstractAlgorithm):
-    def __init__(self, sigma, **kwds):
+    def __init__(self, sigma = 1, **kwds):
         self.sigma = sigma
         super().__init__(**kwds)
 
@@ -202,4 +200,5 @@ class HillClimbAlgorithm(AbstractAlgorithm):
             if best_in_neighborhood.fitness_value < self.best_solution.fitness_value:
                 self.best_solution = best_in_neighborhood
 
-            self.graph.draw(self.best_solution, neighborhood)
+            if self.graph:
+                self.graph.draw(self.best_solution, neighborhood)

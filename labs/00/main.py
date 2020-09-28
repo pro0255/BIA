@@ -28,7 +28,7 @@ def run_action():
     max_generation = int(app.number_of_iterations.get().strip())
     active_function = app.selected_function
     graph = Graph(active_function.left, active_function.right, active_function)
-    algorithm = BlindAgorithm(graph=graph, size_of_population=size_of_population, max_generation=max_generation)
+    algorithm = HillClimbAlgorithm(graph=graph, size_of_population=size_of_population, max_generation=max_generation)
     algorithm.start(active_function)
 
 
