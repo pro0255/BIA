@@ -11,6 +11,7 @@ from functions.Ackley import Ackley
 from algorithms.Algorithms import BlindAgorithm
 from algorithms.Algorithms import HillClimbAlgorithm
 from Graph import Graph
+import matplotlib.pyplot as plt
 
 functions = {
     "Sphere": Sphere(),
@@ -196,7 +197,10 @@ class Application:
         """
         graph = Graph(self.selected_function.left, self.selected_function.right, self.selected_function)
         algorithm = self.build_algorithm(graph)
-        algorithm.start(self.selected_function)
+        try:
+            algorithm.start(self.selected_function)
+        except:
+            plt.close()
 
     def build_algorithm(self, graph):
         """Function which sets all args to selected algorithm
@@ -211,16 +215,25 @@ class Application:
         algorithm.graph = graph
 
         if algorithm.has_attribute('size_of_population'):
-            size_of_population = int(self.size_generation.get().strip())
-            algorithm.size_of_population = size_of_population 
+            try:
+                size_of_population = int(self.size_generation.get().strip())
+                algorithm.size_of_population = size_of_population
+            except:
+                print('wrong input for size_of_population')
 
         if algorithm.has_attribute('max_generation'):
-            max_generation = int(self.number_of_iterations.get().strip())
-            algorithm.max_generation = max_generation 
+            try:    
+                max_generation = int(self.number_of_iterations.get().strip())
+                algorithm.max_generation = max_generation 
+            except:
+                print('wrong input for max_generation') 
 
         if algorithm.has_attribute('sigma'):
-            sigma = float(self.sigma.get().strip())
-            algorithm.sigma = sigma 
+            try:
+                sigma = float(self.sigma.get().strip())
+                algorithm.sigma = sigma
+            except:
+                print('wrong input for sigma') 
 
         return algorithm
 
