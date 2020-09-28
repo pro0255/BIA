@@ -8,6 +8,6 @@ class Rastrigin:
         self.right = 5.12
 
     def run(self, vector):
-        sum = np.sum(np.power(vector, 2) - 10*np.cos(2*np.pi*vector))
+        sum = np.sum(np.power(vector, 2) - 10 * np.cos(2 * np.pi * vector))
         d = len(vector)
         return 10 * d + sum

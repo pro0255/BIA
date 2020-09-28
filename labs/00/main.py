@@ -19,7 +19,3 @@ from Graph import Graph
 app = Application()
 
 app.start()
-
-
-
-

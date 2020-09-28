@@ -2,20 +2,22 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 class Solution:
-    def __init__(self, dimension = 2, lower_bound = 0, upper_bound = 0):
+    def __init__(self, dimension=2, lower_bound=0, upper_bound=0):
         self.dimension = dimension
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
-        self.vector = np.zeros(dimension) #x,y..
-        self.fitness_value = np.inf #z..
+        self.vector = np.zeros(dimension)  # x,y..
+        self.fitness_value = np.inf  # z..
 
     def fill_vector_with_random(self):
-        """Sets random vector with specified bounds
-        """
-        self.vector = np.random.uniform(low=self.lower_bound, high=self.upper_bound, size=self.dimension)
-    
-    def fill_vector_with_gaussian(self, individual, sigma = 1):
+        """Sets random vector with specified bounds"""
+        self.vector = np.random.uniform(
+            low=self.lower_bound, high=self.upper_bound, size=self.dimension
+        )
+
+    def fill_vector_with_gaussian(self, individual, sigma=1):
         """Sets vector using NORMAL (Gaussian) distribution with specified bounds
 
         Args:
@@ -27,37 +29,35 @@ class Solution:
         for i in range(len(self.vector)):
             while True:
                 generated_value = np.random.normal(individual.vector[i], sigma)
-                if generated_value >= individual.lower_bound and generated_value <= individual.upper_bound:
+                if (
+                    generated_value >= individual.lower_bound
+                    and generated_value <= individual.upper_bound
+                ):
                     result.append(generated_value)
                     break
         self.vector = np.array(result)
 
-                
-    
     def __str__(self):
         """ToString
 
         Returns:
             string: Solution.toString() --> print(Solution)
         """
-        return f'Solution with\n Vector ->> {self.vector}\n Fitness ->> {self.fitness_value}'
+        return f"Solution with\n Vector ->> {self.vector}\n Fitness ->> {self.fitness_value}"
 
 
-
-class AbstractAlgorithm():
-    def __init__(self, graph = None, size_of_population = 1000, max_generation = 20):
+class AbstractAlgorithm:
+    def __init__(self, graph=None, size_of_population=1000, max_generation=20):
         self.size_of_population = size_of_population
         self.max_generation = max_generation
         self.graph = graph
         self.index_of_generation = 0
         self.best_solution = Solution()
 
-
     def has_attribute(self, attribute):
         if hasattr(self, attribute):
             return True
         return False
-
 
     def evaluate(self, solution, Function):
         """Sets z (fitness) value according to Function
@@ -93,11 +93,11 @@ class AbstractAlgorithm():
                 best_in_population = solution
         return best_in_population
 
-    def generate_random_solution(self, lower_bound, upper_bound, dimension = 2):
+    def generate_random_solution(self, lower_bound, upper_bound, dimension=2):
         """Generates random solution according to bounds
 
         Args:
-            lower_bound (float) 
+            lower_bound (float)
             upper_bound (float)
             dimension (int, optional) Defaults to 2.
 
@@ -109,8 +109,7 @@ class AbstractAlgorithm():
         return random_solution
 
     def generate_population(self):
-        """Adds 1 to prop index_of_generation. It is used in alg as condition.
-        """
+        """Adds 1 to prop index_of_generation. It is used in alg as condition."""
         self.index_of_generation += 1
 
 
@@ -125,10 +124,11 @@ class BlindAgorithm(AbstractAlgorithm):
     Generation does not optimizes move.
     It remembers previous state.
     """
-    def __init__(self, **kwds):
-         super().__init__(**kwds)
 
-    def generate_population(self, Function, dimension = 2):
+    def __init__(self, **kwds):
+        super().__init__(**kwds)
+
+    def generate_population(self, Function, dimension=2):
         """Generates population for BlindAlgorithm with random individuals
 
         Args:
@@ -141,11 +141,13 @@ class BlindAgorithm(AbstractAlgorithm):
         super().generate_population()
         population = []
         for _ in range(self.size_of_population):
-            population.append(self.generate_random_solution(Function.left, Function.right, dimension))
+            population.append(
+                self.generate_random_solution(Function.left, Function.right, dimension)
+            )
         return population
 
     def start(self, Function):
-        """Runs Blind Algorithm on specified Function 
+        """Runs Blind Algorithm on specified Function
 
         Args:
             Function (class Function): specific Function (Sphere || Ackley..)
@@ -160,18 +162,17 @@ class BlindAgorithm(AbstractAlgorithm):
             best_in_population = self.select_best_solution(population)
             if best_in_population.fitness_value < self.best_solution.fitness_value:
                 self.best_solution = best_in_population
-        
+
             if self.graph:
                 self.graph.draw(self.best_solution, population)
 
 
 class HillClimbAlgorithm(AbstractAlgorithm):
-    def __init__(self, sigma = 1, **kwds):
+    def __init__(self, sigma=1, **kwds):
         self.sigma = sigma
         super().__init__(**kwds)
 
-
-    def generate_population(self, Function, dimension = 2):
+    def generate_population(self, Function, dimension=2):
         """Generates population for HillClimbAlgorithm with np.random.normal
 
         Args:
@@ -190,7 +191,7 @@ class HillClimbAlgorithm(AbstractAlgorithm):
         return population
 
     def start(self, Function):
-        """Runs HillClimb Algorithm on specified Function, with specified args. 
+        """Runs HillClimb Algorithm on specified Function, with specified args.
 
         Args:
             Function (class Function): specific Function (Sphere || Ackley..)
@@ -198,7 +199,6 @@ class HillClimbAlgorithm(AbstractAlgorithm):
         first_solution = self.generate_random_solution(Function.left, Function.right)
         self.evaluate(first_solution, Function)
         self.best_solution = first_solution
-
 
         while self.index_of_generation < self.max_generation:
             neighborhood = self.generate_population(Function)

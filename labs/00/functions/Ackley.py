@@ -9,7 +9,7 @@ class Ackley:
         self.a = 20
         self.b = 0.2
         self.c = 2 * math.pi
-        
+
     def run(self, vector):
         result = 0
         sum1 = np.sum(np.power(vector, 2))

@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 
-class Graph():
+
+class Graph:
     def __init__(self, start, stop, Function):
         x = np.linspace(start, stop, 30)
         y = np.linspace(start, stop, 30)
@@ -18,9 +19,19 @@ class Graph():
         numpyArray = np.array(flat_Z)
         Z = numpyArray.reshape(X.shape[0], -1)
 
-        varidis = cm.get_cmap('viridis', 12)
+        varidis = cm.get_cmap("viridis", 12)
         ax = plt.axes(projection="3d", title=type(Function).__name__)
-        ax.plot_surface(X, Y, Z, cmap=varidis,rstride=1, cstride=1, linewidth=0, alpha=0.1, antialiased=False)
+        ax.plot_surface(
+            X,
+            Y,
+            Z,
+            cmap=varidis,
+            rstride=1,
+            cstride=1,
+            linewidth=0,
+            alpha=0.1,
+            antialiased=False,
+        )
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("z")
@@ -56,12 +67,9 @@ class Graph():
         if self.population:
             self.population.remove()
 
-
-
-    def draw(self, best_solution, population = None):
+    def draw(self, best_solution, population=None):
         if self.best:
             self.best.remove()
-
 
         self.best = self.plot.scatter(
             best_solution.vector[0],

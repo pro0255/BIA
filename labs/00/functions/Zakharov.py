@@ -12,6 +12,6 @@ class Zakharov:
         d = len(vector)
         i_vector = np.arange(1, d + 1)
         sum1 = np.sum(np.power(vector, 2))
-        sum2 = np.sum(0.5 * i_vector * vector )
+        sum2 = np.sum(0.5 * i_vector * vector)
         result = sum1 + math.pow(sum2, 2) + math.pow(sum2, 4)
         return result

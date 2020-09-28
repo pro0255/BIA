@@ -10,7 +10,7 @@ class Griewangk:
     def run(self, vector):
         result = 0
         d = len(vector)
-        sum = np.sum(np.power(vector, 2)/4000)
-        product = np.product(np.cos(vector/np.sqrt(2)))
+        sum = np.sum(np.power(vector, 2) / 4000)
+        product = np.product(np.cos(vector / np.sqrt(2)))
         result = sum - product + 1
         return result
