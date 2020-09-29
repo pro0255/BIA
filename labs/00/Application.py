@@ -28,6 +28,22 @@ functions = {
 
 algorithms = {"Blind": BlindAgorithm(), "HillClimb": HillClimbAlgorithm(), "SimulatedAnnealing": SimulatedAnnealingAlgorithm()}
 
+
+blind_args = {
+    "size_of_population": {},
+    "max_generation": {}
+}
+
+hill_climb_args = {
+    "sigma": {}
+}
+
+simulated_annealing_args = {
+    "initial_temperature": {},
+    "minimal_temperature": {},
+    "cooling_constant": {}
+}
+
 #TODO!: automatic generation of (label, input)
 class Application:
     """Represents GUI"""
@@ -97,7 +113,7 @@ class Application:
         """Creation of combo box with Algorithms"""
         choices = list(algorithms.keys())
         variable = StringVar(self.root)
-        init_algorithm = choices[0]
+        init_algorithm = choices[2]
         variable.set(init_algorithm)
         self.selected_algorithm = algorithms[init_algorithm]
         menu = OptionMenu(
@@ -237,10 +253,13 @@ class Application:
             self.selected_function,
         )
         algorithm = self.build_algorithm(graph)
-        try:
-            algorithm.start(self.selected_function)
-        except:
-            plt.close()
+        algorithm.start(self.selected_function)
+
+        # try:
+        #     algorithm.start(self.selected_function)
+        # except Exception as e:
+        #     print("Oops!", e.__class__, "occurred.")
+        #     plt.close()
 
     def build_algorithm(self, graph):
         """Function which sets all args to selected algorithm

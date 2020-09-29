@@ -225,7 +225,7 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         super().generate_population()
         population = []
         neighbor = Solution(lower_bound=Function.left, upper_bound=Function.right)
-        neighbor.fill_vector_with_gaussian(self.best_solution, self.sigma)
+        neighbor.fill_vector_with_gaussian(self.best_solution)
         population.append(neighbor)
         return population
 
@@ -243,7 +243,7 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         while self.initial_temperature > self.minimal_temperature:
             neighbour = self.generate_population(Function)
             self.evaluate(neighbour[0], Function)
-            if neighbour[0].fitness_value < self.best_solution:
+            if neighbour[0].fitness_value < self.best_solution.fitness_value:
                 self.best_solution = neighbour[0]
             else:
                 r = np.random.uniform(Function.left, Function.right)
@@ -251,5 +251,6 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
                     self.best_solution = neighbour[0]
             self.initial_temperature = self.initial_temperature * self.cooling_constant
 
+            print(self.initial_temperature)
             if self.graph:
                 self.graph.draw(self.best_solution, neighbour)
