@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
+import seaborn as sns
+
 
 
 class Graph:
@@ -40,6 +42,7 @@ class Graph:
         self.population = None
 
         self.plot = ax
+        # self_heat_map = sns.heatmap(Z, linewidth=0.5)
 
     def draw_population(self, population):
         X = []
@@ -86,3 +89,4 @@ class Graph:
 
         if population:
             self.draw_population(population)
+

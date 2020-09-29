@@ -54,6 +54,9 @@ class AbstractAlgorithm:
         self.index_of_generation = 0
         self.best_solution = Solution()
 
+    def __setitem__(self, key, value):
+        self.__setattr__(key, value)
+
     def has_attribute(self, attribute):
         if hasattr(self, attribute):
             return True

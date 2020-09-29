@@ -40,33 +40,40 @@ algorithms = {"Blind": BlindAgorithm(), "HillClimb": HillClimbAlgorithm(), "Simu
 blind_args = {
     "size_of_population": {
         "text": "Size of population",
-        "convert": lambda a: int(a.get().strip())
+        "convert": lambda a: int(a.get().strip()),
+        "initial_value": 10
     },
     "max_generation": {
         "text": "Max generation",
-        "convert": lambda a: int(a.get().strip())
+        "convert": lambda a: int(a.get().strip()),
+        "initial_value": 30
     }
 }
 
 hill_climb_args = {
     "sigma": {
         "text": "Sigma gaussian value",
-        "convert": lambda a: float(a.get().strip())
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.5
     }
 }
 
 simulated_annealing_args = {
     "initial_temperature": {
         "text": "Initial temperature - T_0",
-        "convert": lambda a: float(a.get().strip())
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 100
     },
     "minimal_temperature": {
         "text": "Minimal temperature - T_min",
-        "convert": lambda a: float(a.get().strip())
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0
+
     },
     "cooling_constant": {
         "text": "Cooling constant - alpha",
-        "convert": lambda a: float(a.get().strip())
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.95
     }
 }
 
@@ -159,6 +166,7 @@ class Application:
         key = algorithm_tuple_arg[0]
         value = algorithm_tuple_arg[1]
         self.algorithms_args[key] = StringVar()
+        self.algorithms_args[key].set(value["initial_value"])
 
         label = Label(self.root, text=value["text"])
         label.pack()
@@ -255,8 +263,10 @@ class Application:
         for key, value in merged_args.items():
             if algorithm.has_attribute(key):
                 try:
-                    converted_value = value['convert'](self.algorithms_args[key])
-                    algorithm.size_of_population = converted_value
+                    ##TODO!: fix this!!
+                    converter = value['convert']
+                    converted_value = converter(self.algorithms_args[key])
+                    algorithm[key] = converted_value
                 except:
                     print(f"wrong input for {key}")
 
