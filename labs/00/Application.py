@@ -126,7 +126,7 @@ class Application:
         """Creation of combo box with Test functions"""
         choices = list(functions.keys())
         variable = StringVar(self.root)
-        init_function = choices[0]
+        init_function = INITIAL_FUNCTION_KEY
         variable.set(init_function)
         self.select_function_action(init_function)
         menu = OptionMenu(
@@ -140,7 +140,7 @@ class Application:
         """Creation of combo box with Algorithms"""
         choices = list(algorithms.keys())
         variable = StringVar(self.root)
-        init_algorithm = choices[2]
+        init_algorithm = INITIAL_ALGORITHM_KEY
         variable.set(init_algorithm)
         self.selected_algorithm = algorithms[init_algorithm]
         menu = OptionMenu(
