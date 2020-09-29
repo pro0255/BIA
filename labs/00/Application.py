@@ -16,6 +16,10 @@ import matplotlib.pyplot as plt
 
 INITIAL_FUNCTION_KEY = 'Sphere'
 INITIAL_ALGORITHM_KEY = 'SimulatedAnnealing'
+GLOBAL_WIDTH = 600
+GLOBAL_HEIGHT = 600
+GLOBAL_INPUT_SIZE = 100
+GLOBAL_OPTION_MENU_COLOR = 'DodgerBlue2'
 
 
 functions = {
@@ -76,24 +80,15 @@ class Application:
     def __init__(self):
         self.root = Tk()
         self.root.title("BIA course")
-        self.root.geometry("400x600")
+        self.root.geometry(f"{GLOBAL_WIDTH}x{GLOBAL_HEIGHT}")
 
         self.all_entries = {}
-
         self.create_run_button()
         self.create_combo_box_function()
         self.create_combo_box_algorithm()
-        self.create_input_size_generation()
-        self.create_input_number_of_iterations()
-        self.create_input_sigma()
-        self.create_input_initial_temperature()
-        self.create_input_minimal_temperature()
-        self.create_input_cooling_constant()
-
 
         self.algorithms_args = {}
         self.create_entries_dynamic()
-
 
         self.run_disabled_entries_action()
         self.change_text_button_action()
@@ -106,6 +101,7 @@ class Application:
             fg="white",
             font=("helvetica", 9, "bold"),
             command=self.run_action,
+            width=GLOBAL_WIDTH
         )
         self.run_button.pack()
 
@@ -136,6 +132,8 @@ class Application:
         menu = OptionMenu(
             self.root, variable, *choices, command=self.select_function_action
         )
+        menu.configure(width=GLOBAL_WIDTH, bg=GLOBAL_OPTION_MENU_COLOR)
+
         menu.pack()
 
     def create_combo_box_algorithm(self):
@@ -148,9 +146,16 @@ class Application:
         menu = OptionMenu(
             self.root, variable, *choices, command=self.select_algorithm_action
         )
+        menu.configure(width=GLOBAL_WIDTH, bg=GLOBAL_OPTION_MENU_COLOR)
+
         menu.pack()
 
     def create_input_dynamic(self, algorithm_tuple_arg):
+        """Creation of special gui tuple (label, entry)
+
+        Args:
+            algorithm_tuple_arg ((key, {"test": string, "convert": lambda})): tuple which contains specific information linked to gui tuple
+        """
         key = algorithm_tuple_arg[0]
         value = algorithm_tuple_arg[1]
         self.algorithms_args[key] = StringVar()
@@ -159,6 +164,7 @@ class Application:
         label.pack()
 
         entry = Entry(self.root, textvariable=self.algorithms_args[key])
+        entry.configure(width=50)
         entry.pack()
 
         self.all_entries[key] = (label, entry)
@@ -166,64 +172,11 @@ class Application:
 
 
     def create_entries_dynamic(self):
+        """Dynamic creation of tuples (label, entry) according to global dictionary
+        """
         for dic_tuple in merged_args.items():
             self.create_input_dynamic(dic_tuple)
 
-
-    def create_input_size_generation(self):
-        """Creation of GUI tuple (label, input) for size generation"""
-        self.size_generation = StringVar()
-        size_generation_label = Label(self.root, text="Size generation")
-        size_generation_label.pack()
-        size_generation = Entry(self.root, textvariable=self.size_generation)
-        self.all_entries["size_of_population"] = (size_generation_label, size_generation)
-        size_generation.pack()
-
-    def create_input_number_of_iterations(self):
-        """Creation of GUI tuple (label, input) for number of iterations"""
-        self.number_of_iterations = StringVar()
-        number_of_iterations_label = Label(self.root, text="Number of iterations")
-        number_of_iterations_label.pack()
-        number_of_iterations = Entry(self.root, textvariable=self.number_of_iterations)
-        self.all_entries["max_generation"] = (number_of_iterations_label,number_of_iterations)
-        number_of_iterations.pack()
-
-    def create_input_sigma(self):
-        """Creation of GUI tuple (label, input) for sigma [HillClimbAlgorithm]"""
-        self.sigma = StringVar()
-        sigma_label = Label(self.root, text="Sigma")
-        sigma_label.pack()
-        sigma = Entry(self.root, textvariable=self.sigma)
-        self.all_entries["sigma"] = (sigma_label, sigma)
-        sigma.pack()
-
-    def create_input_initial_temperature(self):
-        """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
-        self.initial_temperature = StringVar()
-        initial_temperature_label = Label(self.root, text="Initial Temperature - T_0")
-        initial_temperature_label.pack()
-        initial_temperature = Entry(self.root, textvariable=self.initial_temperature)
-        self.all_entries["initial_temperature"] = (initial_temperature_label, initial_temperature)
-        initial_temperature.pack()
-    
-    def create_input_minimal_temperature(self):
-        """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
-        self.minimal_temperature = StringVar()
-        minimal_temperature_label = Label(self.root, text="Minimal Temperature - T_min")
-        minimal_temperature_label.pack()
-        minimal_temperature = Entry(self.root, textvariable=self.minimal_temperature)
-        self.all_entries["minimal_temperature"] = (minimal_temperature_label, minimal_temperature)
-        minimal_temperature.pack()
-
-    def create_input_cooling_constant(self):
-        """Creation of GUI tuple (label, input) for sigma [SimulatedAnnealingAlgorithm]"""
-        self.cooling_constant = StringVar()
-        cooling_constant_label = Label(self.root, text="Cooling Constant - alpha")
-        cooling_constant_label.pack()
-        cooling_constant = Entry(self.root, textvariable=self.cooling_constant)
-        self.all_entries["cooling_constant"] = (cooling_constant_label, cooling_constant)
-        cooling_constant.pack()
-    
 
     def toggle_entry(self, entry_tuple, enable=True):
         """Toggle state of entry
@@ -264,35 +217,11 @@ class Application:
 
     def run_disabled_entries_action(self):
         """According to selected algorithm disable || enable GUI entries"""
-        if self.selected_algorithm.has_attribute("size_of_population"):
-            self.toggle_entry(self.all_entries["size_of_population"])
-        else:
-            self.toggle_entry(self.all_entries["size_of_population"], False)
-
-        if self.selected_algorithm.has_attribute("max_generation"):
-            self.toggle_entry(self.all_entries["max_generation"])
-        else:
-            self.toggle_entry(self.all_entries["max_generation"], False)
-
-        if self.selected_algorithm.has_attribute("sigma"):
-            self.toggle_entry(self.all_entries["sigma"])
-        else:
-            self.toggle_entry(self.all_entries["sigma"], False)
-
-        if self.selected_algorithm.has_attribute("initial_temperature"):
-            self.toggle_entry(self.all_entries["initial_temperature"])
-        else:
-            self.toggle_entry(self.all_entries["initial_temperature"], False)
-
-        if self.selected_algorithm.has_attribute("minimal_temperature"):
-            self.toggle_entry(self.all_entries["minimal_temperature"])
-        else:
-            self.toggle_entry(self.all_entries["minimal_temperature"], False)
-
-        if self.selected_algorithm.has_attribute("cooling_constant"):
-            self.toggle_entry(self.all_entries["cooling_constant"])
-        else:
-            self.toggle_entry(self.all_entries["cooling_constant"], False)
+        for key in merged_args:
+            if self.selected_algorithm.has_attribute(key):
+                self.toggle_entry(self.all_entries[key])
+            else:
+                self.toggle_entry(self.all_entries[key], False)
 
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
@@ -304,6 +233,7 @@ class Application:
         algorithm = self.build_algorithm(graph)
         algorithm.start(self.selected_function)
 
+        ## PRODUCTION crash
         # try:
         #     algorithm.start(self.selected_function)
         # except Exception as e:
@@ -322,48 +252,13 @@ class Application:
         algorithm = self.selected_algorithm
         algorithm.graph = graph
 
-        if algorithm.has_attribute("size_of_population"):
-            try:
-                size_of_population = int(self.size_generation.get().strip())
-                algorithm.size_of_population = size_of_population
-            except:
-                print("wrong input for size_of_population")
-
-        if algorithm.has_attribute("max_generation"):
-            try:
-                max_generation = int(self.number_of_iterations.get().strip())
-                algorithm.max_generation = max_generation
-            except:
-                print("wrong input for max_generation")
-
-        if algorithm.has_attribute("sigma"):
-            try:
-                sigma = float(self.sigma.get().strip())
-                algorithm.sigma = sigma
-            except:
-                print("wrong input for sigma")
-        
-        if algorithm.has_attribute("initial_temperature"):
-            try:
-                initial_temperature = float(self.initial_temperature.get().strip())
-                algorithm.initial_temperature = initial_temperature
-            except:
-                print("wrong input for initial_temperature")
-
-        if algorithm.has_attribute("minimal_temperature"):
-            try:
-                minimal_temperature = float(self.minimal_temperature.get().strip())
-                algorithm.minimal_temperature = minimal_temperature
-            except:
-                print("wrong input for minimal_temperature")
-
-        if algorithm.has_attribute("cooling_constant"):
-            try:
-                cooling_constant = float(self.cooling_constant.get().strip())
-                algorithm.cooling_constant = cooling_constant
-            except:
-                print("wrong input for cooling_constant")
-
+        for key, value in merged_args.items():
+            if algorithm.has_attribute(key):
+                try:
+                    converted_value = value['convert'](self.algorithms_args[key])
+                    algorithm.size_of_population = converted_value
+                except:
+                    print(f"wrong input for {key}")
 
         return algorithm
 

@@ -213,11 +213,14 @@ class HillClimbAlgorithm(AbstractAlgorithm):
 
 
 class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
-    def __init__(self, initial_temperature=100, minimal_temperature = 0, cooling_constant = 0.9, **kwds):
+    def __init__(self, sigma = 1, initial_temperature=100, minimal_temperature = 0, cooling_constant = 0.9, **kwds):
         super().__init__(**kwds)
         self.initial_temperature = initial_temperature
         self.minimal_temperature = minimal_temperature
         self.cooling_constant = cooling_constant
+        self.sigma = sigma
+
+        ##cause of gui :]
         delattr(self, 'size_of_population')
         delattr(self, 'max_generation')
 
@@ -225,7 +228,7 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         super().generate_population()
         population = []
         neighbor = Solution(lower_bound=Function.left, upper_bound=Function.right)
-        neighbor.fill_vector_with_gaussian(self.best_solution)
+        neighbor.fill_vector_with_gaussian(self.best_solution, self.sigma)
         population.append(neighbor)
         return population
 
