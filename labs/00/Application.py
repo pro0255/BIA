@@ -14,6 +14,10 @@ from algorithms.Algorithms import SimulatedAnnealingAlgorithm
 from Graph import Graph
 import matplotlib.pyplot as plt
 
+INITIAL_FUNCTION_KEY = 'Sphere'
+INITIAL_ALGORITHM_KEY = 'SimulatedAnnealing'
+
+
 functions = {
     "Sphere": Sphere(),
     "Schwefel": Schwefel(),
@@ -30,19 +34,40 @@ algorithms = {"Blind": BlindAgorithm(), "HillClimb": HillClimbAlgorithm(), "Simu
 
 
 blind_args = {
-    "size_of_population": {},
-    "max_generation": {}
+    "size_of_population": {
+        "text": "Size of population",
+        "convert": lambda a: int(a.get().strip())
+    },
+    "max_generation": {
+        "text": "Max generation",
+        "convert": lambda a: int(a.get().strip())
+    }
 }
 
 hill_climb_args = {
-    "sigma": {}
+    "sigma": {
+        "text": "Sigma gaussian value",
+        "convert": lambda a: float(a.get().strip())
+    }
 }
 
 simulated_annealing_args = {
-    "initial_temperature": {},
-    "minimal_temperature": {},
-    "cooling_constant": {}
+    "initial_temperature": {
+        "text": "Initial temperature - T_0",
+        "convert": lambda a: float(a.get().strip())
+    },
+    "minimal_temperature": {
+        "text": "Minimal temperature - T_min",
+        "convert": lambda a: float(a.get().strip())
+    },
+    "cooling_constant": {
+        "text": "Cooling constant - alpha",
+        "convert": lambda a: float(a.get().strip())
+    }
 }
+
+
+merged_args = {**blind_args, **hill_climb_args, **simulated_annealing_args}
 
 #TODO!: automatic generation of (label, input)
 class Application:
@@ -64,6 +89,10 @@ class Application:
         self.create_input_initial_temperature()
         self.create_input_minimal_temperature()
         self.create_input_cooling_constant()
+
+
+        self.algorithms_args = {}
+        self.create_entries_dynamic()
 
 
         self.run_disabled_entries_action()
@@ -120,6 +149,26 @@ class Application:
             self.root, variable, *choices, command=self.select_algorithm_action
         )
         menu.pack()
+
+    def create_input_dynamic(self, algorithm_tuple_arg):
+        key = algorithm_tuple_arg[0]
+        value = algorithm_tuple_arg[1]
+        self.algorithms_args[key] = StringVar()
+
+        label = Label(self.root, text=value["text"])
+        label.pack()
+
+        entry = Entry(self.root, textvariable=self.algorithms_args[key])
+        entry.pack()
+
+        self.all_entries[key] = (label, entry)
+
+
+
+    def create_entries_dynamic(self):
+        for dic_tuple in merged_args.items():
+            self.create_input_dynamic(dic_tuple)
+
 
     def create_input_size_generation(self):
         """Creation of GUI tuple (label, input) for size generation"""
