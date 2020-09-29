@@ -263,7 +263,6 @@ class Application:
         for key, value in merged_args.items():
             if algorithm.has_attribute(key):
                 try:
-                    ##TODO!: fix this!!
                     converter = value['convert']
                     converted_value = converter(self.algorithms_args[key])
                     algorithm[key] = converted_value
