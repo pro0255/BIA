@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 
 
 class Solution:
@@ -61,6 +62,12 @@ class AbstractAlgorithm:
         if hasattr(self, attribute):
             return True
         return False
+
+    def close_plot(self):
+        if self.graph:
+            time.sleep(0.5)
+            plt.close('all')
+
 
     def evaluate(self, solution, Function):
         """Sets z (fitness) value according to Function
@@ -212,11 +219,18 @@ class HillClimbAlgorithm(AbstractAlgorithm):
 
             if self.graph:
                 self.graph.draw(self.best_solution, neighborhood)
-
+        # self.close_plot()
 
 
 class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
-    def __init__(self, sigma = 1, initial_temperature=100, minimal_temperature = 0, cooling_constant = 0.9, **kwds):
+    def __init__(
+        self,
+        sigma=1,
+        initial_temperature=100,
+        minimal_temperature=0,
+        cooling_constant=0.9,
+        **kwds,
+    ):
         super().__init__(**kwds)
         self.initial_temperature = initial_temperature
         self.minimal_temperature = minimal_temperature
@@ -224,10 +238,10 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         self.sigma = sigma
 
         ##cause of gui :]
-        delattr(self, 'size_of_population')
-        delattr(self, 'max_generation')
+        delattr(self, "size_of_population")
+        delattr(self, "max_generation")
 
-    def generate_population(self, Function, dimension = 2):
+    def generate_population(self, Function, dimension=2):
         super().generate_population()
         population = []
         neighbor = Solution(lower_bound=Function.left, upper_bound=Function.right)
@@ -241,22 +255,26 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         Args:
             Function (class Function): specific Function (Sphere || Ackley..)
         """
-        print('running algorithm')
         first_solution = self.generate_random_solution(Function.left, Function.right)
         self.evaluate(first_solution, Function)
         self.best_solution = first_solution
-        print(self.initial_temperature, self.minimal_temperature)
         while self.initial_temperature > self.minimal_temperature:
-            neighbour = self.generate_population(Function)
-            self.evaluate(neighbour[0], Function)
-            if neighbour[0].fitness_value < self.best_solution.fitness_value:
-                self.best_solution = neighbour[0]
+            neighbourhood = self.generate_population(Function)
+            neighbour = neighbourhood[0]
+            self.evaluate(neighbour, Function)
+            if neighbour.fitness_value < self.best_solution.fitness_value:
+                self.best_solution = neighbour
             else:
-                r = np.random.uniform(Function.left, Function.right)
-                if r < np.exp(-((neighbour[0].fitness_value - self.best_solution.fitness_value)/self.initial_temperature)):
-                    self.best_solution = neighbour[0]
+                ##TODO?: random with bound or without?
+                # r = np.random.uniform(Function.left, Function.right)
+                r = np.random.uniform()
+                if r < np.exp(
+                    -((neighbour.fitness_value - self.best_solution.fitness_value))
+                    / self.initial_temperature
+                ):
+                    self.best_solution = neighbour
             self.initial_temperature = self.initial_temperature * self.cooling_constant
 
             print(self.initial_temperature)
             if self.graph:
-                self.graph.draw(self.best_solution, neighbour)
+                self.graph.draw(self.best_solution, neighbourhood)

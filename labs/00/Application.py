@@ -14,12 +14,12 @@ from algorithms.Algorithms import SimulatedAnnealingAlgorithm
 from Graph import Graph
 import matplotlib.pyplot as plt
 
-INITIAL_FUNCTION_KEY = 'Sphere'
-INITIAL_ALGORITHM_KEY = 'SimulatedAnnealing'
+INITIAL_FUNCTION_KEY = "Sphere"
+INITIAL_ALGORITHM_KEY = "HillClimb"
 GLOBAL_WIDTH = 600
 GLOBAL_HEIGHT = 600
 GLOBAL_INPUT_SIZE = 100
-GLOBAL_OPTION_MENU_COLOR = 'DodgerBlue2'
+GLOBAL_OPTION_MENU_COLOR = "DodgerBlue2"
 
 
 functions = {
@@ -34,27 +34,31 @@ functions = {
     "Ackley": Ackley(),
 }
 
-algorithms = {"Blind": BlindAgorithm(), "HillClimb": HillClimbAlgorithm(), "SimulatedAnnealing": SimulatedAnnealingAlgorithm()}
+algorithms = {
+    "Blind": BlindAgorithm(),
+    "HillClimb": HillClimbAlgorithm(),
+    "SimulatedAnnealing": SimulatedAnnealingAlgorithm(),
+}
 
 
 blind_args = {
     "size_of_population": {
         "text": "Size of population",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 10
+        "initial_value": 10,
     },
     "max_generation": {
         "text": "Max generation",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 30
-    }
+        "initial_value": 30,
+    },
 }
 
 hill_climb_args = {
     "sigma": {
         "text": "Sigma gaussian value",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.5
+        "initial_value": 0.5,
     }
 }
 
@@ -62,25 +66,24 @@ simulated_annealing_args = {
     "initial_temperature": {
         "text": "Initial temperature - T_0",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 100
+        "initial_value": 100,
     },
     "minimal_temperature": {
         "text": "Minimal temperature - T_min",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0
-
+        "initial_value": 0.5,
     },
     "cooling_constant": {
         "text": "Cooling constant - alpha",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.95
-    }
+        "initial_value": 0.95,
+    },
 }
 
 
 merged_args = {**blind_args, **hill_climb_args, **simulated_annealing_args}
 
-#TODO!: automatic generation of (label, input)
+# TODO!: automatic generation of (label, input)
 class Application:
     """Represents GUI"""
 
@@ -108,7 +111,7 @@ class Application:
             fg="white",
             font=("helvetica", 9, "bold"),
             command=self.run_action,
-            width=GLOBAL_WIDTH
+            width=GLOBAL_WIDTH,
         )
         self.run_button.pack()
 
@@ -177,14 +180,10 @@ class Application:
 
         self.all_entries[key] = (label, entry)
 
-
-
     def create_entries_dynamic(self):
-        """Dynamic creation of tuples (label, entry) according to global dictionary
-        """
+        """Dynamic creation of tuples (label, entry) according to global dictionary"""
         for dic_tuple in merged_args.items():
             self.create_input_dynamic(dic_tuple)
-
 
     def toggle_entry(self, entry_tuple, enable=True):
         """Toggle state of entry
@@ -263,7 +262,7 @@ class Application:
         for key, value in merged_args.items():
             if algorithm.has_attribute(key):
                 try:
-                    converter = value['convert']
+                    converter = value["convert"]
                     converted_value = converter(self.algorithms_args[key])
                     algorithm[key] = converted_value
                 except:

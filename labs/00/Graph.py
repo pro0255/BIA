@@ -4,9 +4,10 @@ from matplotlib import cm
 import seaborn as sns
 
 
-
 class Graph:
     def __init__(self, start, stop, Function):
+        fig = plt.figure()
+
         x = np.linspace(start, stop, 30)
         y = np.linspace(start, stop, 30)
         X, Y = np.meshgrid(x, y)
@@ -21,13 +22,13 @@ class Graph:
         numpyArray = np.array(flat_Z)
         Z = numpyArray.reshape(X.shape[0], -1)
 
-        varidis = cm.get_cmap("viridis", 12)
-        ax = plt.axes(projection="3d", title=type(Function).__name__)
+        cmap = cm.get_cmap("jet", 12)
+        ax = fig.add_subplot(111, projection="3d", title=type(Function).__name__)
         ax.plot_surface(
             X,
             Y,
             Z,
-            cmap=varidis,
+            cmap=cmap,
             rstride=1,
             cstride=1,
             linewidth=0,
@@ -42,7 +43,10 @@ class Graph:
         self.population = None
 
         self.plot = ax
-        # self_heat_map = sns.heatmap(Z, linewidth=0.5)
+
+        # self.heat_map = fig.add_subplot(122, title="Heat Map")
+        # sns.heatmap(Z, ax=self.heat_map, cmap=cmap)
+        # fig.canvas.manager.full_screen_toggle() #fullSize
 
     def draw_population(self, population):
         X = []
@@ -64,7 +68,7 @@ class Graph:
             marker="o",
         )
 
-        plt.pause(0.1)
+        plt.pause(0.05)
         plt.draw()
 
         if self.population:
@@ -74,9 +78,14 @@ class Graph:
         if self.best:
             self.best.remove()
 
+        if population:
+            self.draw_population(population)
+
+        plt.draw()
+
         self.best = self.plot.scatter(
-            best_solution.vector[0],
-            best_solution.vector[1],
+            abs(best_solution.vector[0]),
+            abs(best_solution.vector[1]),
             best_solution.fitness_value,
             s=40,
             alpha=1,
@@ -84,9 +93,16 @@ class Graph:
             marker="o",
         )
 
-        plt.pause(0.1)
-        plt.draw()
+        # print(best_solution.vector)
+        # self.heat_map.scatter(
+        #     best_solution.vector[0],
+        #     best_solution.vector[1],
+        #     s=20,
+        #     alpha=1,
+        #     c="red",
+        #     marker="o",
+        # )
 
-        if population:
-            self.draw_population(population)
+        plt.pause(0.05)
+        plt.draw()
 
