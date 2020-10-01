@@ -238,14 +238,14 @@ class Application:
             self.selected_function,
         )
         algorithm = self.build_algorithm(graph)
-        # algorithm.start(self.selected_function)
+        algorithm.start(self.selected_function)
 
         # PRODUCTION crash
-        try:
-            algorithm.start(self.selected_function)
-        except Exception as e:
-            print("Oops!", e.__class__, "occurred.")
-            plt.close()
+        # try:
+        #     algorithm.start(self.selected_function)
+        # except Exception as e:
+        #     print("Oops!", e.__class__, "occurred.")
+        #     plt.close()
 
     def build_algorithm(self, graph):
         """Function which sets all args to selected algorithm

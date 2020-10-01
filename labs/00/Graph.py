@@ -68,7 +68,7 @@ class Graph:
             marker="o",
         )
 
-        plt.pause(0.05)
+        plt.pause(0.5)
         plt.draw()
 
         if self.population:
@@ -78,14 +78,9 @@ class Graph:
         if self.best:
             self.best.remove()
 
-        if population:
-            self.draw_population(population)
-
-        plt.draw()
-
         self.best = self.plot.scatter(
-            abs(best_solution.vector[0]),
-            abs(best_solution.vector[1]),
+            best_solution.vector[0],
+            best_solution.vector[1],
             best_solution.fitness_value,
             s=40,
             alpha=1,
@@ -93,6 +88,8 @@ class Graph:
             marker="o",
         )
 
+        if population:
+            self.draw_population(population)
         # print(best_solution.vector)
         # self.heat_map.scatter(
         #     best_solution.vector[0],
@@ -103,6 +100,4 @@ class Graph:
         #     marker="o",
         # )
 
-        plt.pause(0.05)
-        plt.draw()
 
