@@ -219,7 +219,7 @@ class HillClimbAlgorithm(AbstractAlgorithm):
 
             if self.graph:
                 self.graph.draw(self.best_solution, neighborhood)
-        # self.close_plot()
+        self.close_plot()
 
 
 class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
