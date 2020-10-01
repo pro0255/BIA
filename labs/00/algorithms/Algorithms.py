@@ -12,6 +12,8 @@ class Solution:
         self.vector = np.zeros(dimension)  # x,y..
         self.fitness_value = np.inf  # z..
 
+
+    ##TODO!: create __eq__ for fintess_value
     def fill_vector_with_random(self):
         """Sets random vector with specified bounds"""
         self.vector = np.random.uniform(

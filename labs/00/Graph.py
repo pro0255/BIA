@@ -6,7 +6,7 @@ import seaborn as sns
 
 class Graph:
     def __init__(self, start, stop, Function):
-        fig = plt.figure()
+        fig = plt.figure(num="Bia vizualization", figsize=(20, 10), dpi=80, facecolor='w', edgecolor='k')
 
         x = np.linspace(start, stop, 30)
         y = np.linspace(start, stop, 30)
@@ -23,7 +23,7 @@ class Graph:
         Z = numpyArray.reshape(X.shape[0], -1)
 
         cmap = cm.get_cmap("jet", 12)
-        ax = fig.add_subplot(111, projection="3d", title=type(Function).__name__)
+        ax = fig.add_subplot(121, projection="3d", title=type(Function).__name__)
         ax.plot_surface(
             X,
             Y,
@@ -41,12 +41,13 @@ class Graph:
 
         self.best = None
         self.population = None
+        ##TODO!: refactor to better solution
+        self.best_heatmap = None
 
         self.plot = ax
 
-        # self.heat_map = fig.add_subplot(122, title="Heat Map")
-        # sns.heatmap(Z, ax=self.heat_map, cmap=cmap)
-        # fig.canvas.manager.full_screen_toggle() #fullSize
+        self.heat_map = fig.add_subplot(122, title="Heat Map")
+        self.heat_map.pcolormesh(X, Y, Z)
 
     def draw_population(self, population):
         X = []
@@ -78,26 +79,30 @@ class Graph:
         if self.best:
             self.best.remove()
 
+        if self.best_heatmap:
+            self.best_heatmap.remove()
+
         self.best = self.plot.scatter(
             best_solution.vector[0],
             best_solution.vector[1],
             best_solution.fitness_value,
             s=40,
             alpha=1,
-            c="red",
+            c="orangered",
+            marker="o",
+        )
+
+        self.best_heatmap = self.heat_map.scatter(
+            best_solution.vector[0],
+            best_solution.vector[1],
+            s=20,
+            alpha=1,
+            c="orangered",
             marker="o",
         )
 
         if population:
             self.draw_population(population)
-        # print(best_solution.vector)
-        # self.heat_map.scatter(
-        #     best_solution.vector[0],
-        #     best_solution.vector[1],
-        #     s=20,
-        #     alpha=1,
-        #     c="red",
-        #     marker="o",
-        # )
+
 
 
