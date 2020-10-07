@@ -2,15 +2,19 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-
+import traceback
 
 class Solution:
-    def __init__(self, dimension=2, lower_bound=0, upper_bound=0):
+    def __init__(self, dimension=2, lower_bound=0, upper_bound=0, key=0):
         self.dimension = dimension
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
         self.vector = np.zeros(dimension)  # x,y..
         self.fitness_value = np.inf  # z..
+        self.key = Solution.key
+        Solution.key += 1
+    
+    key = 0
 
 
     ##TODO!: create __eq__ for fintess_value
@@ -28,7 +32,6 @@ class Solution:
             sigma (int, optional): scale, Defaults to 1.
         """
         result = []
-        print()
         for i in range(len(self.vector)):
             while True:
                 generated_value = np.random.normal(individual.vector[i], sigma)
@@ -125,6 +128,11 @@ class AbstractAlgorithm:
         self.index_of_generation += 1
 
 
+    def select_random_individual(self, population, actual_individual):
+        selected = random.choice(population)
+        return selected
+
+
 class BlindAgorithm(AbstractAlgorithm):
     """Blind algorithm tries to find global min/max.
 
@@ -200,6 +208,7 @@ class HillClimbAlgorithm(AbstractAlgorithm):
             neighbor = Solution(lower_bound=Function.left, upper_bound=Function.right)
             neighbor.fill_vector_with_gaussian(self.best_solution, self.sigma)
             population.append(neighbor)
+
         return population
 
     def start(self, Function):
@@ -269,7 +278,7 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
             else:
                 ##TODO?: random with bound or without?
                 # r = np.random.uniform(Function.left, Function.right)
-                r = np.random.uniform()
+                r = np.random.uniform(0, 1)
                 if r < np.exp(
                     -((neighbour.fitness_value - self.best_solution.fitness_value))
                     / self.initial_temperature
@@ -280,3 +289,125 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
             print(self.initial_temperature)
             if self.graph:
                 self.graph.draw(self.best_solution, neighbourhood)
+
+
+
+
+#TODO!: make abstract genetic algorithm, mutate etc..
+class GeneticAlgorithmTSP(AbstractAlgorithm):
+    def __init__(self, number_of_cities = 20, **kwds):
+        """
+            NP = size of population
+            G = max_generation
+
+        Args:
+            number_of_cities (int): D, it will be a number of cities. Defaults to 20.
+        """
+        super().__init__(kwds)
+        self.number_of_cities = number_of_cities
+        self.cities = np.random.uniform(size=(self.number_of_cities, 2), low=0,high=200)
+
+    def generate_individual(self, cities):
+        """Generating single individual according to input
+        Shuffle cities
+
+        Returns:
+            []: [description]
+        """
+        individual = Solution()
+        individual.vector = np.array(random.sample(list(self.cities), len(self.cities)))
+        return individual
+        
+    def generate_population(self, cities):
+        """Generating NP random individuals
+        """
+        population = [self.generate_individual(cities) for _ in range(self.size_of_population)]
+        return population
+
+    def copy(self, population):
+        return population.copy()
+
+    def crossover(self, parent_A, parent_B):
+        half_A = int((len(parent_A.vector)/2))+1
+        part_A = parent_A.vector[0:half_A, :]
+        # full_size_B = int(len(parent_B.vector))
+        # part_B = parent_B.vector[half_A:full_size_B, :]
+
+        rest = []
+        for city in parent_B.vector:
+            is_there = np.any(part_A == city)
+            if not is_there:
+                rest.append(list(city))
+
+        crossover_vector = np.concatenate((part_A, np.array(rest)), axis=0) 
+        offspring_AB = Solution()
+        offspring_AB.vector = crossover_vector
+        return offspring_AB
+    
+
+
+
+    def mutate(self, offspring_AB):
+        first_index = int(np.random.uniform(0, len(offspring_AB.vector)))
+        second_index = int(np.random.uniform(0, len(offspring_AB.vector)))
+        if first_index != second_index:
+            offspring_AB.vector[[first_index, second_index], :] = offspring_AB.vector[[second_index, first_index] , :] 
+            return offspring_AB
+        else:
+            self.mutate(offspring_AB)
+
+    def get_individual(self, population, parent_A):
+        selected = self.select_random_individual(population, parent_A)
+        if selected.key != parent_A.key:
+            return selected
+        self.get_individual(population, parent_A) 
+
+
+    def start(self):
+        ed = EucladianDistance()
+        population = self.generate_population(self.cities)
+        self.evalute_population(population, ed)
+        new_population = self.copy(population)
+        for _ in range(self.max_generation): #how many times will i try
+            for j in range(len(population)): #try to get new one in new generation for every individual
+                parent_A = population[j] ##is here j or i?
+                parent_B = self.get_individual(population, parent_A) #here is drop down cause he is trying to find 10 uin len 10..
+                try: 
+                    offspring_AB = self.crossover(parent_A, parent_B) #TODO! vector error
+                    offspring_AB = self.mutate(offspring_AB)                    
+                    self.evaluate(offspring_AB, ed) #TODO! vector error
+                
+
+                    if offspring_AB.fitness_value < parent_A.fitness_value: ##if is better then his parent
+                        new_population[j] = offspring_AB ##is here j or i?
+
+                except Exception as error:
+                    print(f'something wrong {error}')
+                    print(traceback.print_exc())
+                    continue            
+
+            population = new_population
+        print('finished')
+        for p in population:
+            print(f'{p.fitness_value} \n')
+
+    
+
+class EucladianDistance():
+    def __init__(self):
+        pass
+
+    def run(self, vector):
+        distance = 0
+        rows = len(vector)
+        for i in range(rows):
+            current_index = i
+            next_index = ((i + 1) % rows)
+
+            current_vector = vector[current_index]
+            next_vector = vector[next_index]
+
+            dist = np.linalg.norm(next_vector - current_vector)
+            distance += dist
+
+        return distance

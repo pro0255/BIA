@@ -11,11 +11,12 @@ from functions.Ackley import Ackley
 from algorithms.Algorithms import BlindAgorithm
 from algorithms.Algorithms import HillClimbAlgorithm
 from algorithms.Algorithms import SimulatedAnnealingAlgorithm
+from algorithms.Algorithms import GeneticAlgorithmTSP
 from Graph import Graph
 import matplotlib.pyplot as plt
 
 INITIAL_FUNCTION_KEY = "Sphere"
-INITIAL_ALGORITHM_KEY = "HillClimb"
+INITIAL_ALGORITHM_KEY = "GeneticAlgorithmTSP"
 GLOBAL_WIDTH = 600
 GLOBAL_HEIGHT = 600
 GLOBAL_INPUT_SIZE = 100
@@ -38,6 +39,7 @@ algorithms = {
     "Blind": BlindAgorithm(),
     "HillClimb": HillClimbAlgorithm(),
     "SimulatedAnnealing": SimulatedAnnealingAlgorithm(),
+    "GeneticAlgorithmTSP": GeneticAlgorithmTSP()
 }
 
 
@@ -80,8 +82,16 @@ simulated_annealing_args = {
     },
 }
 
+traveling_salesman_problem_GA = {
+    "number_of_cities": {
+        "text": "Number of cities",
+        "convert": lambda a: int(a.get().strip()),
+        "initial_value": 20,
+    }
+}
 
-merged_args = {**blind_args, **hill_climb_args, **simulated_annealing_args}
+
+merged_args = {**blind_args, **hill_climb_args, **simulated_annealing_args, **traveling_salesman_problem_GA}
 
 # TODO!: automatic generation of (label, input)
 class Application:
@@ -238,7 +248,10 @@ class Application:
             self.selected_function,
         )
         algorithm = self.build_algorithm(graph)
-        algorithm.start(self.selected_function)
+        if type(algorithm).__name__ == 'GeneticAlgorithmTSP':
+            algorithm.start()
+        else:
+            algorithm.start(self.selected_function)
 
         # PRODUCTION crash
         # try:

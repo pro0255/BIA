@@ -47,7 +47,7 @@ class Graph:
         self.plot = ax
 
         self.heat_map = fig.add_subplot(122, title="Heat Map")
-        self.heat_map.pcolormesh(X, Y, Z)
+        self.heat_map.pcolormesh(X, Y, Z, shading="nearest")
 
     def draw_population(self, population):
         X = []
