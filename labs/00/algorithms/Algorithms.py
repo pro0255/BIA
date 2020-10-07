@@ -354,13 +354,13 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
             offspring_AB.vector[[first_index, second_index], :] = offspring_AB.vector[[second_index, first_index] , :] 
             return offspring_AB
         else:
-            self.mutate(offspring_AB)
+            return self.mutate(offspring_AB)
 
     def get_individual(self, population, parent_A):
         selected = self.select_random_individual(population, parent_A)
         if selected.key != parent_A.key:
             return selected
-        self.get_individual(population, parent_A) 
+        return self.get_individual(population, parent_A) 
 
 
     def start(self):
@@ -387,7 +387,6 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
                     continue            
 
             population = new_population
-        print('finished')
         for p in population:
             print(f'{p.fitness_value} \n')
 
