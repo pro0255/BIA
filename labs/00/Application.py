@@ -43,6 +43,8 @@ algorithms = {
     "GeneticAlgorithmTSP": GeneticAlgorithmTSP()
 }
 
+algorithms_functions_blacklist = ["GeneticAlgorithmTSP"]
+
 
 blind_args = {
     "size_of_population": {
@@ -166,6 +168,7 @@ class Application:
         menu.configure(width=GLOBAL_WIDTH, bg=GLOBAL_OPTION_MENU_COLOR)
 
         menu.pack()
+        self.menu_function = menu
 
     def create_combo_box_algorithm(self):
         """Creation of combo box with Algorithms"""
@@ -206,6 +209,13 @@ class Application:
         for dic_tuple in merged_args.items():
             self.create_input_dynamic(dic_tuple)
 
+    def toggle_function(self):
+        if type(self.selected_algorithm).__name__ in algorithms_functions_blacklist:
+            self.menu_function.pack_forget()
+        else:
+            self.menu_function.pack()
+
+
     def toggle_entry(self, entry_tuple, enable=True):
         """Toggle state of entry
 
@@ -237,14 +247,21 @@ class Application:
         except:
             print("no selected algorithm")
         try:
-            self.run_button[
-                "text"
-            ] = f"{constant_text} on {var_text_function} with {var_text_algorithm}"
+            if type(self.selected_algorithm).__name__ not in algorithms_functions_blacklist:
+                self.run_button[
+                    "text"
+                ] = f"{constant_text} on {var_text_function} with {var_text_algorithm}"
+            else:
+                self.run_button[
+                    "text"
+                ] = f"{constant_text} with {var_text_algorithm}"
+
         except:
             print("no button now")
 
     def run_disabled_entries_action(self):
         """According to selected algorithm disable || enable GUI entries"""
+        self.toggle_function()
         for key in merged_args:
             if self.selected_algorithm.has_attribute(key):
                 self.toggle_entry(self.all_entries[key])
