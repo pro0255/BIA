@@ -369,13 +369,15 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
         self.evalute_population(population, ed)
         new_population = self.copy(population)
         for _ in range(self.max_generation): #how many times will i try
+            if self.graph:
+                self.graph.draw(population[0])
             for j in range(len(population)): #try to get new one in new generation for every individual
                 parent_A = population[j] ##is here j or i?
                 parent_B = self.get_individual(population, parent_A) #here is drop down cause he is trying to find 10 uin len 10..
                 try: 
-                    offspring_AB = self.crossover(parent_A, parent_B) #TODO! vector error
+                    offspring_AB = self.crossover(parent_A, parent_B)
                     offspring_AB = self.mutate(offspring_AB)                    
-                    self.evaluate(offspring_AB, ed) #TODO! vector error
+                    self.evaluate(offspring_AB, ed)
                 
 
                     if offspring_AB.fitness_value < parent_A.fitness_value: ##if is better then his parent
@@ -387,8 +389,7 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
                     continue            
 
             population = new_population
-        for p in population:
-            print(f'{p.fitness_value} \n')
+
 
     
 

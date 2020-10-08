@@ -2,12 +2,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import seaborn as sns
+import matplotlib.lines as mlines
 
 
-class Graph:
+
+
+class AbstractGraph():
+    def __init__(self):
+        self.fig = plt.figure(num="Bia vizualization", figsize=(20, 10), dpi=80, facecolor='w', edgecolor='k')
+
+
+class Graph(AbstractGraph):
+
+
+
     def __init__(self, start, stop, Function):
-        fig = plt.figure(num="Bia vizualization", figsize=(20, 10), dpi=80, facecolor='w', edgecolor='k')
-
+        super().__init__()
         x = np.linspace(start, stop, 30)
         y = np.linspace(start, stop, 30)
         X, Y = np.meshgrid(x, y)
@@ -23,7 +33,7 @@ class Graph:
         Z = numpyArray.reshape(X.shape[0], -1)
 
         cmap = cm.get_cmap("jet", 12)
-        ax = fig.add_subplot(121, projection="3d", title=type(Function).__name__)
+        ax = self.fig.add_subplot(121, projection="3d", title=type(Function).__name__)
         ax.plot_surface(
             X,
             Y,
@@ -46,7 +56,7 @@ class Graph:
 
         self.plot = ax
 
-        self.heat_map = fig.add_subplot(122, title="Heat Map")
+        self.heat_map = self.fig.add_subplot(122, title="Heat Map")
         self.heat_map.pcolormesh(X, Y, Z, shading="nearest")
 
     def draw_population(self, population):
@@ -104,5 +114,37 @@ class Graph:
         if population:
             self.draw_population(population)
 
+class TSPGraph(AbstractGraph):
+    def __init__(self, low, high):
+        super().__init__()
+
+    def draw_cities(self, cities):
+        for index, city in enumerate(cities[1:len(cities)]):
+            x = city[0]
+            y = city[1]
+
+            if index == 0:
+                plt.plot(x, y, 'bo', markersize=20)
+            else:
+                plt.plot(x, y, 'go-', markersize=15)
+            plt.text(x, y, s=index, fontsize=30)
+
+
+
+    def draw_connections(self, cities):
+        length = len(cities) 
+        for i in range(length):
+            current = cities[i]
+            next = cities[(i + 1) % length]
+            plt.plot([current[0], next[0]], [current[1], next[1]], 'r', label='line 1', linewidth=1)
+
+
+    def draw(self, best_solution):
+        plt.clf()
+        cities = best_solution.vector
+        self.draw_cities(cities)
+        self.draw_connections(cities)
+        plt.draw()
+        plt.pause(0.05)
 
 

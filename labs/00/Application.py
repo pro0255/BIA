@@ -13,6 +13,7 @@ from algorithms.Algorithms import HillClimbAlgorithm
 from algorithms.Algorithms import SimulatedAnnealingAlgorithm
 from algorithms.Algorithms import GeneticAlgorithmTSP
 from Graph import Graph
+from Graph import TSPGraph
 import matplotlib.pyplot as plt
 
 INITIAL_FUNCTION_KEY = "Sphere"
@@ -242,15 +243,17 @@ class Application:
 
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
-        graph = Graph(
-            self.selected_function.left,
-            self.selected_function.right,
-            self.selected_function,
-        )
-        algorithm = self.build_algorithm(graph)
-        if type(algorithm).__name__ == 'GeneticAlgorithmTSP':
+        if type(self.selected_algorithm).__name__ == 'GeneticAlgorithmTSP':
+            graph = TSPGraph(0, 200)
+            algorithm = self.build_algorithm(graph)
             algorithm.start()
         else:
+            graph = Graph(
+                self.selected_function.left,
+                self.selected_function.right,
+                self.selected_function,
+            )
+            algorithm = self.build_algorithm(graph)
             algorithm.start(self.selected_function)
 
         # PRODUCTION crash
