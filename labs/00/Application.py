@@ -88,6 +88,16 @@ traveling_salesman_problem_GA = {
         "text": "Number of cities",
         "convert": lambda a: int(a.get().strip()),
         "initial_value": 20,
+    },
+    "low": {
+        "text": "Low border",
+        "convert": lambda a: int(a.get().strip()),
+        "initial_value": 0,
+    },
+    "high": {
+        "text": "High border",
+        "convert": lambda a: int(a.get().strip()),
+        "initial_value": 200,
     }
 }
 

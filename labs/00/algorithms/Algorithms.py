@@ -295,17 +295,22 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
 
 #TODO!: make abstract genetic algorithm, mutate etc..
 class GeneticAlgorithmTSP(AbstractAlgorithm):
-    def __init__(self, number_of_cities = 20, **kwds):
+    def __init__(self, number_of_cities=20, low =0, high=200, **kwds):
         """
             NP = size of population
             G = max_generation
 
         Args:
-            number_of_cities (int): D, it will be a number of cities. Defaults to 20.
+            number_of_cities (int): D, it will be a number of cities
         """
-        super().__init__(kwds)
+        super().__init__(**kwds)
         self.number_of_cities = number_of_cities
-        self.cities = np.random.uniform(size=(self.number_of_cities, 2), low=0,high=200)
+        self.low =low
+        self.high=high
+        self.generate_cities()
+
+    def generate_cities(self):
+        self.cities = np.random.uniform(size=(self.number_of_cities, 2), low=self.low,high=self.high)
 
     def generate_individual(self, cities):
         """Generating single individual according to input
@@ -360,17 +365,21 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
         selected = self.select_random_individual(population, parent_A)
         if selected.key != parent_A.key:
             return selected
-        return self.get_individual(population, parent_A) 
+        return self.get_individual(population, parent_A)
+
+
 
 
     def start(self):
+        self.generate_cities()
         ed = EucladianDistance()
         population = self.generate_population(self.cities)
         self.evalute_population(population, ed)
         new_population = self.copy(population)
         for _ in range(self.max_generation): #how many times will i try
+            self.best_solution = self.select_best_solution(population)
             if self.graph:
-                self.graph.draw(population[0])
+                self.graph.draw(self.best_solution)
             for j in range(len(population)): #try to get new one in new generation for every individual
                 parent_A = population[j] ##is here j or i?
                 parent_B = self.get_individual(population, parent_A) #here is drop down cause he is trying to find 10 uin len 10..

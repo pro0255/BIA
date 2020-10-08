@@ -117,6 +117,8 @@ class Graph(AbstractGraph):
 class TSPGraph(AbstractGraph):
     def __init__(self, low, high):
         super().__init__()
+        self.plot = self.fig.add_subplot(111, title="Traveling salesman problem")
+
 
     def draw_cities(self, cities):
         for index, city in enumerate(cities[1:len(cities)]):
@@ -124,10 +126,10 @@ class TSPGraph(AbstractGraph):
             y = city[1]
 
             if index == 0:
-                plt.plot(x, y, 'bo', markersize=20)
+                self.plot.plot(x, y, 'bo', markersize=20)
             else:
-                plt.plot(x, y, 'go-', markersize=15)
-            plt.text(x, y, s=index, fontsize=30)
+                self.plot.plot(x, y, 'go-', markersize=15)
+            self.plot.text(x, y, s=index, fontsize=30)
 
 
 
@@ -136,11 +138,11 @@ class TSPGraph(AbstractGraph):
         for i in range(length):
             current = cities[i]
             next = cities[(i + 1) % length]
-            plt.plot([current[0], next[0]], [current[1], next[1]], 'r', label='line 1', linewidth=1)
+            self.plot.plot([current[0], next[0]], [current[1], next[1]], 'r', label='line 1', linewidth=1)
 
 
     def draw(self, best_solution):
-        plt.clf()
+        self.plot.clear()
         cities = best_solution.vector
         self.draw_cities(cities)
         self.draw_connections(cities)
