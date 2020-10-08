@@ -69,8 +69,13 @@ class AbstractAlgorithm:
         return False
 
     def close_plot(self):
+        counter = 5
+        for i in range(counter):
+            time.sleep(1)
+            print(f'Closing in {i+1}-{counter}')
+
         if self.graph:
-            time.sleep(0.5)
+            print('Closing!!')
             plt.close('all')
 
 
@@ -398,6 +403,8 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
                     continue            
 
             population = new_population
+        
+        self.close_plot()
 
 
     

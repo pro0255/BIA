@@ -138,11 +138,12 @@ class TSPGraph(AbstractGraph):
         for i in range(length):
             current = cities[i]
             next = cities[(i + 1) % length]
-            self.plot.plot([current[0], next[0]], [current[1], next[1]], 'r', label='line 1', linewidth=1)
+            self.plot.plot([current[0], next[0]], [current[1], next[1]], 'r', linewidth=2)
 
 
     def draw(self, best_solution):
         self.plot.clear()
+        plt.title(f"Traveling salesman problem {best_solution.fitness_value}")
         cities = best_solution.vector
         self.draw_cities(cities)
         self.draw_connections(cities)
