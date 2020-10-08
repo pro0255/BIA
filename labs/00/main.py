@@ -6,7 +6,6 @@ app.start()
 
 
 
-#TODO! make another graph
 #TODO! docs for tsp
 #TODO! send sa
 #TODO! send tsp
