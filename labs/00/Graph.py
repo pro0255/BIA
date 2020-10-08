@@ -121,7 +121,7 @@ class TSPGraph(AbstractGraph):
 
 
     def draw_cities(self, cities):
-        for index, city in enumerate(cities[1:len(cities)]):
+        for index, city in enumerate(cities):
             x = city[0]
             y = city[1]
 
