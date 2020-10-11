@@ -281,8 +281,6 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
             if neighbour.fitness_value < self.best_solution.fitness_value:
                 self.best_solution = neighbour
             else:
-                ##TODO?: random with bound or without?
-                # r = np.random.uniform(Function.left, Function.right)
                 r = np.random.uniform(0, 1)
                 if r < np.exp(
                     -((neighbour.fitness_value - self.best_solution.fitness_value))
