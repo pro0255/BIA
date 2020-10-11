@@ -17,7 +17,7 @@ from Graph import TSPGraph
 import matplotlib.pyplot as plt
 
 INITIAL_FUNCTION_KEY = "Sphere"
-INITIAL_ALGORITHM_KEY = "GeneticAlgorithmTSP"
+INITIAL_ALGORITHM_KEY = "SimulatedAnnealing"
 GLOBAL_WIDTH = 600
 GLOBAL_HEIGHT = 600
 GLOBAL_INPUT_SIZE = 100
