@@ -338,12 +338,8 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
     def crossover(self, parent_A, parent_B):
 
         length = len(parent_A.vector)
-        random_position_in_range = random.randint(0, length)
-
-        half_A = int((len(parent_A.vector)/2))+1
-        part_A = parent_A.vector[0:half_A, :]
-        # full_size_B = int(len(parent_B.vector))
-        # part_B = parent_B.vector[half_A:full_size_B, :]
+        random_position_in_range = random.randint(0, length-1)
+        part_A = parent_A.vector[0:random_position_in_range, :]
 
         rest = []
         for city in parent_B.vector:
