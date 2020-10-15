@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 import traceback
+import copy
 
 class Solution:
     def __init__(self, dimension=2, lower_bound=0, upper_bound=0, key=0):
@@ -333,8 +334,8 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
         return population
 
     def copy(self, population):
-        return population.copy()
-
+        return copy.deepcopy(population)
+        
     def crossover(self, parent_A, parent_B):
 
         length = len(parent_A.vector)
@@ -379,8 +380,8 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
         ed = EucladianDistance()
         population = self.generate_population(self.cities)
         self.evalute_population(population, ed)
-        new_population = self.copy(population)
         for _ in range(self.max_generation): #how many times will i try
+            new_population = self.copy(population)
             self.best_solution = self.select_best_solution(population)
             if self.graph:
                 self.graph.draw(self.best_solution)
