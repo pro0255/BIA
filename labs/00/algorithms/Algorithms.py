@@ -347,7 +347,7 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
             NP = size of population
             G = max_generation
 
-            CONVENCTION!!!
+            CONVENCTION!!! but here is renamed cause consistency
         Args:
             number_of_cities (int): D, it will be a number of cities
         """
