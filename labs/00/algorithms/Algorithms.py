@@ -336,6 +336,10 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
         return population.copy()
 
     def crossover(self, parent_A, parent_B):
+
+        length = len(parent_A.vector)
+        random_position_in_range = random.randint(0, length)
+
         half_A = int((len(parent_A.vector)/2))+1
         part_A = parent_A.vector[0:half_A, :]
         # full_size_B = int(len(parent_B.vector))
@@ -370,7 +374,8 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
             return selected
         return self.get_individual(population, parent_A)
 
-
+    def gonna_mutate(self):
+        return 0.5 > np.random.uniform(0, 1)
 
 
     def start(self):
@@ -388,7 +393,8 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
                 parent_B = self.get_individual(population, parent_A) #here is drop down cause he is trying to find 10 uin len 10..
                 try: 
                     offspring_AB = self.crossover(parent_A, parent_B)
-                    offspring_AB = self.mutate(offspring_AB)                    
+                    if self.gonna_mutate():
+                        offspring_AB = self.mutate(offspring_AB)                    
                     self.evaluate(offspring_AB, ed)
                 
 
