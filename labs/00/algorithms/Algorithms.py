@@ -302,7 +302,6 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
     def copy(self, population):
         return copy.deepcopy(population)
 
-
     
     def crossover(self, parent_A, parent_B):
         length = len(parent_A.vector)
@@ -321,7 +320,25 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
         return offspring_AB
     
 
+    def mutate(self, offspring_AB):
+        first_index = int(np.random.uniform(0, len(offspring_AB.vector)))
+        second_index = int(np.random.uniform(0, len(offspring_AB.vector)))
+        if first_index != second_index:
+            offspring_AB.vector[[first_index, second_index], :] = offspring_AB.vector[[second_index, first_index] , :] 
+            return offspring_AB
+        else:
+            return self.mutate(offspring_AB)
 
+
+    def get_different_individual_then_input(self, population, parent_A):
+        selected = self.select_random_individual(population, parent_A)
+        if selected.key != parent_A.key:
+            return selected
+        return self.get_different_individual_then_input(population, parent_A)
+
+
+    def gonna_mutate(self):
+        return 0.5 > np.random.uniform(0, 1)
 
 
 
@@ -363,38 +380,20 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
         population = [self.generate_individual(cities) for _ in range(self.size_of_population)]
         return population
 
-    def mutate(self, offspring_AB):
-        first_index = int(np.random.uniform(0, len(offspring_AB.vector)))
-        second_index = int(np.random.uniform(0, len(offspring_AB.vector)))
-        if first_index != second_index:
-            offspring_AB.vector[[first_index, second_index], :] = offspring_AB.vector[[second_index, first_index] , :] 
-            return offspring_AB
-        else:
-            return self.mutate(offspring_AB)
-
-    def get_individual(self, population, parent_A):
-        selected = self.select_random_individual(population, parent_A)
-        if selected.key != parent_A.key:
-            return selected
-        return self.get_individual(population, parent_A)
-
-    def gonna_mutate(self):
-        return 0.5 > np.random.uniform(0, 1)
-
-
     def start(self, EucladianDistance):
         self.generate_cities()
-
         population = self.generate_population(self.cities)
         self.evalute_population(population, EucladianDistance)
+
         for _ in range(self.max_generation):
             new_population = self.copy(population)
             self.best_solution = self.select_best_solution(population)
             if self.graph:
                 self.graph.draw(self.best_solution)
+
             for j in range(len(population)):
                 parent_A = population[j]
-                parent_B = self.get_individual(population, parent_A)
+                parent_B = self.get_different_individual_then_input(population, parent_A)
                 try: 
                     offspring_AB = self.crossover(parent_A, parent_B)
                     if self.gonna_mutate():
@@ -409,7 +408,6 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
                     print(f'something wrong {error}')
                     print(traceback.print_exc())
                     continue            
-
             population = new_population
         
         self.close_plot()
