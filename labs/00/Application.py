@@ -12,6 +12,7 @@ from algorithms.Algorithms import BlindAgorithm
 from algorithms.Algorithms import HillClimbAlgorithm
 from algorithms.Algorithms import SimulatedAnnealingAlgorithm
 from algorithms.Algorithms import GeneticAlgorithmTSP
+from functions.EucladianDistance import EucladianDistance
 from Graph import Graph
 from Graph import TSPGraph
 import matplotlib.pyplot as plt
@@ -271,9 +272,10 @@ class Application:
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
         if type(self.selected_algorithm).__name__ == 'GeneticAlgorithmTSP':
+            ed = EucladianDistance()
             graph = TSPGraph(0, 200)
             algorithm = self.build_algorithm(graph)
-            algorithm.start()
+            algorithm.start(ed)
         else:
             graph = Graph(
                 self.selected_function.left,

@@ -5,6 +5,7 @@ import time
 import traceback
 import copy
 
+
 class Solution:
     def __init__(self, dimension=2, lower_bound=0, upper_bound=0, key=0):
         self.dimension = dimension
@@ -335,7 +336,7 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
 
     def copy(self, population):
         return copy.deepcopy(population)
-        
+
     def crossover(self, parent_A, parent_B):
 
         length = len(parent_A.vector)
@@ -375,11 +376,11 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
         return 0.5 > np.random.uniform(0, 1)
 
 
-    def start(self):
+    def start(self, EucladianDistance):
         self.generate_cities()
-        ed = EucladianDistance()
+
         population = self.generate_population(self.cities)
-        self.evalute_population(population, ed)
+        self.evalute_population(population, EucladianDistance)
         for _ in range(self.max_generation): #how many times will i try
             new_population = self.copy(population)
             self.best_solution = self.select_best_solution(population)
@@ -392,7 +393,7 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
                     offspring_AB = self.crossover(parent_A, parent_B)
                     if self.gonna_mutate():
                         offspring_AB = self.mutate(offspring_AB)                    
-                    self.evaluate(offspring_AB, ed)
+                    self.evaluate(offspring_AB, EucladianDistance)
                 
 
                     if offspring_AB.fitness_value < parent_A.fitness_value: ##if is better then his parent
@@ -410,21 +411,3 @@ class GeneticAlgorithmTSP(AbstractAlgorithm):
 
     
 
-class EucladianDistance():
-    def __init__(self):
-        pass
-
-    def run(self, vector):
-        distance = 0
-        rows = len(vector)
-        for i in range(rows):
-            current_index = i
-            next_index = ((i + 1) % rows)
-
-            current_vector = vector[current_index]
-            next_vector = vector[next_index]
-
-            dist = np.linalg.norm(next_vector - current_vector)
-            distance += dist
-
-        return distance
