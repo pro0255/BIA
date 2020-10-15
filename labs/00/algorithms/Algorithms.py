@@ -341,8 +341,6 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
         return 0.5 > np.random.uniform(0, 1)
 
 
-
-#TODO!: make abstract genetic algorithm, mutate etc..
 class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
     def __init__(self, number_of_cities=20, low =0, high=200, **kwds):
         """
