@@ -320,9 +320,9 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
         return offspring_AB
     
 
-    def mutate(self, offspring_AB):
-        first_index = int(np.random.uniform(0, len(offspring_AB.vector)))
-        second_index = int(np.random.uniform(0, len(offspring_AB.vector)))
+    def mutate(self, offspring_AB, fixed=0):
+        first_index = int(np.random.uniform(fixed, len(offspring_AB.vector)))
+        second_index = int(np.random.uniform(fixed, len(offspring_AB.vector)))
         if first_index != second_index:
             offspring_AB.vector[[first_index, second_index], :] = offspring_AB.vector[[second_index, first_index] , :] 
             return offspring_AB
@@ -347,6 +347,8 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
             NP = size of population
             G = max_generation
 
+            If can starts from different citis then need to be fixed_first_index set to False :]
+
             CONVENCTION!!! but here is renamed cause consistency
         Args:
             number_of_cities (int): D, it will be a number of cities
@@ -356,6 +358,7 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
         self.low =low
         self.high=high
         self.generate_cities()
+        self.fixed_first_index = True # first city will be not moved
 
     def generate_cities(self):
         self.cities = np.random.uniform(size=(self.number_of_cities, 2), low=self.low,high=self.high)
@@ -364,11 +367,21 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
         """Generating single individual according to input
         Shuffle cities
 
+        If fixed_first_index then always starts from one point and this will be not moved when alg moves forward
+
         Returns:
             []: [description]
         """
         individual = Solution()
-        individual.vector = np.array(random.sample(list(self.cities), len(self.cities)))
+        if self.fixed_first_index:
+            first =  list(self.cities)[0]
+            without_first = list(self.cities)[1:]
+            shuffled = random.sample(without_first, len(without_first))
+            result = [first] + shuffled
+            individual.vector = np.array(result)
+        else:
+            individual.vector = np.array(random.sample(list(self.cities), len(self.cities)))
+
         return individual
         
     def generate_population(self, cities):
@@ -376,6 +389,7 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
         """
         super().generate_population()
         population = [self.generate_individual(cities) for _ in range(self.size_of_population)]
+
         return population
 
     def start(self, EucladianDistance):
@@ -395,7 +409,7 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
                 try: 
                     offspring_AB = self.crossover(parent_A, parent_B)
                     if self.gonna_mutate():
-                        offspring_AB = self.mutate(offspring_AB)                    
+                        offspring_AB = self.mutate(offspring_AB, 1 if self.fixed_first_index else 0)                    
                     self.evaluate(offspring_AB, EucladianDistance)
                 
 
