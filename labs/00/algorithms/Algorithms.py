@@ -344,7 +344,7 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
 class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
     def __init__(self, number_of_cities=20, low =0, high=200, **kwds):
         """
-            NP = size of population
+            NP = size_of_population
             G = max_generation
 
             If can starts from different citis then need to be fixed_first_index set to False :]
@@ -426,4 +426,38 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
 
 
     
+class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
+    def __init__(self, crossover_range=.5, mutation_constant=.5,**kwds):
+        """
+            NP = size_of_population 
+            G = max_generation
+            F = new parametr, [mutation constant]
+            CR = new parametr, [crossover range]
+        """
+        self.crossover_range = crossover_range
+        self.mutation_constant = mutation_constant
+        super().__init__(**kwds)
+
+
+    def start(self, Function):
+        """Runs DifferentialEvolution Algorithm on specified Function, with specified args.
+
+
+
+        Args:
+            Function (class Function): specific Function (Sphere || Ackley..)
+        """
+
+
+        print('starting')
+
+
+
+
+        self.close_plot()
+
+
+
+
+
 

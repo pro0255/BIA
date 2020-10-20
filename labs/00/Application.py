@@ -1,111 +1,15 @@
 from tkinter import *
-from functions.Sphere import Sphere
-from functions.Schwefel import Schwefel
-from functions.Rosenbrock import Rosenbrock
-from functions.Rastrigin import Rastrigin
-from functions.Griewangk import Griewangk
-from functions.Levy import Levy
-from functions.Michalewicz import Michalewicz
-from functions.Zakharov import Zakharov
-from functions.Ackley import Ackley
-from algorithms.Algorithms import BlindAgorithm
-from algorithms.Algorithms import HillClimbAlgorithm
-from algorithms.Algorithms import SimulatedAnnealingAlgorithm
-from algorithms.Algorithms import GeneticAlgorithmTSP
 from functions.EucladianDistance import EucladianDistance
+from init_algorithms import algorithms
+from init_functions import functions
 from Graph import Graph
 from Graph import TSPGraph
 import matplotlib.pyplot as plt
-
-INITIAL_FUNCTION_KEY = "Sphere"
-INITIAL_ALGORITHM_KEY = "GeneticAlgorithmTSP"
-GLOBAL_WIDTH = 600
-GLOBAL_HEIGHT = 600
-GLOBAL_INPUT_SIZE = 100
-GLOBAL_OPTION_MENU_COLOR = "DodgerBlue2"
-
-
-functions = {
-    "Sphere": Sphere(),
-    "Schwefel": Schwefel(),
-    "Rosenbrock": Rosenbrock(),
-    "Rastrigin": Rastrigin(),
-    "Griewangk": Griewangk(),
-    "Levy": Levy(),
-    "Michalewicz": Michalewicz(),
-    "Zakharov": Zakharov(),
-    "Ackley": Ackley(),
-}
-
-algorithms = {
-    "Blind": BlindAgorithm(),
-    "HillClimb": HillClimbAlgorithm(),
-    "SimulatedAnnealing": SimulatedAnnealingAlgorithm(),
-    "GeneticAlgorithmTSP": GeneticAlgorithmTSP()
-}
+import converters.Converters as converters
+import WINDOW_VALUES as WV
 
 algorithms_functions_blacklist = ["GeneticAlgorithmTSP"]
-
-
-blind_args = {
-    "size_of_population": {
-        "text": "Size of population",
-        "convert": lambda a: int(a.get().strip()),
-        "initial_value": 10,
-    },
-    "max_generation": {
-        "text": "Max generation",
-        "convert": lambda a: int(a.get().strip()),
-        "initial_value": 30,
-    },
-}
-
-hill_climb_args = {
-    "sigma": {
-        "text": "Sigma gaussian value",
-        "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.5,
-    }
-}
-
-simulated_annealing_args = {
-    "initial_temperature": {
-        "text": "Initial temperature - T_0",
-        "convert": lambda a: float(a.get().strip()),
-        "initial_value": 100,
-    },
-    "minimal_temperature": {
-        "text": "Minimal temperature - T_min",
-        "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.5,
-    },
-    "cooling_constant": {
-        "text": "Cooling constant - alpha",
-        "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.95,
-    },
-}
-
-traveling_salesman_problem_GA = {
-    "number_of_cities": {
-        "text": "Number of cities",
-        "convert": lambda a: int(a.get().strip()),
-        "initial_value": 20,
-    },
-    "low": {
-        "text": "Low border",
-        "convert": lambda a: int(a.get().strip()),
-        "initial_value": 0,
-    },
-    "high": {
-        "text": "High border",
-        "convert": lambda a: int(a.get().strip()),
-        "initial_value": 200,
-    }
-}
-
-
-merged_args = {**blind_args, **hill_climb_args, **simulated_annealing_args, **traveling_salesman_problem_GA}
+merged_args = {**converters.blind_args, **converters.hill_climb_args, **converters.simulated_annealing_args, **converters.traveling_salesman_problem_GA, **converters.differential_evolution_alg}
 
 # TODO!: automatic generation of (label, input)
 class Application:
@@ -114,7 +18,7 @@ class Application:
     def __init__(self):
         self.root = Tk()
         self.root.title("BIA course")
-        self.root.geometry(f"{GLOBAL_WIDTH}x{GLOBAL_HEIGHT}")
+        self.root.geometry(f"{WV.GLOBAL_WIDTH}x{WV.GLOBAL_HEIGHT}")
 
         self.all_entries = {}
         self.create_run_button()
@@ -135,7 +39,7 @@ class Application:
             fg="white",
             font=("helvetica", 9, "bold"),
             command=self.run_action,
-            width=GLOBAL_WIDTH,
+            width=WV.GLOBAL_WIDTH,
         )
         self.run_button.pack()
 
@@ -160,13 +64,13 @@ class Application:
         """Creation of combo box with Test functions"""
         choices = list(functions.keys())
         variable = StringVar(self.root)
-        init_function = INITIAL_FUNCTION_KEY
+        init_function = WV.INITIAL_FUNCTION_KEY
         variable.set(init_function)
         self.select_function_action(init_function)
         menu = OptionMenu(
             self.root, variable, *choices, command=self.select_function_action
         )
-        menu.configure(width=GLOBAL_WIDTH, bg=GLOBAL_OPTION_MENU_COLOR)
+        menu.configure(width=WV.GLOBAL_WIDTH, bg=WV.GLOBAL_OPTION_MENU_COLOR)
 
         menu.pack()
         self.menu_function = menu
@@ -175,13 +79,13 @@ class Application:
         """Creation of combo box with Algorithms"""
         choices = list(algorithms.keys())
         variable = StringVar(self.root)
-        init_algorithm = INITIAL_ALGORITHM_KEY
+        init_algorithm = WV.INITIAL_ALGORITHM_KEY
         variable.set(init_algorithm)
         self.selected_algorithm = algorithms[init_algorithm]
         menu = OptionMenu(
             self.root, variable, *choices, command=self.select_algorithm_action
         )
-        menu.configure(width=GLOBAL_WIDTH, bg=GLOBAL_OPTION_MENU_COLOR)
+        menu.configure(width=WV.GLOBAL_WIDTH, bg=WV.GLOBAL_OPTION_MENU_COLOR)
 
         menu.pack()
 
