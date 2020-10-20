@@ -1,6 +1,0 @@
-Unimodální
-
-
-# https://homel.vsb.cz/~ska206/bia.html
-# func and blind alg naslepo najit minimum 10 zaznamu vygenerovat, vyzkouset, nahradit, vizualizovat
-# vizualizovat nejlepsi reseni za danou generaci :]
