@@ -7,6 +7,9 @@ from Graph import TSPGraph
 import matplotlib.pyplot as plt
 import converters.Converters as converters
 import WINDOW_VALUES as WV
+import time
+
+
 
 algorithms_functions_blacklist = ["GeneticAlgorithmTSP"]
 merged_args = {**converters.blind_args, **converters.hill_climb_args, **converters.simulated_annealing_args, **converters.traveling_salesman_problem_GA, **converters.differential_evolution_alg}
@@ -173,13 +176,21 @@ class Application:
             else:
                 self.toggle_entry(self.all_entries[key], False)
 
+    def start_action_production(self, algorithm, function):
+        try:
+            algorithm.start(function)
+        except Exception as e:
+            print("Oops!", e.__class__, "occurred.")
+            time.sleep(1)
+            plt.close()
+
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
         if type(self.selected_algorithm).__name__ == 'GeneticAlgorithmTSP':
             ed = EucladianDistance()
             graph = TSPGraph(0, 200)
             algorithm = self.build_algorithm(graph)
-            algorithm.start(ed)
+            self.start_action_production(algorithm, ed)
         else:
             graph = Graph(
                 self.selected_function.left,
@@ -187,14 +198,8 @@ class Application:
                 self.selected_function,
             )
             algorithm = self.build_algorithm(graph)
-            algorithm.start(self.selected_function)
+            self.start_action_production(algorithm, self.selected_function)
 
-        # PRODUCTION crash
-        # try:
-        #     algorithm.start(self.selected_function)
-        # except Exception as e:
-        #     print("Oops!", e.__class__, "occurred.")
-        #     plt.close()
 
     def build_algorithm(self, graph):
         """Function which sets all args to selected algorithm
@@ -226,3 +231,4 @@ class Application:
     def stop(self):
         """Stops GUI"""
         self.root.destroy()
+
