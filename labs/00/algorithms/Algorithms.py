@@ -153,8 +153,6 @@ class AbstractAlgorithm:
         for key, value in dict(self).items():
             if not inspect.isclass(value) and not isinstance(value, Solution) and not isinstance(value, AbstractGraph):
                 output += f'\n\t{key} -- {value}'
-        print(output)
-        exit()
         return output
 
 
@@ -197,6 +195,7 @@ class BlindAgorithm(AbstractAlgorithm):
         Args:
             Function (class Function): specific Function (Sphere || Ackley..)
         """
+        super().start()
         first_solution = self.generate_random_solution(Function.left, Function.right)
         self.evaluate(first_solution, Function)
         self.best_solution = first_solution
@@ -242,6 +241,7 @@ class HillClimbAlgorithm(AbstractAlgorithm):
         Args:
             Function (class Function): specific Function (Sphere || Ackley..)
         """
+        super().start()
         first_solution = self.generate_random_solution(Function.left, Function.right)
         self.evaluate(first_solution, Function)
         self.best_solution = first_solution
@@ -291,6 +291,7 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
         Args:
             Function (class Function): specific Function (Sphere || Ackley..)
         """
+        super().start()
         first_solution = self.generate_random_solution(Function.left, Function.right)
         self.evaluate(first_solution, Function)
         self.best_solution = first_solution
@@ -411,6 +412,7 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
         return population
 
     def start(self, EucladianDistance):
+        super().start()
         self.generate_cities()
         population = self.generate_population(self.cities)
         self.evalute_population(population, EucladianDistance)
