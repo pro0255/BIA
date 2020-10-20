@@ -439,21 +439,57 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
         super().__init__(**kwds)
 
 
+    def generate_population(self, Function):
+        return [self.generate_individual(Function) for i in range(self.size_of_population)]
+
+
+    def generate_individual(self, Function):
+        return self.generate_random_solution(Function.left, Function.right)
+
+    def get_random_indicies(self, black_list):
+        r = random.randint(0, self.size_of_population - 1)
+        if r not in black_list:
+            return r
+        else:
+            return self.get_random_indicies(black_list)
+
+    def get_n_random_indicies(self, number_of_indicies, default_black_list):
+        indicies = []
+        scope_black_list = copy.copy(default_black_list)
+        while len(indicies) != number_of_indicies:
+            i = self.get_random_indicies(scope_black_list)
+            scope_black_list.append(i)
+            indicies.append(i)
+        return indicies
+
+
+
+
+
+
+
     def start(self, Function):
         """Runs DifferentialEvolution Algorithm on specified Function, with specified args.
-
-
-
         Args:
             Function (class Function): specific Function (Sphere || Ackley..)
         """
+        pop = self.generate_population(Function)
+
+        while self.index_of_generation < self.max_generation:
+            new_population = self.copy(pop) #class scoped function actually it is deepcopy
+            for i, individual in enumerate(new_population):
+                lol = self.get_n_random_indicies(3, [i])
+                print(lol)
 
 
-        print('starting')
 
 
 
 
+
+
+            self.index_of_generation += 1
+            pop = new_population
         self.close_plot()
 
 
