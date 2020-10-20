@@ -11,7 +11,7 @@ import WINDOW_VALUES as WV
 algorithms_functions_blacklist = ["GeneticAlgorithmTSP"]
 merged_args = {**converters.blind_args, **converters.hill_climb_args, **converters.simulated_annealing_args, **converters.traveling_salesman_problem_GA, **converters.differential_evolution_alg}
 
-# TODO!: automatic generation of (label, input)
+
 class Application:
     """Represents GUI"""
 
