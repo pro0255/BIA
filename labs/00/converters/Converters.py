@@ -1,6 +1,3 @@
-algorithms_functions_blacklist = ["GeneticAlgorithmTSP"]
-
-
 blind_args = {
     "size_of_population": {
         "text": "Size of population",
