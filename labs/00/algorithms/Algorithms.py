@@ -5,8 +5,6 @@ import time
 import traceback
 import copy
 import inspect
-from Graph import AbstractGraph
-
 
 class Solution:
     def __init__(self, dimension=2, lower_bound=0, upper_bound=0, key=0):
@@ -151,7 +149,7 @@ class AbstractAlgorithm:
     def __str__(self):
         output = f'Starts algorithm {type(self).__name__} with attributes:'
         for key, value in dict(self).items():
-            if not inspect.isclass(value) and not isinstance(value, Solution) and not isinstance(value, AbstractGraph):
+            if not inspect.isclass(value) and not isinstance(value, Solution):
                 output += f'\n\t{key} -- {value}'
         return output
 
@@ -513,7 +511,7 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
         self.evalute_population(pop, Function)
 
         while self.index_of_generation < self.max_generation:
-            new_population = self.copy(pop) #class scoped function actually it is deepcopy
+            new_population = self.copy(pop) #class scoped function.., actually it is deepcopy
             self.best_solution = self.select_best_solution(new_population)
             if self.graph:
                 self.graph.draw(self.best_solution, new_population)
