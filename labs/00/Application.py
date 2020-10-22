@@ -1,6 +1,6 @@
 from tkinter import *
 from functions.EucladianDistance import EucladianDistance
-from init_algorithms import algorithms
+from init_algorithms import algs
 from init_functions import functions
 from Graph import Graph
 from Graph import TSPGraph
@@ -17,6 +17,7 @@ merged_args = {
     **converters.simulated_annealing_args,
     **converters.traveling_salesman_problem_GA,
     **converters.differential_evolution_alg,
+    **converters.particle_swarm_optimization
 }
 
 
@@ -64,7 +65,7 @@ class Application:
         Args:
             value (string): Key of Algortihm which targets to algorithms object defined in global scope
         """
-        self.selected_algorithm = algorithms[value]
+        self.selected_algorithm = algs[value]
         self.run_disabled_entries_action()
         self.change_text_button_action()
 
@@ -85,11 +86,11 @@ class Application:
 
     def create_combo_box_algorithm(self):
         """Creation of combo box with Algorithms"""
-        choices = list(algorithms.keys())
+        choices = list(algs.keys())
         variable = StringVar(self.root)
         init_algorithm = WV.INITIAL_ALGORITHM_KEY
         variable.set(init_algorithm)
-        self.selected_algorithm = algorithms[init_algorithm]
+        self.selected_algorithm = algs[init_algorithm]
         menu = OptionMenu(
             self.root, variable, *choices, command=self.select_algorithm_action
         )

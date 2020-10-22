@@ -15,6 +15,7 @@ class Solution:
         self.vector = np.zeros(dimension)  # x,y..
         self.fitness_value = np.inf  # z..
         self.key = Solution.key
+        self.personal_best = np.zeros(dimension) # PSO solution param
         Solution.key += 1
 
     key = 0
@@ -52,6 +53,7 @@ class Solution:
             string: Solution.toString() --> print(Solution)
         """
         return f"Solution with\n Vector ->> {self.vector}\n Fitness ->> {self.fitness_value}"
+
 
 
 class AbstractAlgorithm:
@@ -150,8 +152,6 @@ class AbstractAlgorithm:
             if not inspect.isclass(value) and not isinstance(value, Solution):
                 output += f"\n\t{key} -- {value}"
         return output
-
-
 class BlindAgorithm(AbstractAlgorithm):
     """Blind algorithm tries to find global min/max.
 
@@ -205,8 +205,6 @@ class BlindAgorithm(AbstractAlgorithm):
 
             if self.graph:
                 self.graph.draw(self.best_solution, population)
-
-
 class HillClimbAlgorithm(AbstractAlgorithm):
     def __init__(self, sigma=1, **kwds):
         self.sigma = sigma
@@ -252,8 +250,6 @@ class HillClimbAlgorithm(AbstractAlgorithm):
             if self.graph:
                 self.graph.draw(self.best_solution, neighborhood)
         self.close_plot()
-
-
 class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
     def __init__(
         self,
@@ -309,8 +305,6 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
             print(self.initial_temperature)
             if self.graph:
                 self.graph.draw(self.best_solution, neighbourhood)
-
-
 class AbstractGeneticAlgorithm(AbstractAlgorithm):
     def __init__(self, **kwds):
         super().__init__(**kwds)
@@ -353,8 +347,6 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
 
     def gonna_mutate(self):
         return 0.5 > np.random.uniform(0, 1)
-
-
 class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
     def __init__(self, number_of_cities=20, low=0, high=200, **kwds):
         """
@@ -448,8 +440,6 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
             population = new_population
 
         self.close_plot()
-
-
 class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
     def __init__(self, crossover_range=0.5, mutation_constant=0.5, **kwds):
         """
@@ -537,3 +527,44 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             self.index_of_generation += 1
             pop = new_population
         self.close_plot()
+
+class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
+    def __init__(self, c1=0, c2=0, v_min=0, v_max=0, **kwds):
+        """
+        𝑝𝑜𝑝_𝑠𝑖𝑧𝑒 = size_of_population [number of individuals]
+        𝑀_𝑚𝑎𝑥 = max_generation [number of migration cycles]
+        𝑐_1, 𝑐_2 = new parametr, [learning constants]
+        𝑣_𝑚𝑖𝑛𝑖, 𝑣_𝑚𝑎𝑥𝑖 = new parametr, [minimal and maximal velocity]
+        """
+        self.v_min = v_min
+        self.v_max = v_max
+        self.c1 = c1
+        self.c2 = c2
+        super().__init__(**kwds)
+
+
+    def generate_population(self, Function):
+        return [
+            self.generate_individual(Function) for i in range(self.size_of_population)
+        ]
+
+    def generate_individual(self, Function):
+        return self.generate_random_solution(Function.left, Function.right)
+
+
+    def start(self, Function):
+        super().start()
+        swarm = self.generate_population(Function)
+        self.evalute_population(swarm, Function)
+        velocity_vectors = [] 
+        self.best_solution = self.select_best_solution(swarm)
+
+        while self.index_of_generation < self.max_generation:
+            if self.graph:
+                self.graph.draw(self.best_solution, swarm)
+            for particle in swarm:
+                pass
+
+
+            self.index_of_generation += 1
+        print('starting')

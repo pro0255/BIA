@@ -67,3 +67,26 @@ differential_evolution_alg = {
         "initial_value": 0.5,
     },
 }
+
+particle_swarm_optimization = {
+    "c1": {
+        "text": "Learning constant c1",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.5,
+    },
+    "c2": {
+        "text": "Learning constant c1",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.5,
+    },
+    "v_min": {
+        "text": "Minimal velocity",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.5,
+    },
+    "v_max": {
+        "text": "Maximal velocity",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.5,
+    },
+}
