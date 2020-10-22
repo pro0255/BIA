@@ -6,6 +6,7 @@ import traceback
 import copy
 import inspect
 
+
 class Solution:
     def __init__(self, dimension=2, lower_bound=0, upper_bound=0, key=0):
         self.dimension = dimension
@@ -15,9 +16,8 @@ class Solution:
         self.fitness_value = np.inf  # z..
         self.key = Solution.key
         Solution.key += 1
-    
-    key = 0
 
+    key = 0
 
     ##TODO!: create __eq__ for fintess_value
     def fill_vector_with_random(self):
@@ -74,12 +74,11 @@ class AbstractAlgorithm:
         counter = 5
         for i in range(counter):
             time.sleep(1)
-            print(f'Closing in {i+1}-{counter}')
+            print(f"Closing in {i+1}-{counter}")
 
         if self.graph:
-            print('Closing!!')
-            plt.close('all')
-
+            print("Closing!!")
+            plt.close("all")
 
     def evaluate(self, solution, Function):
         """Sets z (fitness) value according to Function
@@ -134,7 +133,6 @@ class AbstractAlgorithm:
         """Adds 1 to prop index_of_generation. It is used in alg as condition."""
         self.index_of_generation += 1
 
-
     def select_random_individual(self, population, actual_individual):
         selected = random.choice(population)
         return selected
@@ -147,10 +145,10 @@ class AbstractAlgorithm:
             yield attr, value
 
     def __str__(self):
-        output = f'Starts algorithm {type(self).__name__} with attributes:'
+        output = f"Starts algorithm {type(self).__name__} with attributes:"
         for key, value in dict(self).items():
             if not inspect.isclass(value) and not isinstance(value, Solution):
-                output += f'\n\t{key} -- {value}'
+                output += f"\n\t{key} -- {value}"
         return output
 
 
@@ -312,6 +310,7 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
             if self.graph:
                 self.graph.draw(self.best_solution, neighbourhood)
 
+
 class AbstractGeneticAlgorithm(AbstractAlgorithm):
     def __init__(self, **kwds):
         super().__init__(**kwds)
@@ -319,10 +318,9 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
     def copy(self, population):
         return copy.deepcopy(population)
 
-    
     def crossover(self, parent_A, parent_B):
         length = len(parent_A.vector)
-        random_position_in_range = random.randint(0, length-1)
+        random_position_in_range = random.randint(0, length - 1)
         part_A = parent_A.vector[0:random_position_in_range, :]
 
         rest = []
@@ -331,21 +329,21 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
             if not is_there:
                 rest.append(list(city))
 
-        crossover_vector = np.concatenate((part_A, np.array(rest)), axis=0) 
+        crossover_vector = np.concatenate((part_A, np.array(rest)), axis=0)
         offspring_AB = Solution()
         offspring_AB.vector = crossover_vector
         return offspring_AB
-    
 
     def mutate(self, offspring_AB, fixed=0):
         first_index = int(np.random.uniform(fixed, len(offspring_AB.vector)))
         second_index = int(np.random.uniform(fixed, len(offspring_AB.vector)))
         if first_index != second_index:
-            offspring_AB.vector[[first_index, second_index], :] = offspring_AB.vector[[second_index, first_index] , :] 
+            offspring_AB.vector[[first_index, second_index], :] = offspring_AB.vector[
+                [second_index, first_index], :
+            ]
             return offspring_AB
         else:
             return self.mutate(offspring_AB)
-
 
     def get_different_individual_then_input(self, population, parent_A):
         selected = self.select_random_individual(population, parent_A)
@@ -353,13 +351,12 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
             return selected
         return self.get_different_individual_then_input(population, parent_A)
 
-
     def gonna_mutate(self):
         return 0.5 > np.random.uniform(0, 1)
 
 
 class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
-    def __init__(self, number_of_cities=20, low =0, high=200, **kwds):
+    def __init__(self, number_of_cities=20, low=0, high=200, **kwds):
         """
             NP = size_of_population
             G = max_generation
@@ -372,13 +369,15 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
         """
         super().__init__(**kwds)
         self.number_of_cities = number_of_cities
-        self.low =low
-        self.high=high
+        self.low = low
+        self.high = high
         self.generate_cities()
-        self.fixed_first_index = True # first city will be not moved
+        self.fixed_first_index = True  # first city will be not moved
 
     def generate_cities(self):
-        self.cities = np.random.uniform(size=(self.number_of_cities, 2), low=self.low,high=self.high)
+        self.cities = np.random.uniform(
+            size=(self.number_of_cities, 2), low=self.low, high=self.high
+        )
 
     def generate_individual(self, cities):
         """Generating single individual according to input
@@ -391,21 +390,24 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
         """
         individual = Solution()
         if self.fixed_first_index:
-            first =  list(self.cities)[0]
+            first = list(self.cities)[0]
             without_first = list(self.cities)[1:]
             shuffled = random.sample(without_first, len(without_first))
             result = [first] + shuffled
             individual.vector = np.array(result)
         else:
-            individual.vector = np.array(random.sample(list(self.cities), len(self.cities)))
+            individual.vector = np.array(
+                random.sample(list(self.cities), len(self.cities))
+            )
 
         return individual
-        
+
     def generate_population(self, cities):
-        """Generating NP random individuals
-        """
+        """Generating NP random individuals"""
         super().generate_population()
-        population = [self.generate_individual(cities) for _ in range(self.size_of_population)]
+        population = [
+            self.generate_individual(cities) for _ in range(self.size_of_population)
+        ]
 
         return population
 
@@ -423,43 +425,47 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
 
             for j in range(len(population)):
                 parent_A = population[j]
-                parent_B = self.get_different_individual_then_input(population, parent_A)
-                try: 
+                parent_B = self.get_different_individual_then_input(
+                    population, parent_A
+                )
+                try:
                     offspring_AB = self.crossover(parent_A, parent_B)
                     if self.gonna_mutate():
-                        offspring_AB = self.mutate(offspring_AB, 1 if self.fixed_first_index else 0)                    
+                        offspring_AB = self.mutate(
+                            offspring_AB, 1 if self.fixed_first_index else 0
+                        )
                     self.evaluate(offspring_AB, EucladianDistance)
-                
 
-                    if offspring_AB.fitness_value < parent_A.fitness_value: ##if is better then his parent
+                    if (
+                        offspring_AB.fitness_value < parent_A.fitness_value
+                    ):  ##if is better then his parent
                         new_population[j] = offspring_AB
 
                 except Exception as error:
-                    print(f'something wrong {error}')
+                    print(f"something wrong {error}")
                     print(traceback.print_exc())
-                    continue            
+                    continue
             population = new_population
-        
+
         self.close_plot()
 
 
-    
 class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
-    def __init__(self, crossover_range=.5, mutation_constant=.5,**kwds):
+    def __init__(self, crossover_range=0.5, mutation_constant=0.5, **kwds):
         """
-            NP = size_of_population 
-            G = max_generation
-            F = new parametr, [mutation constant]
-            CR = new parametr, [crossover range]
+        NP = size_of_population
+        G = max_generation
+        F = new parametr, [mutation constant]
+        CR = new parametr, [crossover range]
         """
         self.crossover_range = crossover_range
         self.mutation_constant = mutation_constant
         super().__init__(**kwds)
 
-
     def generate_population(self, Function):
-        return [self.generate_individual(Function) for i in range(self.size_of_population)]
-
+        return [
+            self.generate_individual(Function) for i in range(self.size_of_population)
+        ]
 
     def generate_individual(self, Function):
         return self.generate_random_solution(Function.left, Function.right)
@@ -480,15 +486,15 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             indicies.append(i)
         return indicies
 
-
     def mutate(self, indicies, population, Function):
-        mutation_vector = (population[indicies[1]].vector - population[indicies[2]].vector)*self.mutation_constant + population[indicies[3]].vector
-        return np.clip(mutation_vector, Function.left, Function.right) 
-        #TODO!: take care for boundaries!
-
+        mutation_vector = (
+            population[indicies[1]].vector - population[indicies[2]].vector
+        ) * self.mutation_constant + population[indicies[3]].vector
+        return np.clip(mutation_vector, Function.left, Function.right)
+        # TODO!: take care for boundaries!
 
     def crossover(self, iteration_individual, mutation_vector):
-        trial_solution = Solution() #trial_vector
+        trial_solution = Solution()  # trial_vector
         dimension = len(trial_solution.vector)
         random_position_j = np.random.randint(0, dimension)
 
@@ -500,7 +506,6 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
 
         return trial_solution
 
-
     def start(self, Function):
         """Runs DifferentialEvolution Algorithm on specified Function, with specified args.
         Args:
@@ -511,12 +516,19 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
         self.evalute_population(pop, Function)
 
         while self.index_of_generation < self.max_generation:
-            new_population = self.copy(pop) #class scoped function.., actually it is deepcopy
+            new_population = self.copy(
+                pop
+            )  # class scoped function.., actually it is deepcopy
             self.best_solution = self.select_best_solution(new_population)
             if self.graph:
                 self.graph.draw(self.best_solution, new_population)
             for i, individual in enumerate(new_population):
-                trial_solution = self.crossover(individual, self.mutate([i] + self.get_n_random_indicies(3, [i]), pop, Function))                
+                trial_solution = self.crossover(
+                    individual,
+                    self.mutate(
+                        [i] + self.get_n_random_indicies(3, [i]), pop, Function
+                    ),
+                )
                 self.evaluate(trial_solution, Function)
 
                 if trial_solution.fitness_value <= individual.fitness_value:
@@ -525,9 +537,3 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             self.index_of_generation += 1
             pop = new_population
         self.close_plot()
-
-
-
-
-
-

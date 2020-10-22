@@ -9,5 +9,5 @@ algorithms = {
     "HillClimb": HillClimbAlgorithm(),
     "SimulatedAnnealing": SimulatedAnnealingAlgorithm(),
     "GeneticAlgorithmTSP": GeneticAlgorithmTSP(),
-    'DifferentialEvolution': DifferentialEvolutionAlgorithm()
+    "DifferentialEvolution": DifferentialEvolutionAlgorithm(),
 }

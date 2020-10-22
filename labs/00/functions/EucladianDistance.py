@@ -1,6 +1,7 @@
 import numpy as np
 
-class EucladianDistance():
+
+class EucladianDistance:
     def __init__(self):
         pass
 
@@ -9,7 +10,7 @@ class EucladianDistance():
         rows = len(vector)
         for i in range(rows):
             current_index = i
-            next_index = ((i + 1) % rows)
+            next_index = (i + 1) % rows
 
             current_vector = vector[current_index]
             next_vector = vector[next_index]

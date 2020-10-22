@@ -52,18 +52,18 @@ traveling_salesman_problem_GA = {
         "text": "High border",
         "convert": lambda a: int(a.get().strip()),
         "initial_value": 200,
-    }
+    },
 }
 
 differential_evolution_alg = {
     "crossover_range": {
         "text": "Crossover Range",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": .5,
+        "initial_value": 0.5,
     },
     "mutation_constant": {
         "text": "Mutation Constant",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": .5,
-    }
+        "initial_value": 0.5,
+    },
 }

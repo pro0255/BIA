@@ -10,9 +10,14 @@ import WINDOW_VALUES as WV
 import time
 
 
-
 algorithms_functions_blacklist = ["GeneticAlgorithmTSP"]
-merged_args = {**converters.blind_args, **converters.hill_climb_args, **converters.simulated_annealing_args, **converters.traveling_salesman_problem_GA, **converters.differential_evolution_alg}
+merged_args = {
+    **converters.blind_args,
+    **converters.hill_climb_args,
+    **converters.simulated_annealing_args,
+    **converters.traveling_salesman_problem_GA,
+    **converters.differential_evolution_alg,
+}
 
 
 class Application:
@@ -123,7 +128,6 @@ class Application:
         else:
             self.menu_function.pack()
 
-
     def toggle_entry(self, entry_tuple, enable=True):
         """Toggle state of entry
 
@@ -155,14 +159,15 @@ class Application:
         except:
             print("no selected algorithm")
         try:
-            if type(self.selected_algorithm).__name__ not in algorithms_functions_blacklist:
+            if (
+                type(self.selected_algorithm).__name__
+                not in algorithms_functions_blacklist
+            ):
                 self.run_button[
                     "text"
                 ] = f"{constant_text} on {var_text_function} with {var_text_algorithm}"
             else:
-                self.run_button[
-                    "text"
-                ] = f"{constant_text} with {var_text_algorithm}"
+                self.run_button["text"] = f"{constant_text} with {var_text_algorithm}"
 
         except:
             print("no button now")
@@ -186,7 +191,7 @@ class Application:
 
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
-        if type(self.selected_algorithm).__name__ == 'GeneticAlgorithmTSP':
+        if type(self.selected_algorithm).__name__ == "GeneticAlgorithmTSP":
             ed = EucladianDistance()
             graph = TSPGraph(0, 200)
             algorithm = self.build_algorithm(graph)
@@ -199,7 +204,6 @@ class Application:
             )
             algorithm = self.build_algorithm(graph)
             self.start_action_production(algorithm, self.selected_function)
-
 
     def build_algorithm(self, graph):
         """Function which sets all args to selected algorithm
@@ -231,4 +235,3 @@ class Application:
     def stop(self):
         """Stops GUI"""
         self.root.destroy()
-

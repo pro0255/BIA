@@ -5,17 +5,18 @@ import seaborn as sns
 import matplotlib.lines as mlines
 
 
-
-
-class AbstractGraph():
+class AbstractGraph:
     def __init__(self):
-        self.fig = plt.figure(num="Bia vizualization", figsize=(20, 10), dpi=80, facecolor='w', edgecolor='k')
+        self.fig = plt.figure(
+            num="Bia vizualization",
+            figsize=(20, 10),
+            dpi=80,
+            facecolor="w",
+            edgecolor="k",
+        )
 
 
 class Graph(AbstractGraph):
-
-
-
     def __init__(self, start, stop, Function):
         super().__init__()
         x = np.linspace(start, stop, 30)
@@ -114,11 +115,11 @@ class Graph(AbstractGraph):
         if population:
             self.draw_population(population)
 
+
 class TSPGraph(AbstractGraph):
     def __init__(self, low, high):
         super().__init__()
         self.plot = self.fig.add_subplot(111, title="Traveling salesman problem")
-
 
     def draw_cities(self, cities):
         for index, city in enumerate(cities):
@@ -126,20 +127,19 @@ class TSPGraph(AbstractGraph):
             y = city[1]
 
             if index == 0:
-                self.plot.plot(x, y, 'bo', markersize=20)
+                self.plot.plot(x, y, "bo", markersize=20)
             else:
-                self.plot.plot(x, y, 'go-', markersize=15)
+                self.plot.plot(x, y, "go-", markersize=15)
             self.plot.text(x, y, s=index, fontsize=30)
 
-
-
     def draw_connections(self, cities):
-        length = len(cities) 
+        length = len(cities)
         for i in range(length):
             current = cities[i]
             next = cities[(i + 1) % length]
-            self.plot.plot([current[0], next[0]], [current[1], next[1]], 'r', linewidth=2)
-
+            self.plot.plot(
+                [current[0], next[0]], [current[1], next[1]], "r", linewidth=2
+            )
 
     def draw(self, best_solution):
         self.plot.clear()
@@ -149,5 +149,3 @@ class TSPGraph(AbstractGraph):
         self.draw_connections(cities)
         plt.draw()
         plt.pause(0.05)
-
-
