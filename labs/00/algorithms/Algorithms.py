@@ -566,8 +566,9 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
 
     def calculate_new_velocity(self, solution):
         r1 = np.random.uniform()
-        new_velocity_vector = solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r1 * self.c1 * (self.best_solution.vector - solution.vector)
+        new_velocity_vector = solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r1 * self.c2 * (self.best_solution.vector - solution.vector)
         solution.velocity_vector = np.clip(new_velocity_vector, self.v_min, self.v_max)
+        print(solution.velocity_vector)
 
     def calculate_new_position(self, solution):
         new_position = solution.vector + solution.velocity_vector
@@ -580,15 +581,13 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         return solution.personal_best is None or solution.fitness_value < solution.personal_best.fitness_value 
 
     def is_better_then_global_best(self, solution):
-        return solution.fitness_value < self.best_solution.fitness_value
+        return solution.personal_best.fitness_value < self.best_solution.fitness_value
 
     def check_state_of_particle(self, solution):
         if self.is_better_then_peronal_best(solution):
             solution.personal_best = copy.deepcopy(solution)
             if self.is_better_then_global_best(solution):
-                self.best_solution = solution
-
-
+                self.best_solution = solution.personal_best
 
 
 
@@ -604,7 +603,6 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         while self.index_of_generation < self.max_generation:
             if self.graph:
                 self.graph.draw(self.best_solution, swarm)
-            print(self.index_of_generation)
             for particle in swarm:
                 self.calculate_new_velocity(particle)
                 self.calculate_new_position(particle)

@@ -7,7 +7,7 @@ blind_args = {
     "max_generation": {
         "text": "Max generation",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 30,
+        "initial_value": 50,
     },
 }
 
@@ -72,21 +72,21 @@ particle_swarm_optimization = {
     "c1": {
         "text": "Learning constant c1",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.5,
+        "initial_value": 2,
     },
     "c2": {
         "text": "Learning constant c1",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.5,
+        "initial_value": 2,
     },
     "v_min": {
         "text": "Minimal velocity",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": -0.5,
+        "initial_value": -1,
     },
     "v_max": {
         "text": "Maximal velocity",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.5,
+        "initial_value": 1,
     },
 }

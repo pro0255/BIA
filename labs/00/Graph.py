@@ -80,11 +80,23 @@ class Graph(AbstractGraph):
             marker="o",
         )
 
+
+        self.population_heatmap=self.heat_map.scatter(
+            X,
+            Y,
+            s=20,
+            alpha=1,
+            c="k",
+            marker="^",
+        )
+
         plt.pause(0.5)
         plt.draw()
 
         if self.population:
             self.population.remove()
+        if self.population_heatmap:
+            self.population_heatmap.remove()
 
     def draw(self, best_solution, population=None):
         if self.best:
