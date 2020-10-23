@@ -625,7 +625,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         solution.vector = new_position
 
     def calculate_inertia_weight(self, w_start=0.9, w_end=0.4):
-        """CZ - [Setrvacnost]
+        """cze - [Setrvacnost]
 
             It is used cause in the beginning of alg is searched large space then at the end..-> global optimum
             ..with time -> local optimum
