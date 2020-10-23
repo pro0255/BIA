@@ -15,7 +15,8 @@ class Solution:
         self.vector = np.zeros(dimension)  # x,y..
         self.fitness_value = np.inf  # z..
         self.key = Solution.key
-        self.personal_best = np.zeros(dimension) # PSO solution param
+        self.personal_best = None # PSO solution param
+        self.velocity_vector = np.zeros(dimension) # PSO solution param
         Solution.key += 1
 
     key = 0
@@ -543,28 +544,68 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         super().__init__(**kwds)
 
 
+    def generate_velocity_vector(self, solution):
+        solution.velocity_vector = np.random.uniform(
+            low=self.v_min, high=self.v_max, size=solution.dimension
+        )
+
+    def generate_velocity_vectors_for_paricles(self, swarm):
+        [self.generate_velocity_vector(individual) for individual in swarm]
+
+
     def generate_population(self, Function):
         return [
             self.generate_individual(Function) for i in range(self.size_of_population)
         ]
 
     def generate_individual(self, Function):
-        return self.generate_random_solution(Function.left, Function.right)
+        solution = self.generate_random_solution(Function.left, Function.right)
+        solution.personal_best = copy.deepcopy(solution)
+        return solution
+
+    def calculate_new_velocity(self, solution):
+        r1 = np.random.uniform()
+        new_velocity_vector = solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r1 * self.c1 * (self.best_solution.vector - solution.vector)
+        solution.velocity_vector = np.clip(new_velocity_vector, self.v_min, self.v_max)
+
+    def calculate_new_position(self, solution):
+        new_position = solution.vector + solution.velocity_vector
+        solution.vector = np.clip(new_position, solution.lower_bound, solution.upper_bound)
+
+
+
+
+    def is_better_then_peronal_best(self, solution):
+        return solution.personal_best is None or solution.fitness_value < solution.personal_best.fitness_value 
+
+    def is_better_then_global_best(self, solution):
+        return solution.fitness_value < self.best_solution.fitness_value
+
+    def check_state_of_particle(self, solution):
+        if self.is_better_then_peronal_best(solution):
+            solution.personal_best = copy.deepcopy(solution)
+            if self.is_better_then_global_best(solution):
+                self.best_solution = solution
+
+
+
+
 
 
     def start(self, Function):
         super().start()
         swarm = self.generate_population(Function)
         self.evalute_population(swarm, Function)
-        velocity_vectors = [] 
+        
         self.best_solution = self.select_best_solution(swarm)
+        self.generate_velocity_vectors_for_paricles(swarm)
 
         while self.index_of_generation < self.max_generation:
             if self.graph:
                 self.graph.draw(self.best_solution, swarm)
             for particle in swarm:
-                pass
-
+                self.calculate_new_velocity(particle)
+                self.calculate_new_position(particle)
+                self.check_state_of_particle(particle)
 
             self.index_of_generation += 1
-        print('starting')

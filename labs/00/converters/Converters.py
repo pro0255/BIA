@@ -82,7 +82,7 @@ particle_swarm_optimization = {
     "v_min": {
         "text": "Minimal velocity",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.5,
+        "initial_value": -0.5,
     },
     "v_max": {
         "text": "Maximal velocity",
