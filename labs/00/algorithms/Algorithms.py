@@ -578,14 +578,14 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
 
 
 
-    def is_better_then_peronal_best(self, solution):
+    def is_better_then_personal_best(self, solution):
         return solution.personal_best is None or solution.fitness_value < solution.personal_best.fitness_value 
 
     def is_better_then_global_best(self, solution):
         return solution.personal_best.fitness_value < self.best_solution.fitness_value
 
     def check_state_of_particle(self, solution):
-        if self.is_better_then_peronal_best(solution):
+        if self.is_better_then_personal_best(solution):
             solution.personal_best = copy.deepcopy(solution)
             if self.is_better_then_global_best(solution):
                 self.best_solution = solution.personal_best
