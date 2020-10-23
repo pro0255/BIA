@@ -566,7 +566,8 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
 
     def calculate_new_velocity(self, solution):
         r1 = np.random.uniform()
-        new_velocity_vector = solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r1 * self.c2 * (self.best_solution.vector - solution.vector)
+        r2 = np.random.uniform()
+        new_velocity_vector = solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r2 * self.c2 * (self.best_solution.vector - solution.vector)
         solution.velocity_vector = np.clip(new_velocity_vector, self.v_min, self.v_max)
         print(solution.velocity_vector)
 
