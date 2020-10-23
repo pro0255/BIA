@@ -21,6 +21,11 @@ class Solution:
 
     key = 0
 
+    @staticmethod
+    def is_in_bounderies(value, left, right):
+        return value >= left and value <= right
+
+
     ##TODO!: create __eq__ for fintess_value
     def fill_vector_with_random(self):
         """Sets random vector with specified bounds"""
@@ -537,6 +542,11 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         𝑀_𝑚𝑎𝑥 = max_generation [number of migration cycles]
         𝑐_1, 𝑐_2 = new parametr, [learning constants]
         𝑣_𝑚𝑖𝑛𝑖, 𝑣_𝑚𝑎𝑥𝑖 = new parametr, [minimal and maximal velocity]
+
+        #! v-max according to textbooks is vmax generated as 1/20 space scope of p[i]
+        #! c_1 c_2 by user, common interval = [0, 4] - common value = 2
+        #! pop_size - normally 10 - 20, max 40-50, it is possible value like 100 but computation time takes to long 
+
         """
         self.v_min = v_min
         self.v_max = v_max
@@ -565,16 +575,55 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         return solution
 
     def calculate_new_velocity(self, solution):
+        """Calculated velocity vector moves individual according to 3 directions:
+            -> current
+            -> my best
+            -> gloval best
+
+        Args:
+            solution ([type]): [description]
+        """
         r1 = np.random.uniform()
         r2 = np.random.uniform()
-        new_velocity_vector = solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r2 * self.c2 * (self.best_solution.vector - solution.vector)
+        new_velocity_vector = self.calculate_inertia_weight() * solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r2 * self.c2 * (self.best_solution.vector - solution.vector)
         solution.velocity_vector = np.clip(new_velocity_vector, self.v_min, self.v_max)
-        print(solution.velocity_vector)
+
 
     def calculate_new_position(self, solution):
-        new_position = solution.vector + solution.velocity_vector
-        solution.vector = np.clip(new_position, solution.lower_bound, solution.upper_bound)
+        """Calculates new positon of particle
 
+            According to textbooks when value is out of bounderies then is generated new random position 
+
+        Args:
+            solution ([type]): [description]
+        """
+        new_position = solution.vector + solution.velocity_vector
+        # solution.vector = np.clip(new_position, solution.lower_bound, solution.upper_bound) #!old one
+        #! new one
+        for index, param in enumerate(new_position):
+            if not Solution.is_in_bounderies(param, solution.lower_bound, solution.upper_bound):
+                new_position[index] = np.random.uniform(low=solution.lower_bound, high=solution.upper_bound)
+        
+        solution.vector = new_position
+
+
+    def calculate_inertia_weight(self, w_start = 0.9, w_end = 0.4):
+        """CZ - [Setrvacnost]
+
+            It is used cause in the beginning of alg is searched large space then at the end..-> global optimum
+            ..with time -> local optimum
+
+            Default values - [Xiaodong, 2007]
+        Args:
+            w_start (float, optional): Sometimes is specified by user. Defaults to 0.9.
+            w_end (float, optional): Sometimes is specified by user. Defaults to 0.4.
+
+
+
+        Returns:
+            int: calculated value according to iteration and max generation value
+        """
+        return w_start - (((w_start - w_end)*self.index_of_generation)/self.max_generation)
 
 
 
@@ -589,8 +638,6 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             solution.personal_best = copy.deepcopy(solution)
             if self.is_better_then_global_best(solution):
                 self.best_solution = solution.personal_best
-
-
 
 
     def start(self, Function):
