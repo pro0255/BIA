@@ -141,6 +141,7 @@ class AbstractAlgorithm:
         return selected
 
     def start(self):
+        self.index_of_generation = 0
         print(self)
 
     def __iter__(self):
@@ -603,9 +604,13 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         while self.index_of_generation < self.max_generation:
             if self.graph:
                 self.graph.draw(self.best_solution, swarm)
+            print(self.index_of_generation)
             for particle in swarm:
                 self.calculate_new_velocity(particle)
                 self.calculate_new_position(particle)
+                self.evaluate(particle, Function)
                 self.check_state_of_particle(particle)
 
             self.index_of_generation += 1
+
+        self.close_plot()
