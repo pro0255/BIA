@@ -8,6 +8,7 @@ import inspect
 
 ##TODO!: Kind of separation :]]]]
 
+
 class Solution:
     def __init__(self, dimension=2, lower_bound=0, upper_bound=0, key=0):
         self.dimension = dimension
@@ -16,8 +17,8 @@ class Solution:
         self.vector = np.zeros(dimension)  # x,y..
         self.fitness_value = np.inf  # z..
         self.key = Solution.key
-        self.personal_best = None # PSO solution param
-        self.velocity_vector = np.zeros(dimension) # PSO solution param
+        self.personal_best = None  # PSO solution param
+        self.velocity_vector = np.zeros(dimension)  # PSO solution param
         Solution.key += 1
 
     key = 0
@@ -25,7 +26,6 @@ class Solution:
     @staticmethod
     def is_in_bounderies(value, left, right):
         return value >= left and value <= right
-
 
     ##TODO!: create __eq__ for fintess_value
     def fill_vector_with_random(self):
@@ -60,7 +60,6 @@ class Solution:
             string: Solution.toString() --> print(Solution)
         """
         return f"Solution with\n Vector ->> {self.vector}\n Fitness ->> {self.fitness_value}"
-
 
 
 class AbstractAlgorithm:
@@ -160,6 +159,8 @@ class AbstractAlgorithm:
             if not inspect.isclass(value) and not isinstance(value, Solution):
                 output += f"\n\t{key} -- {value}"
         return output
+
+
 class BlindAgorithm(AbstractAlgorithm):
     """Blind algorithm tries to find global min/max.
 
@@ -213,6 +214,8 @@ class BlindAgorithm(AbstractAlgorithm):
 
             if self.graph:
                 self.graph.draw(self.best_solution, population)
+
+
 class HillClimbAlgorithm(AbstractAlgorithm):
     def __init__(self, sigma=1, **kwds):
         self.sigma = sigma
@@ -258,6 +261,8 @@ class HillClimbAlgorithm(AbstractAlgorithm):
             if self.graph:
                 self.graph.draw(self.best_solution, neighborhood)
         self.close_plot()
+
+
 class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
     def __init__(
         self,
@@ -313,6 +318,8 @@ class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
             print(self.initial_temperature)
             if self.graph:
                 self.graph.draw(self.best_solution, neighbourhood)
+
+
 class AbstractGeneticAlgorithm(AbstractAlgorithm):
     def __init__(self, **kwds):
         super().__init__(**kwds)
@@ -355,6 +362,8 @@ class AbstractGeneticAlgorithm(AbstractAlgorithm):
 
     def gonna_mutate(self):
         return 0.5 > np.random.uniform(0, 1)
+
+
 class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
     def __init__(self, number_of_cities=20, low=0, high=200, **kwds):
         """
@@ -448,6 +457,8 @@ class GeneticAlgorithmTSP(AbstractGeneticAlgorithm):
             population = new_population
 
         self.close_plot()
+
+
 class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
     def __init__(self, crossover_range=0.5, mutation_constant=0.5, **kwds):
         """
@@ -536,6 +547,7 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             pop = new_population
         self.close_plot()
 
+
 class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
     def __init__(self, c1=0, c2=0, v_min=0, v_max=0, **kwds):
         """
@@ -546,7 +558,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
 
         #! v-max according to textbooks is vmax generated as 1/20 space scope of p[i]
         #! c_1 c_2 by user, common interval = [0, 4] - common value = 2
-        #! pop_size - normally 10 - 20, max 40-50, it is possible value like 100 but computation time takes to long 
+        #! pop_size - normally 10 - 20, max 40-50, it is possible value like 100 but computation time takes to long
 
         """
         self.v_min = v_min
@@ -555,7 +567,6 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         self.c2 = c2
         super().__init__(**kwds)
 
-
     def generate_velocity_vector(self, solution):
         solution.velocity_vector = np.random.uniform(
             low=self.v_min, high=self.v_max, size=solution.dimension
@@ -563,7 +574,6 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
 
     def generate_velocity_vectors_for_paricles(self, swarm):
         [self.generate_velocity_vector(individual) for individual in swarm]
-
 
     def generate_population(self, Function):
         return [
@@ -586,14 +596,17 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         """
         r1 = np.random.uniform()
         r2 = np.random.uniform()
-        new_velocity_vector = self.calculate_inertia_weight() * solution.velocity_vector + r1 * self.c1 * (solution.personal_best.vector - solution.vector) + r2 * self.c2 * (self.best_solution.vector - solution.vector)
+        new_velocity_vector = (
+            self.calculate_inertia_weight() * solution.velocity_vector
+            + r1 * self.c1 * (solution.personal_best.vector - solution.vector)
+            + r2 * self.c2 * (self.best_solution.vector - solution.vector)
+        )
         solution.velocity_vector = np.clip(new_velocity_vector, self.v_min, self.v_max)
-
 
     def calculate_new_position(self, solution):
         """Calculates new positon of particle
 
-            According to textbooks when value is out of bounderies then is generated new random position 
+            According to textbooks when value is out of bounderies then is generated new random position
 
         Args:
             solution ([type]): [description]
@@ -602,13 +615,16 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         # solution.vector = np.clip(new_position, solution.lower_bound, solution.upper_bound) #!old one
         #! new one
         for index, param in enumerate(new_position):
-            if not Solution.is_in_bounderies(param, solution.lower_bound, solution.upper_bound):
-                new_position[index] = np.random.uniform(low=solution.lower_bound, high=solution.upper_bound)
-        
+            if not Solution.is_in_bounderies(
+                param, solution.lower_bound, solution.upper_bound
+            ):
+                new_position[index] = np.random.uniform(
+                    low=solution.lower_bound, high=solution.upper_bound
+                )
+
         solution.vector = new_position
 
-
-    def calculate_inertia_weight(self, w_start = 0.9, w_end = 0.4):
+    def calculate_inertia_weight(self, w_start=0.9, w_end=0.4):
         """CZ - [Setrvacnost]
 
             It is used cause in the beginning of alg is searched large space then at the end..-> global optimum
@@ -624,12 +640,15 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         Returns:
             int: calculated value according to iteration and max generation value
         """
-        return w_start - (((w_start - w_end)*self.index_of_generation)/self.max_generation)
-
-
+        return w_start - (
+            ((w_start - w_end) * self.index_of_generation) / self.max_generation
+        )
 
     def is_better_then_personal_best(self, solution):
-        return solution.personal_best is None or solution.fitness_value < solution.personal_best.fitness_value 
+        return (
+            solution.personal_best is None
+            or solution.fitness_value < solution.personal_best.fitness_value
+        )
 
     def is_better_then_global_best(self, solution):
         return solution.personal_best.fitness_value < self.best_solution.fitness_value
@@ -640,12 +659,11 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             if self.is_better_then_global_best(solution):
                 self.best_solution = solution.personal_best
 
-
     def start(self, Function):
         super().start()
         swarm = self.generate_population(Function)
         self.evalute_population(swarm, Function)
-        
+
         self.best_solution = self.select_best_solution(swarm)
         self.generate_velocity_vectors_for_paricles(swarm)
 

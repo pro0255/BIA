@@ -9,6 +9,8 @@ Classes which take care of vizualization
 
 Graphs created for specific tasks [TSP{2d vizualization}, Other{3d vizualization}]
 """
+
+
 class AbstractGraph:
     def __init__(self):
         self.fig = plt.figure(
@@ -84,8 +86,7 @@ class Graph(AbstractGraph):
             marker="o",
         )
 
-
-        self.population_heatmap=self.heat_map.scatter(
+        self.population_heatmap = self.heat_map.scatter(
             X,
             Y,
             s=20,
