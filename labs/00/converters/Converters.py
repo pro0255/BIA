@@ -1,3 +1,11 @@
+"""
+Values are used in Application class as init value for builded algorithm.
+Key are connected to properties of specific algorithm. #! 1:1
+Text is label for input.
+For every tuple (key, value) is created (input, label) in GUI.
+"""
+
+
 blind_args = {
     "size_of_population": {
         "text": "Size of population",

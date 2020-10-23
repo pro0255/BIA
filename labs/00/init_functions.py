@@ -8,7 +8,7 @@ from functions.Michalewicz import Michalewicz
 from functions.Zakharov import Zakharov
 from functions.Ackley import Ackley
 
-
+#* cv1
 functions = {
     "Sphere": Sphere(),
     "Schwefel": Schwefel(),

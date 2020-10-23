@@ -4,7 +4,11 @@ from matplotlib import cm
 import seaborn as sns
 import matplotlib.lines as mlines
 
+"""
+Classes which take care of vizualization
 
+Graphs created for specific tasks [TSP{2d vizualization}, Other{3d vizualization}]
+"""
 class AbstractGraph:
     def __init__(self):
         self.fig = plt.figure(
