@@ -183,6 +183,8 @@ class Application:
                 self.toggle_entry(self.all_entries[key], False)
 
     def start_action_production(self, algorithm, function):
+        # algorithm.start(function)
+
         try:
             algorithm.start(function)
         except Exception as e:

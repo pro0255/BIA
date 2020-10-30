@@ -1,11 +1,15 @@
-import algorithms.Algorithms as ALG
-
+from algorithms.Blind import BlindAgorithm
+from algorithms.HillClimb import HillClimbAlgorithm
+from algorithms.SimulatedAnnealing import SimulatedAnnealingAlgorithm
+from algorithms.GeneticTSP import GeneticAlgorithmTSP
+from algorithms.DifferentialEvolution import DifferentialEvolutionAlgorithm
+from algorithms.ParticleSwarmOptimization import ParticleSwarmOptimizationAlgorithm
 
 algs = {
-    "Blind": ALG.BlindAgorithm(),  # * cv1
-    "HillClimb": ALG.HillClimbAlgorithm(),  # * cv2
-    "SimulatedAnnealing": ALG.SimulatedAnnealingAlgorithm(),  # * cv3
-    "GeneticAlgorithmTSP": ALG.GeneticAlgorithmTSP(),  # * cv4
-    "DifferentialEvolution": ALG.DifferentialEvolutionAlgorithm(),  # * cv5
-    "ParticleSwarmOptimization": ALG.ParticleSwarmOptimizationAlgorithm(),  # * cv6
+    "Blind": BlindAgorithm(),  # * cv1
+    "HillClimb": HillClimbAlgorithm(),  # * cv2
+    "SimulatedAnnealing": SimulatedAnnealingAlgorithm(),  # * cv3
+    "GeneticAlgorithmTSP": GeneticAlgorithmTSP(),  # * cv4
+    "DifferentialEvolution": DifferentialEvolutionAlgorithm(),  # * cv5
+    "ParticleSwarmOptimization": ParticleSwarmOptimizationAlgorithm(),  # * cv6
 }
