@@ -83,7 +83,7 @@ particle_swarm_optimization = {
         "initial_value": 2,
     },
     "c2": {
-        "text": "Learning constant c1",
+        "text": "Learning constant c2",
         "convert": lambda a: float(a.get().strip()),
         "initial_value": 2,
     },
