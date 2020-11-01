@@ -1,5 +1,6 @@
 from algorithms.Abstract import AbstractAlgorithm
 
+
 class BlindAgorithm(AbstractAlgorithm):
     """Blind algorithm tries to find global min/max.
 

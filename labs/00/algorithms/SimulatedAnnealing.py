@@ -1,7 +1,7 @@
-
 from algorithms.Abstract import AbstractAlgorithm
 from solution.Solution import Solution
 import numpy as np
+
 
 class SimulatedAnnealingAlgorithm(AbstractAlgorithm):
     def __init__(

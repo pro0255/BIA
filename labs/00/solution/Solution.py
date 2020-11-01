@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Solution:
     def __init__(self, dimension=2, lower_bound=0, upper_bound=0, key=0):
         self.dimension = dimension

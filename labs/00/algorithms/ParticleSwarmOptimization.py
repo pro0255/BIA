@@ -3,16 +3,17 @@ import numpy as np
 import copy
 from solution.Solution import Solution
 
+
 class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
     def __init__(self, c1=0, c2=0, v_min=0, v_max=0, **kwds):
-        """ pop_size = size_of_population [number of individuals]
-            M_max = max_generation [number of migration cycles]
-            c_1, c_2 = new parametr, [learning constants]
-            v_mini, v_maxi = new parametr, [minimal and maximal velocity]
+        """pop_size = size_of_population [number of individuals]
+        M_max = max_generation [number of migration cycles]
+        c_1, c_2 = new parametr, [learning constants]
+        v_mini, v_maxi = new parametr, [minimal and maximal velocity]
 
-            #! v-max according to textbooks is vmax generated as 1/20 space scope of p[i]
-            #! c_1 c_2 by user, common interval = [0, 4] - common value = 2
-            #! pop_size - normally 10 - 20, max 40-50, it is possible value like 100 but computation time takes to long
+        #! v-max according to textbooks is vmax generated as 1/20 space scope of p[i]
+        #! c_1 c_2 by user, common interval = [0, 4] - common value = 2
+        #! pop_size - normally 10 - 20, max 40-50, it is possible value like 100 but computation time takes to long
         """
         self.v_min = v_min
         self.v_max = v_max
@@ -21,7 +22,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         super().__init__(**kwds)
 
     def generate_velocity_vector(self, solution):
-        """ Creates random uniform velocity vector for particle.
+        """Creates random uniform velocity vector for particle.
             This method is used only in the beginning of algorithm. We can call it init velocity vector.
         Args:
             solution (Solution): Individual (particle).
@@ -31,7 +32,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         )
 
     def generate_velocity_vectors_for_particles(self, swarm):
-        """ Using generate_velocity_vector to create velocity vector for every particle from swarm.
+        """Using generate_velocity_vector to create velocity vector for every particle from swarm.
             This method is used only in the beginning of algorithm. It helps to generate first generation (swarm), where every particle has random values affected by algorithm parameters like v_max, v_min..
         Args:
             swarm (Solution[]): Vector populated with solutions (particles).
@@ -39,7 +40,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         [self.generate_velocity_vector(individual) for individual in swarm]
 
     def generate_population(self, Function):
-        """ Generates population according to Function with help of method generate_individual.
+        """Generates population according to Function with help of method generate_individual.
         Args:
             Function (Function): One of the cost function. (Sphere, Ackley..)
         Returns:
@@ -50,7 +51,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         ]
 
     def generate_individual(self, Function):
-        """ Method calculates in the beginning of alg individual. Also sets personal_best copy of generated (self).
+        """Method calculates in the beginning of alg individual. Also sets personal_best copy of generated (self).
         Args:
             Function (Function): One of the cost function. (Sphere, Ackley..)
         Returns:
@@ -78,7 +79,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         solution.velocity_vector = np.clip(new_velocity_vector, self.v_min, self.v_max)
 
     def calculate_new_position(self, solution):
-        """ Calculates new positon of particle
+        """Calculates new positon of particle
             According to textbooks when value is out of bounderies then is generated new random position
         Args:
             solution ([type]): [description]

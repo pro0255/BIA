@@ -1,10 +1,8 @@
-
 from algorithms.Abstract import AbstractAlgorithm
 import numpy as np
 from solution.Solution import Solution
 import random
 import copy
-
 
 
 class AbstractGeneticAlgorithm(AbstractAlgorithm):

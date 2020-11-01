@@ -1,6 +1,6 @@
-
 from solution.Solution import Solution
 from algorithms.Abstract import AbstractAlgorithm
+
 
 class HillClimbAlgorithm(AbstractAlgorithm):
     def __init__(self, sigma=1, **kwds):
@@ -27,7 +27,7 @@ class HillClimbAlgorithm(AbstractAlgorithm):
         return population
 
     def start(self, Function):
-        
+
         """Runs HillClimb Algorithm on specified Function, with specified args.
 
         Args:

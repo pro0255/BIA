@@ -1,11 +1,8 @@
-
-from solution.Solution import Solution 
+from solution.Solution import Solution
 import time
 import matplotlib.pyplot as plt
 import inspect
 import random
-
-
 
 
 class AbstractAlgorithm:
