@@ -66,7 +66,8 @@ class Graph(AbstractGraph):
         self.heat_map = self.fig.add_subplot(122, title="Heat Map")
         self.heat_map.pcolormesh(X, Y, Z, shading="nearest")
 
-    def draw_population(self, population):
+
+    def create_arrays(self, population):
         X = []
         Y = []
         Z = []
@@ -76,16 +77,44 @@ class Graph(AbstractGraph):
             Y.append(solution.vector[1])
             Z.append(solution.fitness_value)
 
-        self.population = self.plot.scatter(
+
+        return (X, Y, Z)
+
+    def scatter_population(self,X,Y,Z,c="blue"):
+        return self.plot.scatter(
             X,
             Y,
             Z,
             s=5,
             alpha=1,
-            c="blue",
+            c=c,
             marker="o",
         )
 
+    def draw_extra_population(self, population):
+        values = self.create_arrays(population)
+        tmp = self.scatter_population(*values, c="green")
+        plt.pause(0.2)
+        tmp.remove()
+
+
+    def draw_best_solution(self, solution, c='red'):
+        return self.plot.scatter(
+            solution.vector[0],
+            solution.vector[1],
+            solution.fitness_value,
+            s=40,
+            alpha=1,
+            c=c,
+            marker="o",
+        )
+
+
+
+    def draw_population(self, population):
+        values = self.create_arrays(population)
+        self.population = self.scatter_population(*values)
+        X, Y, Z = values
         self.population_heatmap = self.heat_map.scatter(
             X,
             Y,
@@ -106,19 +135,10 @@ class Graph(AbstractGraph):
     def draw(self, best_solution, population=None):
         if self.best:
             self.best.remove()
-
         if self.best_heatmap:
             self.best_heatmap.remove()
 
-        self.best = self.plot.scatter(
-            best_solution.vector[0],
-            best_solution.vector[1],
-            best_solution.fitness_value,
-            s=40,
-            alpha=1,
-            c="orangered",
-            marker="o",
-        )
+        self.best = self.draw_best_solution(best_solution)
 
         self.best_heatmap = self.heat_map.scatter(
             best_solution.vector[0],

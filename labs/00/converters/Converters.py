@@ -10,12 +10,12 @@ blind_args = {
     "size_of_population": {
         "text": "Size of population",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 10,
+        "initial_value": 50,
     },
     "max_generation": {
         "text": "Max generation",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 50,
+        "initial_value": 10,
     },
 }
 
