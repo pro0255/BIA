@@ -4,6 +4,7 @@ from algorithms.SimulatedAnnealing import SimulatedAnnealingAlgorithm
 from algorithms.GeneticTSP import GeneticAlgorithmTSP
 from algorithms.DifferentialEvolution import DifferentialEvolutionAlgorithm
 from algorithms.ParticleSwarmOptimization import ParticleSwarmOptimizationAlgorithm
+from algorithms.SelfOrganizingMigrationAlgorithm import SelfOrganizingMigrationAlgorithm
 
 algs = {
     "Blind": BlindAgorithm(),  # * cv1
@@ -12,4 +13,5 @@ algs = {
     "GeneticAlgorithmTSP": GeneticAlgorithmTSP(),  # * cv4
     "DifferentialEvolution": DifferentialEvolutionAlgorithm(),  # * cv5
     "ParticleSwarmOptimization": ParticleSwarmOptimizationAlgorithm(),  # * cv6
+    "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm() # * cv7 
 }

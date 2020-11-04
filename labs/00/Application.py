@@ -18,6 +18,7 @@ merged_args = {
     **converters.traveling_salesman_problem_GA,
     **converters.differential_evolution_alg,
     **converters.particle_swarm_optimization,
+    **converters.self_organizing_migration
 }
 
 

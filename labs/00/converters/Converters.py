@@ -98,3 +98,28 @@ particle_swarm_optimization = {
         "initial_value": 1,
     },
 }
+
+
+
+self_organizing_migration = {
+    "path_length": {
+        "text": "Path Length",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 3,
+    },
+    "step": {
+        "text": "Step",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.11,
+    },
+    "PRT": {
+        "text": "PRT",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.33,
+    },
+    "min_div": {
+        "text": "MinDiv",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.001,
+    },
+}
