@@ -56,15 +56,10 @@ class Graph(AbstractGraph):
         ax.set_ylabel("y")
         ax.set_zlabel("z")
 
-        self.best = None
-        self.population = None
-        ##TODO!: refactor to better solution
-        self.best_heatmap = None
-
         self.plot = ax
-
         self.heat_map = self.fig.add_subplot(122, title="Heat Map")
         self.heat_map.pcolormesh(X, Y, Z, shading="nearest")
+        self.save = None
 
 
     def create_arrays(self, population):
@@ -99,28 +94,18 @@ class Graph(AbstractGraph):
         b_c = 'yellow'
         p_c = 'green'
         plots = self.common_draw(best, population, b_c, p_c)
+        self.common_lib_middeware_draw()
+        self.common_remove(plots)
+
+    def common_lib_middeware_draw(self):
         plt.draw()
         plt.pause(0.2)
-        for plot in plots:
-            if plot:
-                plot.remove()
 
-
-
-    def draw_population(self, population):
-        values = self.create_arrays(population)
-        self.population = self.scatter_population(values, self.plot)
-        X, Y, Z = values
-        self.population_heatmap = self.scatter_population((X, Y), self.heat_map)
-
-        plt.pause(0.5)
-        plt.draw()
-
-        if self.population:
-            self.population.remove()
-        if self.population_heatmap:
-            self.population_heatmap.remove()
-
+    def common_remove(self, plots):
+        if plots:
+            for plot in plots:
+                if plot:
+                    plot.remove()
 
     def common_draw(self, best_solution, population, b_c='red', p_c='blue'):
         best_3d = self.draw_best_solution((
@@ -144,23 +129,11 @@ class Graph(AbstractGraph):
 
 
     def draw(self, best_solution, population=None):
-        if self.best:
-            self.best.remove()
-        if self.best_heatmap:
-            self.best_heatmap.remove()
-
-        self.best = self.draw_best_solution((
-            best_solution.vector[0],
-            best_solution.vector[1],
-            best_solution.fitness_value), self.plot)
-
-        self.best_heatmap = self.draw_best_solution(
-            (best_solution.vector[0],
-            best_solution.vector[1]), self.heat_map)
-
-        if population:
-            self.draw_population(population)
-
+        self.common_remove(self.save)
+        plots = self.common_draw(best_solution, population)
+        self.save = plots[0:2]
+        self.common_lib_middeware_draw()
+        self.common_remove(plots[2:])
 
 class TSPGraph(AbstractGraph):
     def __init__(self, low, high):
