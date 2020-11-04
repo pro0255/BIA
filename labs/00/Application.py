@@ -184,14 +184,14 @@ class Application:
                 self.toggle_entry(self.all_entries[key], False)
 
     def start_action_production(self, algorithm, function):
-        algorithm.start(function)
+        # algorithm.start(function)
 
-        # try:
-        #     algorithm.start(function)
-        # except Exception as e:
-        #     print("Oops!", e.__class__, "occurred.")
-        #     time.sleep(1)
-        #     plt.close()
+        try:
+            algorithm.start(function)
+        except Exception as e:
+            print("Oops!", e.__class__, "occurred.")
+            time.sleep(1)
+            plt.close()
 
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
