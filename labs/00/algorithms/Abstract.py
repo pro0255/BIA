@@ -50,6 +50,27 @@ class AbstractAlgorithm:
         for solution in population:
             self.evaluate(solution, Function)
 
+    def sort_population(self, population):
+        return sorted(population, key=lambda solution: solution.fitness_value, reverse=True)
+
+    def print_population(self, population):
+        [print(individual) for individual in population]
+
+    def select_worst_solution(self, population):
+        """ Runs over whole population and returns one with worst fitness
+        Args:
+            population (Solution[]): whole population len(population)=self.size_of_population
+
+        Returns:
+            Solution: Solution with best fitness value
+        """
+        pop = self.sort_population(population)
+        worst = pop[0]
+        return worst
+
+
+        return pop[0]
+
     def select_best_solution(self, population):
         """Runs over whole population and returns one with best fitness
 

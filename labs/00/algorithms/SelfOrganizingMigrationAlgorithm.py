@@ -59,7 +59,10 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
         return best 
     
     def terminate_parameters_check(self, population):
-        return False
+        best = self.select_best_solution(population)
+        worst = self.select_worst_solution(population)
+        diff = abs(best.fitness_value - worst.fitness_value)
+        return diff < self.min_div
 
     def start(self, Function):
         """Runs ______ Algorithm on specified Function, with specified args.
@@ -74,7 +77,6 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
             print(self.index_of_generation)
             new_population = copy.deepcopy(population)
             self.best_solution = self.select_best_solution(population)
-
             if self.graph:
                 self.graph.draw(self.best_solution, population)
 
@@ -82,7 +84,9 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
                 migrated_individual = self.crossover(individual, Function)                
                 new_population[individual_index] = migrated_individual
             population = new_population
+
             if(self.terminate_parameters_check(population)):
+                print('Found best enough!!')
                 break
 
             self.index_of_generation += 1
