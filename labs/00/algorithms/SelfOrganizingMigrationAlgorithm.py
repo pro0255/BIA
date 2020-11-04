@@ -2,7 +2,7 @@
 from algorithms.AbstractGenetic import AbstractGeneticAlgorithm
 
 class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
-    def __init__(self, path_length=3,step=0.11, PRT=0.33, min_div=0.001, **kwds):
+    def __init__(self, path_length=3,step=0.11, PRT=0.1, min_div=0.001, **kwds):
         self.path_length = path_length
         self.step = step
         self.PRT = PRT

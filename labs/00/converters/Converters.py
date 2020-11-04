@@ -115,7 +115,7 @@ self_organizing_migration = {
     "PRT": {
         "text": "PRT",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 0.33,
+        "initial_value": 0.1,
     },
     "min_div": {
         "text": "MinDiv",
