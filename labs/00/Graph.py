@@ -71,20 +71,15 @@ class Graph(AbstractGraph):
         X = []
         Y = []
         Z = []
-
         for solution in population:
             X.append(solution.vector[0])
             Y.append(solution.vector[1])
             Z.append(solution.fitness_value)
-
-
         return (X, Y, Z)
 
-    def scatter_population(self,X,Y,Z,c="blue"):
-        return self.plot.scatter(
-            X,
-            Y,
-            Z,
+    def scatter_population(self, values, plot, c="blue"):
+        return plot.scatter(
+            *values,
             s=5,
             alpha=1,
             c=c,
@@ -93,16 +88,14 @@ class Graph(AbstractGraph):
 
     def draw_extra_population(self, population):
         values = self.create_arrays(population)
-        tmp = self.scatter_population(*values, c="green")
+        tmp = self.scatter_population(values, self.plot, c="green")
         plt.pause(0.2)
         tmp.remove()
 
 
-    def draw_best_solution(self, solution, c='red'):
-        return self.plot.scatter(
-            solution.vector[0],
-            solution.vector[1],
-            solution.fitness_value,
+    def draw_best_solution(self, args, plot, c='red'):
+        return plot.scatter(
+            *args,
             s=40,
             alpha=1,
             c=c,
@@ -110,23 +103,13 @@ class Graph(AbstractGraph):
         )
 
 
-
     def draw_population(self, population):
         values = self.create_arrays(population)
-        self.population = self.scatter_population(*values)
+        self.population = self.scatter_population(values, self.plot)
         X, Y, Z = values
-        self.population_heatmap = self.heat_map.scatter(
-            X,
-            Y,
-            s=20,
-            alpha=1,
-            c="k",
-            marker="^",
-        )
-
+        self.population_heatmap = self.scatter_population((X, Y), self.heat_map)
         plt.pause(0.5)
         plt.draw()
-
         if self.population:
             self.population.remove()
         if self.population_heatmap:
@@ -138,16 +121,14 @@ class Graph(AbstractGraph):
         if self.best_heatmap:
             self.best_heatmap.remove()
 
-        self.best = self.draw_best_solution(best_solution)
-
-        self.best_heatmap = self.heat_map.scatter(
+        self.best = self.draw_best_solution((
             best_solution.vector[0],
             best_solution.vector[1],
-            s=20,
-            alpha=1,
-            c="orangered",
-            marker="o",
-        )
+            best_solution.fitness_value), self.plot)
+
+        self.best_heatmap = self.draw_best_solution(
+            (best_solution.vector[0],
+            best_solution.vector[1]), self.heat_map)
 
         if population:
             self.draw_population(population)
