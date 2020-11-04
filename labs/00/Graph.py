@@ -86,13 +86,6 @@ class Graph(AbstractGraph):
             marker="o",
         )
 
-    def draw_extra_population(self, population):
-        values = self.create_arrays(population)
-        tmp = self.scatter_population(values, self.plot, c="green")
-        plt.pause(0.2)
-        tmp.remove()
-
-
     def draw_best_solution(self, args, plot, c='red'):
         return plot.scatter(
             *args,
@@ -101,6 +94,17 @@ class Graph(AbstractGraph):
             c=c,
             marker="o",
         )
+        
+    def draw_extra_population(self, best, population):
+        b_c = 'yellow'
+        p_c = 'green'
+        plots = self.common_draw(best, population, b_c, p_c)
+        plt.draw()
+        plt.pause(0.2)
+        for plot in plots:
+            if plot:
+                plot.remove()
+
 
 
     def draw_population(self, population):
@@ -108,12 +112,36 @@ class Graph(AbstractGraph):
         self.population = self.scatter_population(values, self.plot)
         X, Y, Z = values
         self.population_heatmap = self.scatter_population((X, Y), self.heat_map)
+
         plt.pause(0.5)
         plt.draw()
+
         if self.population:
             self.population.remove()
         if self.population_heatmap:
             self.population_heatmap.remove()
+
+
+    def common_draw(self, best_solution, population, b_c='red', p_c='blue'):
+        best_3d = self.draw_best_solution((
+            best_solution.vector[0],
+            best_solution.vector[1],
+            best_solution.fitness_value), self.plot, b_c)
+        best_heatmap = self.draw_best_solution(
+            (best_solution.vector[0],
+            best_solution.vector[1]), self.heat_map, b_c)
+        
+        pop_3d = None
+        pop_heatmap = None
+
+        if population:
+            values = self.create_arrays(population)
+            pop_3d = self.scatter_population(values, self.plot, p_c)
+            X, Y, Z = values
+            pop_heatmap = self.scatter_population((X, Y), self.heat_map, p_c)
+            
+        return (best_3d, best_heatmap, pop_3d, pop_heatmap)
+
 
     def draw(self, best_solution, population=None):
         if self.best:

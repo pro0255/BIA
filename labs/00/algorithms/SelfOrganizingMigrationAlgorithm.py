@@ -55,7 +55,7 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
         self.evalute_population(possible_solutions, Function)
         best = self.select_best_solution(possible_solutions)
         if self.graph:
-            self.graph.draw_extra_population(possible_solutions)        
+            self.graph.draw_extra_population(best, possible_solutions)        
         return best 
     
     def terminate_parameters_check(self, population):
