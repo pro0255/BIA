@@ -124,11 +124,16 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
             print(self.index_of_generation)
             new_population = copy.deepcopy(population)
             self.best_solution = self.select_best_solution(population)
+            
             if self.graph:
                 self.graph.draw(self.best_solution, population)
 
             for individual_index, individual in enumerate(population):
-                migrated_individual = self.crossover(individual, Function)                
+                migrated_individual = None
+                if individual.key == self.best_solution.key:
+                    migrated_individual = self.best_solution #leader should stay on his position
+                else:
+                    migrated_individual = self.crossover(individual, Function)                
                 new_population[individual_index] = migrated_individual
             population = new_population
 
