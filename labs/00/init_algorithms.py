@@ -5,6 +5,8 @@ from algorithms.GeneticTSP import GeneticAlgorithmTSP
 from algorithms.DifferentialEvolution import DifferentialEvolutionAlgorithm
 from algorithms.ParticleSwarmOptimization import ParticleSwarmOptimizationAlgorithm
 from algorithms.SelfOrganizingMigrationAlgorithm import SelfOrganizingMigrationAlgorithm
+from algorithms.AntColonyOptimization import AntColonyOptimizationAlgorithm
+
 
 algs = {
     "Blind": BlindAgorithm(),  # * cv1
@@ -13,5 +15,8 @@ algs = {
     "GeneticAlgorithmTSP": GeneticAlgorithmTSP(),  # * cv4
     "DifferentialEvolution": DifferentialEvolutionAlgorithm(),  # * cv5
     "ParticleSwarmOptimization": ParticleSwarmOptimizationAlgorithm(),  # * cv6
-    "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm() # * cv7 
+    "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm(), # * cv7 
+    "AntColonyOptimization": AntColonyOptimizationAlgorithm() # * cv8
 }
+
+algorithms_functions_blacklist = [GeneticAlgorithmTSP.__name__, AntColonyOptimizationAlgorithm.__name__]

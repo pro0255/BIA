@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 import converters.Converters as converters
 import WINDOW_VALUES as WV
 import time
+from init_algorithms import algorithms_functions_blacklist
 
-
-algorithms_functions_blacklist = ["GeneticAlgorithmTSP"]
+#TODO!: TERRIBLE REFACTOR! -> TYPO
+# algorithms_functions_blacklist = ["GeneticAlgorithmTSP", "AntColonyOptimizationAlgorithm"]
 merged_args = {
     **converters.blind_args,
     **converters.hill_climb_args,
@@ -184,18 +185,18 @@ class Application:
                 self.toggle_entry(self.all_entries[key], False)
 
     def start_action_production(self, algorithm, function):
-        # algorithm.start(function)
+        algorithm.start(function)
 
-        try:
-            algorithm.start(function)
-        except Exception as e:
-            print("Oops!", e.__class__, "occurred.")
-            time.sleep(1)
-            plt.close()
+        # try:
+        #     algorithm.start(function)
+        # except Exception as e:
+        #     print("Oops!", e.__class__, "occurred.")
+        #     time.sleep(1)
+        #     plt.close()
 
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
-        if type(self.selected_algorithm).__name__ == "GeneticAlgorithmTSP":
+        if type(self.selected_algorithm).__name__ in algorithms_functions_blacklist:
             ed = EucladianDistance()
             graph = TSPGraph(0, 200)
             algorithm = self.build_algorithm(graph)
