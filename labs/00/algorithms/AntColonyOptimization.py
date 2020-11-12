@@ -62,18 +62,31 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         possibility = pheromone_row * distance_row
         suma = np.sum(possibility)
         probabilities = possibility / suma
-        cumulative = [sum(probabilities[0:i+1]) for i in range(len(probabilities))]
-        print('p', probabilities)
-        print('c', cumulative)
-        exit()
+        cumulative = np.array([sum(probabilities[0:i+1]) for i in range(len(probabilities))])
+        return cumulative
 
     def ant_step(self, s, vis_matrix):
-        self.calc_cumulative_possibility(s, vis_matrix)
+        p_cum = self.calc_cumulative_possibility(s, vis_matrix)
+        r = np.random.uniform()
+        for i, p in enumerate(p_cum):
+            if r < p:
+                return i 
 
     def ant_move(self, ant):
         vis_matrix = np.copy(self.inverse_distance_matrix)
-        for v in ant.trajectory:
-            self.ant_step(v, vis_matrix)
+        trajectory = [self.start_index]
+        vis_matrix[:, self.start_index] = 0
+        for v in trajectory:
+            index = self.ant_step(v, vis_matrix)
+            trajectory.append(index)
+            vis_matrix[:, index] = 0
+            if not vis_matrix.any():
+                break
+        ant.trajectory = np.array(trajectory)
+        self.update_individual(ant)
+
+
+
 
 
     def start(self, EucladianDistance):
@@ -87,8 +100,8 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         while self.index_of_generation < self.max_generation:
             for k, ant in enumerate(colony):
                 self.ant_move(ant)
-                exit()
-            print(self.index_of_generation)
+            self.evalute_population(colony, EucladianDistance)
+            exit()
             self.update_pheromone(colony)
             self.index_of_generation += 1
 
