@@ -34,7 +34,29 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         self.update_individual(individual)
         return individual
 
+
+    def create_value(self, fV, Q=1):
+        if fV != 0:
+            return Q/fV
+        else:
+            return fV
+
+    def generate_edge_dic(self, colony):
+        dic = {}
+        for ant in colony:
+            edges = [(ant.trajectory[i], ant.trajectory[(i+1)%len(ant.trajectory)]) for i in range(len(ant.trajectory))]
+            for e in edges:
+                value = self.create_value(ant.fitness_value)
+                if e in dic:
+                    dic[e].append(value)
+                else:
+                    dic[e] = [value]
+        return dic
+
+
     def update_pheromone(self, colony):
+
+
         #TODO!: update p
         print('update_pheromones')
 
@@ -101,7 +123,6 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
             for k, ant in enumerate(colony):
                 self.ant_move(ant)
             self.evalute_population(colony, EucladianDistance)
-            exit()
             self.update_pheromone(colony)
             self.index_of_generation += 1
 
