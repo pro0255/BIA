@@ -26,13 +26,8 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         return np.array([self.generate_individual(cities) for _ in range(self.number_of_cities)])
 
     def generate_individual(self, cities):
-        # individual = np.arange(0, len(cities))
-        # del_index = np.delete(individual, [self.start_index])
-        # np.random.shuffle(del_index)
         individual = Solution()
         individual.vector = np.copy(cities)
-        # individual.trajectory = np.insert(del_index, 0, self.start_index)
-        # self.update_individual(individual)
         return individual
 
 
