@@ -1,13 +1,15 @@
 
 from algorithms.GeneticTSP import GeneticAlgorithmTSP 
 import numpy as np
+from solution.Solution import Solution
+
 class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
     def __init__(self, importance_pheromone=1, importance_distance=1, **kwds):
         self.importance_pheromone = importance_pheromone
         self.importance_distance = importance_distance
         super().__init__(**kwds)
         delattr(self, "size_of_population") # ants = number of cities
-        
+        self.start_index = 0
  
     def prob_node_to_node(self):
         #TODO!: update p
@@ -16,15 +18,28 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
     def create_init_pheromone_matrix(self):
         return np.ones(shape=(self.number_of_cities, self.number_of_cities))
 
-    def create_inverse_distance_matrix(self):
-        print('inverse distance matrix')
+    def update_individual(self, individual):
+        individual.vector = individual.vector[individual.trajectory] 
 
+
+    def generate_population(self, cities):
+        return np.array([self.generate_individual(cities) for _ in range(self.number_of_cities)])
+
+    def generate_individual(self, cities):
+        individual = np.arange(0, len(cities))
+        del_index = np.delete(individual, [self.start_index])
+        np.random.shuffle(del_index)
+        individual = Solution()
+        individual.vector = np.copy(cities)
+        individual.trajectory = np.insert(del_index, 0, self.start_index)
+        self.update_individual(individual)
+        return individual
 
     def update_pheromone(self, colony):
         #TODO!: update p
         print('update_pheromones')
 
-    def build_distance_matrix(self, cities):
+    def create_distance_matrix(self, cities):
         distance_matrix = np.zeros(shape=((len(cities), len(cities))))
         for i in range(distance_matrix.shape[0]):
             for j in range(distance_matrix.shape[1]):
@@ -35,25 +50,22 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
                 distance_matrix[i][j] = np.linalg.norm(start - end)
         return distance_matrix
 
-    def build_inverse_distance_matrix(self, distance_matrix):
+    def create_inverse_distance_matrix(self, distance_matrix):
         return np.reciprocal(np.copy(distance_matrix))
  
     def start(self, EucladianDistance):
         self.size_of_population = self.number_of_cities # :()
-        self.distance_matrix = self.build_distance_matrix(self.cities)
-        self.inverse_distance_matrix = self.build_inverse_distance_matrix(self.distance_matrix)
-        exit()
+        self.generate_cities()
+        self.distance_matrix = self.create_distance_matrix(self.cities)
+        self.inverse_distance_matrix = self.create_inverse_distance_matrix(self.distance_matrix)
+        self.pheromone_matrix = self.create_init_pheromone_matrix()
         colony = self.generate_population(self.cities)
-        print(self.create_init_pheromone_matrix())
-        self.create_inverse_distance_matrix()
-        
-        print(self.cities)
 
-        exit()
         while self.index_of_generation < self.max_generation:
-            for k, ant in enumerate(pop):
-                print(k)
+            for k, ant in enumerate(colony):
+                print(ant.vector, ant.trajectory)
 
+            exit()
             print(self.index_of_generation)
             self.update_pheromone(colony)
             self.index_of_generation += 1
