@@ -107,12 +107,7 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
             if not vis_matrix.any():
                 break
         ant.trajectory = np.array(trajectory)
-        print(trajectory)
         self.update_individual(ant)
-
-
-
-
 
     def start(self, EucladianDistance):
         self.size_of_population = self.number_of_cities # :()
@@ -131,3 +126,8 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
             if self.graph:
                 self.graph.draw(self.best_solution)
             self.index_of_generation += 1
+
+        if self.graph:
+            self.graph.draw(self.best_solution, 'g')
+
+        self.close_plot()

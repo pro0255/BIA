@@ -151,20 +151,20 @@ class TSPGraph(AbstractGraph):
                 self.plot.plot(x, y, "go-", markersize=15)
             self.plot.text(x, y, s=index, fontsize=30)
 
-    def draw_connections(self, cities):
+    def draw_connections(self, cities, c):
         length = len(cities)
         for i in range(length):
             current = cities[i]
             next = cities[(i + 1) % length]
             self.plot.plot(
-                [current[0], next[0]], [current[1], next[1]], "r", linewidth=2
+                [current[0], next[0]], [current[1], next[1]], c, linewidth=2
             )
 
-    def draw(self, best_solution):
+    def draw(self, best_solution, c='r'):
         self.plot.clear()
         plt.title(f"Traveling salesman problem {best_solution.fitness_value}")
         cities = best_solution.vector
         self.draw_cities(cities)
-        self.draw_connections(cities)
+        self.draw_connections(cities, c)
         plt.draw()
         plt.pause(0.05)
