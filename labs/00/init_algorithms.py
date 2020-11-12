@@ -15,8 +15,11 @@ algs = {
     "GeneticAlgorithmTSP": GeneticAlgorithmTSP(),  # * cv4
     "DifferentialEvolution": DifferentialEvolutionAlgorithm(),  # * cv5
     "ParticleSwarmOptimization": ParticleSwarmOptimizationAlgorithm(),  # * cv6
-    "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm(), # * cv7 
-    "AntColonyOptimization": AntColonyOptimizationAlgorithm() # * cv8
+    "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm(),  # * cv7
+    "AntColonyOptimization": AntColonyOptimizationAlgorithm(),  # * cv8
 }
 
-algorithms_functions_blacklist = [GeneticAlgorithmTSP.__name__, AntColonyOptimizationAlgorithm.__name__]
+algorithms_functions_blacklist = [
+    GeneticAlgorithmTSP.__name__,
+    AntColonyOptimizationAlgorithm.__name__,
+]

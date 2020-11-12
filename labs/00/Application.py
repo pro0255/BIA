@@ -10,7 +10,7 @@ import WINDOW_VALUES as WV
 import time
 from init_algorithms import algorithms_functions_blacklist
 
-#TODO!: TERRIBLE REFACTOR! -> TYPO
+# TODO!: TERRIBLE REFACTOR! -> TYPO
 # algorithms_functions_blacklist = ["GeneticAlgorithmTSP", "AntColonyOptimizationAlgorithm"]
 merged_args = {
     **converters.blind_args,
@@ -20,7 +20,7 @@ merged_args = {
     **converters.differential_evolution_alg,
     **converters.particle_swarm_optimization,
     **converters.self_organizing_migration,
-    **converters.ant_colony_optimization
+    **converters.ant_colony_optimization,
 }
 
 
@@ -240,7 +240,6 @@ class Application:
             self.run_action()
         else:
             self.root.mainloop()
-
 
     def stop(self):
         """Stops GUI"""

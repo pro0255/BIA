@@ -11,7 +11,7 @@ class Solution:
         self.key = Solution.key
         self.personal_best = None  # PSO solution param
         self.velocity_vector = np.zeros(dimension)  # PSO solution param
-        self.trajectory = np.zeros(dimension) #TSP solution param
+        self.trajectory = np.zeros(dimension)  # TSP solution param
         Solution.key += 1
 
     key = 0

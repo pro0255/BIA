@@ -100,7 +100,6 @@ particle_swarm_optimization = {
 }
 
 
-
 self_organizing_migration = {
     "path_length": {
         "text": "Path Length",
@@ -126,7 +125,7 @@ self_organizing_migration = {
 
 
 ant_colony_optimization = {
-   "importance_pheromone": {
+    "importance_pheromone": {
         "text": "Pheromone importance alpha",
         "convert": lambda a: float(a.get().strip()),
         "initial_value": 1,

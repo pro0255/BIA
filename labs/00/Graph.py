@@ -61,7 +61,6 @@ class Graph(AbstractGraph):
         self.heat_map.pcolormesh(X, Y, Z, shading="nearest")
         self.save = None
 
-
     def create_arrays(self, population):
         X = []
         Y = []
@@ -81,7 +80,7 @@ class Graph(AbstractGraph):
             marker="o",
         )
 
-    def draw_best_solution(self, args, plot, c='red'):
+    def draw_best_solution(self, args, plot, c="red"):
         return plot.scatter(
             *args,
             s=40,
@@ -89,10 +88,10 @@ class Graph(AbstractGraph):
             c=c,
             marker="o",
         )
-        
+
     def draw_extra_population(self, best, population):
-        b_c = 'yellow'
-        p_c = 'green'
+        b_c = "yellow"
+        p_c = "green"
         plots = self.common_draw(best, population, b_c, p_c)
         self.common_lib_middeware_draw()
         self.common_remove(plots)
@@ -107,15 +106,20 @@ class Graph(AbstractGraph):
                 if plot:
                     plot.remove()
 
-    def common_draw(self, best_solution, population, b_c='red', p_c='blue'):
-        best_3d = self.draw_best_solution((
-            best_solution.vector[0],
-            best_solution.vector[1],
-            best_solution.fitness_value), self.plot, b_c)
+    def common_draw(self, best_solution, population, b_c="red", p_c="blue"):
+        best_3d = self.draw_best_solution(
+            (
+                best_solution.vector[0],
+                best_solution.vector[1],
+                best_solution.fitness_value,
+            ),
+            self.plot,
+            b_c,
+        )
         best_heatmap = self.draw_best_solution(
-            (best_solution.vector[0],
-            best_solution.vector[1]), self.heat_map, b_c)
-        
+            (best_solution.vector[0], best_solution.vector[1]), self.heat_map, b_c
+        )
+
         pop_3d = None
         pop_heatmap = None
 
@@ -124,9 +128,8 @@ class Graph(AbstractGraph):
             pop_3d = self.scatter_population(values, self.plot, p_c)
             X, Y, Z = values
             pop_heatmap = self.scatter_population((X, Y), self.heat_map, p_c)
-            
-        return (best_3d, best_heatmap, pop_3d, pop_heatmap)
 
+        return (best_3d, best_heatmap, pop_3d, pop_heatmap)
 
     def draw(self, best_solution, population=None):
         self.common_remove(self.save)
@@ -134,6 +137,7 @@ class Graph(AbstractGraph):
         self.save = plots[0:2]
         self.common_lib_middeware_draw()
         self.common_remove(plots[2:])
+
 
 class TSPGraph(AbstractGraph):
     def __init__(self, low, high):
@@ -156,11 +160,9 @@ class TSPGraph(AbstractGraph):
         for i in range(length):
             current = cities[i]
             next = cities[(i + 1) % length]
-            self.plot.plot(
-                [current[0], next[0]], [current[1], next[1]], c, linewidth=2
-            )
+            self.plot.plot([current[0], next[0]], [current[1], next[1]], c, linewidth=2)
 
-    def draw(self, best_solution, c='r'):
+    def draw(self, best_solution, c="r"):
         self.plot.clear()
         plt.title(f"Traveling salesman problem {best_solution.fitness_value}")
         cities = best_solution.vector
