@@ -26,13 +26,13 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         return np.array([self.generate_individual(cities) for _ in range(self.number_of_cities)])
 
     def generate_individual(self, cities):
-        individual = np.arange(0, len(cities))
-        del_index = np.delete(individual, [self.start_index])
-        np.random.shuffle(del_index)
+        # individual = np.arange(0, len(cities))
+        # del_index = np.delete(individual, [self.start_index])
+        # np.random.shuffle(del_index)
         individual = Solution()
         individual.vector = np.copy(cities)
-        individual.trajectory = np.insert(del_index, 0, self.start_index)
-        self.update_individual(individual)
+        # individual.trajectory = np.insert(del_index, 0, self.start_index)
+        # self.update_individual(individual)
         return individual
 
 
@@ -60,7 +60,6 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         perc = (1 - self.vaporization)
         dic_v = dic.get(e, 0)
         self.pheromone_matrix[i][j] = perc*self.pheromone_matrix[i][j] + dic_v if not dic_v else sum(dic_v)
-        # self.pheromone_matrix[i][j] = (1 - self.vaporization) + sum(dic[(i,j)])
 
     def update_pheromone(self, colony):
         dic = self.generate_edge_dic(colony)
@@ -113,6 +112,7 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
             if not vis_matrix.any():
                 break
         ant.trajectory = np.array(trajectory)
+        print(trajectory)
         self.update_individual(ant)
 
 
@@ -132,17 +132,7 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
                 self.ant_move(ant)
             self.evalute_population(colony, EucladianDistance)
             self.update_pheromone(colony)
+            self.best_solution = self.select_best_solution(colony)
+            if self.graph:
+                self.graph.draw(self.best_solution)
             self.index_of_generation += 1
-
-
-
-
-
-
-"""
-    Popis:
-        Mravenční kolonie:
-            Tento algoritmus vychází z mravenců.
-            
-
-"""
