@@ -4,9 +4,10 @@ import numpy as np
 from solution.Solution import Solution
 
 class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
-    def __init__(self, importance_pheromone=1, importance_distance=1, **kwds):
+    def __init__(self, importance_pheromone=1, importance_distance=1, vaporization=.5, **kwds):
         self.importance_pheromone = importance_pheromone
         self.importance_distance = importance_distance
+        self.vaporization = vaporization
         super().__init__(**kwds)
         delattr(self, "size_of_population") # ants = number of cities
         self.start_index = 0
@@ -54,11 +55,18 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         return dic
 
 
+    def make_vaporization(self, e, dic):
+        i, j = e
+        perc = (1 - self.vaporization)
+        dic_v = dic.get(e, 0)
+        self.pheromone_matrix[i][j] = perc*self.pheromone_matrix[i][j] + dic_v if not dic_v else sum(dic_v)
+        # self.pheromone_matrix[i][j] = (1 - self.vaporization) + sum(dic[(i,j)])
+
     def update_pheromone(self, colony):
-
-
-        #TODO!: update p
-        print('update_pheromones')
+        dic = self.generate_edge_dic(colony)
+        for i in range(self.pheromone_matrix.shape[0]):
+            for j in range(self.pheromone_matrix.shape[1]):
+                self.make_vaporization((i,j), dic)
 
     def create_distance_matrix(self, cities):
         distance_matrix = np.zeros(shape=((len(cities), len(cities))))

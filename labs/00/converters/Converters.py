@@ -136,6 +136,9 @@ ant_colony_optimization = {
         "convert": lambda a: float(a.get().strip()),
         "initial_value": 1,
     },
-
-
+    "vaporization": {
+        "text": "Vaporization",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.5,
+    },
 }
