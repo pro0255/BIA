@@ -49,7 +49,7 @@ traveling_salesman_problem_GA = {
     "number_of_cities": {
         "text": "Number of cities",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 20,
+        "initial_value": 5,
     },
     "low": {
         "text": "Low border",
@@ -122,4 +122,20 @@ self_organizing_migration = {
         "convert": lambda a: float(a.get().strip()),
         "initial_value": 0.001,
     },
+}
+
+
+ant_colony_optimization = {
+   "importance_pheromone": {
+        "text": "Pheromone importance alpha",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 1,
+    },
+    "importance_distance": {
+        "text": "Distance importance beta",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 1,
+    },
+
+
 }
