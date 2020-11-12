@@ -56,19 +56,19 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         return r
  
 
-    def calc_possibility(self, s, vis_matrix):
+    def calc_cumulative_possibility(self, s, vis_matrix):
         pheromone_row = np.power(self.pheromone_matrix[s], self.importance_pheromone)
         distance_row = np.power(vis_matrix[s], self.importance_distance)
         possibility = pheromone_row * distance_row
-        sum 
-
-        print(possibility)
-        print(pheromone_row)
-        print(distance_row)
+        suma = np.sum(possibility)
+        probabilities = possibility / suma
+        cumulative = [sum(probabilities[0:i+1]) for i in range(len(probabilities))]
+        print('p', probabilities)
+        print('c', cumulative)
         exit()
 
     def ant_step(self, s, vis_matrix):
-        self.calc_possibility(s, vis_matrix)
+        self.calc_cumulative_possibility(s, vis_matrix)
 
     def ant_move(self, ant):
         vis_matrix = np.copy(self.inverse_distance_matrix)
