@@ -22,6 +22,8 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         individual.vector = individual.vector[individual.trajectory] 
 
 
+
+
     def generate_population(self, cities):
         return np.array([self.generate_individual(cities) for _ in range(self.number_of_cities)])
 
@@ -53,6 +55,26 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
     def create_inverse_distance_matrix(self, distance_matrix):
         return np.reciprocal(np.copy(distance_matrix))
  
+
+    def calc_possibility(self, s, vis_matrix):
+        pheromone_row = np.power(self.pheromone_matrix[s], self.importance_pheromone)
+        distance_row = np.power(vis_matrix[s], self.importance_distance)
+        possibility = pheromone_row * distance_row
+
+        print(possibility)
+        print(pheromone_row)
+        print(distance_row)
+        exit()
+
+    def ant_step(self, s, vis_matrix):
+        self.calc_possibility(s, vis_matrix)
+
+    def ant_move(self, ant):
+        vis_matrix = np.copy(self.inverse_distance_matrix)
+        for v in ant.trajectory:
+            self.ant_step(v, vis_matrix)
+
+
     def start(self, EucladianDistance):
         self.size_of_population = self.number_of_cities # :()
         self.generate_cities()
@@ -63,9 +85,8 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
 
         while self.index_of_generation < self.max_generation:
             for k, ant in enumerate(colony):
-                print(ant.vector, ant.trajectory)
-
-            exit()
+                self.ant_move(ant)
+                exit()
             print(self.index_of_generation)
             self.update_pheromone(colony)
             self.index_of_generation += 1

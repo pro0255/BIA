@@ -234,9 +234,13 @@ class Application:
 
         return algorithm
 
-    def start(self):
+    def start(self, force=True):
         """Starts GUI"""
-        self.root.mainloop()
+        if force:
+            self.run_action()
+        else:
+            self.root.mainloop()
+
 
     def stop(self):
         """Stops GUI"""
