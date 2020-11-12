@@ -19,10 +19,7 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         return np.ones(shape=(self.number_of_cities, self.number_of_cities))
 
     def update_individual(self, individual):
-        individual.vector = individual.vector[individual.trajectory] 
-
-
-
+        individual.vector = individual.vector[individual.trajectory]
 
     def generate_population(self, cities):
         return np.array([self.generate_individual(cities) for _ in range(self.number_of_cities)])
@@ -53,13 +50,17 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         return distance_matrix
 
     def create_inverse_distance_matrix(self, distance_matrix):
-        return np.reciprocal(np.copy(distance_matrix))
+        r = np.reciprocal(np.copy(distance_matrix))
+        for i in range(r.shape[0]):
+            r[i][i] = 0
+        return r
  
 
     def calc_possibility(self, s, vis_matrix):
         pheromone_row = np.power(self.pheromone_matrix[s], self.importance_pheromone)
         distance_row = np.power(vis_matrix[s], self.importance_distance)
         possibility = pheromone_row * distance_row
+        sum 
 
         print(possibility)
         print(pheromone_row)
