@@ -12,7 +12,7 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         self.vaporization = vaporization
         super().__init__(**kwds)
         delattr(self, "size_of_population")  # ants = number of cities
-        self.start_index = 0
+        self.start_index = None #if index then can every ant start from same city
 
     def create_init_pheromone_matrix(self):
         """Generates init pheromone matrix with values populated as 1.
@@ -48,6 +48,10 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         """
         individual = Solution()
         individual.vector = np.copy(cities)
+        if self.start_index:
+            individual.trajectory = [self.start_index]
+        else:
+            individual.trajectory = [np.random.randint(0, len(cities))]
         return individual
 
     def create_value(self, fV, Q=1):
@@ -58,10 +62,8 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         Returns:
             [flaot]: Value which represents 1/(ant distance)
         """
-        if fV != 0:
-            return Q / fV
-        else:
-            return fV
+        
+        return Q / fV
 
     def generate_edge_dic(self, colony):
         """Helper function to generate dictionary.
@@ -93,8 +95,10 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         i, j = e
         perc = 1 - self.vaporization
         dic_v = dic.get(e, 0)
+        sum_update_value = dic_v if not dic_v else sum(dic_v)
+
         self.pheromone_matrix[i][j] = (
-            perc * self.pheromone_matrix[i][j] + dic_v if not dic_v else sum(dic_v)
+            perc * self.pheromone_matrix[i][j] + sum_update_value 
         )
 
     def update_pheromone(self, colony):
@@ -165,17 +169,17 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         p_cum = self.calc_cumulative_possibility(s, vis_matrix)
         r = np.random.uniform()
         for i, p in enumerate(p_cum):
-            if r < p:
+            if r < p: 
                 return i
 
-    def ant_move(self, ant):
+    def ant_move(self, ant, start_index):
         """Method represents logic for ant move. Make step, update visibility matrix with column 0 until zero matrix.
         Args:
             ant (Solution): Current individual.
         """
         vis_matrix = np.copy(self.inverse_distance_matrix)
-        trajectory = [self.start_index]
-        vis_matrix[:, self.start_index] = 0
+        trajectory = [start_index]
+        vis_matrix[:, start_index] = 0
         for v in trajectory:
             index = self.ant_step(v, vis_matrix)
             trajectory.append(index)
@@ -195,17 +199,20 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         self.size_of_population = self.number_of_cities  # :()
         self.generate_cities()
         self.distance_matrix = self.create_distance_matrix(self.cities)
+
         self.inverse_distance_matrix = self.create_inverse_distance_matrix(
             self.distance_matrix
         )
+        
         self.pheromone_matrix = self.create_init_pheromone_matrix()
         colony = self.generate_population(self.cities)
 
         while self.index_of_generation < self.max_generation:
             for k, ant in enumerate(colony):
-                self.ant_move(ant)
+                self.ant_move(ant, ant.trajectory[0])
             self.evalute_population(colony, EucladianDistance)
             self.update_pheromone(colony)
+
             self.best_solution = self.select_best_solution(colony)
             if self.graph:
                 self.graph.draw(self.best_solution)
@@ -214,4 +221,4 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         if self.graph:
             self.graph.draw(self.best_solution, "g")
 
-        self.close_plot()
+        # self.close_plot()

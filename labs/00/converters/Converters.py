@@ -10,12 +10,12 @@ blind_args = {
     "size_of_population": {
         "text": "Size of population",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 10,
+        "initial_value": 5,
     },
     "max_generation": {
         "text": "Max generation",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 25,
+        "initial_value": 100,
     },
 }
 
@@ -49,7 +49,7 @@ traveling_salesman_problem_GA = {
     "number_of_cities": {
         "text": "Number of cities",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 5,
+        "initial_value": 10,
     },
     "low": {
         "text": "Low border",
@@ -133,7 +133,7 @@ ant_colony_optimization = {
     "importance_distance": {
         "text": "Distance importance beta",
         "convert": lambda a: float(a.get().strip()),
-        "initial_value": 1,
+        "initial_value": 2,
     },
     "vaporization": {
         "text": "Vaporization",
