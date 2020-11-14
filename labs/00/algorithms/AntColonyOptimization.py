@@ -13,6 +13,7 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         super().__init__(**kwds)
         delattr(self, "size_of_population")  # ants = number of cities
         self.start_index = None #if index then can every ant start from same city
+        self.random = False #if true then start index random else unique
 
     def create_init_pheromone_matrix(self):
         """Generates init pheromone matrix with values populated as 1.
@@ -36,22 +37,24 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
             [Solution[]]: Generated population.
         """
         return np.array(
-            [self.generate_individual(cities) for _ in range(self.number_of_cities)]
+            [self.generate_individual(cities, i) for i in range(self.number_of_cities)]
         )
 
-    def generate_individual(self, cities):
+    def generate_individual(self, cities, i):
         """Generate individual. Where is actually only set cities as vector. During algorithm are these cities ordered by trajectory. Individual during alogrithn works with property trajectory. It is array of indicies and it is easy to make fast look up to cities.
         Args:
             cities (float[][]): Points in space.
         Returns:
             [Solution]: Generated solution.
         """
+        
+
         individual = Solution()
         individual.vector = np.copy(cities)
         if self.start_index:
             individual.trajectory = [self.start_index]
         else:
-            individual.trajectory = [np.random.randint(0, len(cities))]
+            individual.trajectory = [i if self.random else np.random.randint(0, len(cities))]
         return individual
 
     def create_value(self, fV, Q=1):
