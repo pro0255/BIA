@@ -169,4 +169,4 @@ class TSPGraph(AbstractGraph):
         self.draw_cities(cities)
         self.draw_connections(cities, c)
         plt.draw()
-        plt.pause(0.05)
+        plt.pause(0.02)

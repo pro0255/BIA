@@ -199,7 +199,11 @@ class Application:
         """Actions binded to click on start algorithm with specified args"""
         if type(self.selected_algorithm).__name__ in algorithms_functions_blacklist:
             ed = EucladianDistance()
-            graph = TSPGraph(0, 200)
+            converter1 = merged_args["low"]["convert"]
+            low = converter1(self.algorithms_args["low"])
+            converter2 = merged_args["high"]["convert"]
+            high = converter2(self.algorithms_args["high"])
+            graph = TSPGraph(low, high)
             algorithm = self.build_algorithm(graph)
             self.start_action_production(algorithm, ed)
         else:
