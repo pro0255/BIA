@@ -60,6 +60,8 @@ class Graph(AbstractGraph):
         self.heat_map = self.fig.add_subplot(122, title="Heat Map")
         self.heat_map.pcolormesh(X, Y, Z, shading="nearest")
         self.save = None
+        self.delayed_remove = {}
+        self.path = []
 
     def create_arrays(self, population):
         X = []
@@ -89,16 +91,38 @@ class Graph(AbstractGraph):
             marker="o",
         )
 
-    def draw_extra_population(self, best, population):
-        b_c = "yellow"
+    def draw_with_vector(self, solution, old_solution, target, memorize_path=False, b_c = "yellow"):
+        move =  solution.vector - old_solution.vector
+        self.path.append(self.heat_map.arrow(x=old_solution.vector[0], y=old_solution.vector[1], dx=move[0], dy=move[1], head_width=0.05, color=b_c))
+        plots = self.common_draw(solution, None, b_c)
+        plots_target = self.common_draw(target, None, "green")
+        self.common_lib_middeware_draw()
+        if not memorize_path:
+            self.path[0].remove()
+        self.common_remove(plots)
+        self.common_remove(plots_target)
+
+
+    def refresh_path(self):
+        for arrow in self.path:
+            arrow.remove()
+        self.path = []
+
+
+    def draw_extra_population(self, best, population=None, b_c="yellow", delayed_remove=None):
+        if delayed_remove is not None and delayed_remove in self.delayed_remove:
+            self.common_remove(self.delayed_remove[delayed_remove])
         p_c = "green"
         plots = self.common_draw(best, population, b_c, p_c)
         self.common_lib_middeware_draw()
-        self.common_remove(plots)
+        if delayed_remove is None:
+            self.common_remove(plots)
+        else:
+            self.delayed_remove[delayed_remove] = plots
 
     def common_lib_middeware_draw(self):
         plt.draw()
-        plt.pause(0.2)
+        plt.pause(0.002)
 
     def common_remove(self, plots):
         if plots:
@@ -134,9 +158,9 @@ class Graph(AbstractGraph):
     def draw(self, best_solution, population=None):
         self.common_remove(self.save)
         plots = self.common_draw(best_solution, population)
-        self.save = plots[0:2]
+        self.save = plots
         self.common_lib_middeware_draw()
-        self.common_remove(plots[2:])
+        # self.common_remove(plots[2:])
 
 
 class TSPGraph(AbstractGraph):
@@ -169,4 +193,4 @@ class TSPGraph(AbstractGraph):
         self.draw_cities(cities)
         self.draw_connections(cities, c)
         plt.draw()
-        plt.pause(0.02)
+        plt.pause(0.002)

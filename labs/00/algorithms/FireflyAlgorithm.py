@@ -63,21 +63,27 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         fireflies = self.generate_population(Function)
         self.dimension = fireflies[0].dimension
         self.evalute_population(fireflies, Function)
-        self.print_population(fireflies)
-        self.print_population_fitness(fireflies)
-
 
         while self.index_of_generation < self.max_generation:
             self.best_solution = self.select_best_solution(fireflies)
-            if self.graph:
-                self.graph.draw(self.best_solution, fireflies)
             for i in range(self.size_of_population): # projde vsechny a pak vzhledem ke vsem se pohybuje
+                fireflyI = fireflies[i]
+                savedfireflyI = copy.deepcopy(fireflyI)
+                if self.graph:
+                    self.graph.refresh_path()
+                    self.graph.draw_extra_population(savedfireflyI, None, "black", "start_position")
+
                 for j in range(self.size_of_population): # posouva i vzhledem ke vsem
-                    fireflyI = fireflies[i]
+                    if self.graph:
+                        self.graph.draw(self.best_solution, fireflies)
                     fireflyJ = fireflies[j]
                     distance = np.linalg.norm(fireflyI.vector-fireflyJ.vector)
+
                     if self.calculate_light_intensity(fireflyI, distance) > self.calculate_light_intensity(fireflyJ, distance):
-                        self.calculate_new_position(fireflyI, fireflyJ, distance, Function)   
+                        beforeMoveSolution = copy.deepcopy(fireflyI)
+                        self.calculate_new_position(fireflyI, fireflyJ, distance, Function)
+                        if self.graph:
+                            self.graph.draw_with_vector(fireflyI, beforeMoveSolution, fireflyJ, True)
                         #Move firefly i towards j in all d dimensions
                     self.evaluate(fireflyI, Function)
         self.close_plot()
