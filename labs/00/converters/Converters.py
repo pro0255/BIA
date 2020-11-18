@@ -10,7 +10,7 @@ blind_args = {
     "size_of_population": {
         "text": "Size of population",
         "convert": lambda a: int(a.get().strip()),
-        "initial_value": 5,
+        "initial_value": 10,
     },
     "max_generation": {
         "text": "Max generation",
@@ -140,4 +140,24 @@ ant_colony_optimization = {
         "convert": lambda a: float(a.get().strip()),
         "initial_value": 0.5,
     },
+}
+
+
+
+firefly = {
+    "absorption_coefficient": {
+        "text": "Absorption coefficient",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 1,
+    },
+    "attractivness_coefficient": {
+        "text": "Attractivness coefficient",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 1,
+    },
+    "alpha": {
+        "text": "Alpha",
+        "convert": lambda a: float(a.get().strip()),
+        "initial_value": 0.3,
+    }
 }
