@@ -3,6 +3,7 @@ import time
 import matplotlib.pyplot as plt
 import inspect
 import random
+import pandas as pd
 
 
 class AbstractAlgorithm:
@@ -109,6 +110,14 @@ class AbstractAlgorithm:
     def select_random_individual(self, population, actual_individual):
         selected = random.choice(population)
         return selected
+
+
+    def print_population(self, population):
+        vectors = [individual.vector for individual in population]
+        print(pd.DataFrame(vectors))
+
+
+
 
     def start(self):
         self.index_of_generation = 0
