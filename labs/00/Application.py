@@ -21,7 +21,7 @@ merged_args = {
     **converters.particle_swarm_optimization,
     **converters.self_organizing_migration,
     **converters.ant_colony_optimization,
-    **converters.firefly
+    **converters.firefly,
 }
 
 

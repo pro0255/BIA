@@ -11,6 +11,7 @@ Graphs created for specific tasks [TSP{2d vizualization}, Other{3d vizualization
 """
 GLOBAL_PAUSE_TIME = 0.02
 
+
 class AbstractGraph:
     def __init__(self):
         self.fig = plt.figure(
@@ -91,9 +92,20 @@ class Graph(AbstractGraph):
             marker="o",
         )
 
-    def draw_with_vector(self, solution, old_solution, target=None, memorize_path=False, b_c = "yellow"):
-        move =  solution.vector - old_solution.vector
-        self.path.append(self.heat_map.arrow(x=old_solution.vector[0], y=old_solution.vector[1], dx=move[0], dy=move[1], head_width=0.05, color=b_c))
+    def draw_with_vector(
+        self, solution, old_solution, target=None, memorize_path=False, b_c="yellow"
+    ):
+        move = solution.vector - old_solution.vector
+        self.path.append(
+            self.heat_map.arrow(
+                x=old_solution.vector[0],
+                y=old_solution.vector[1],
+                dx=move[0],
+                dy=move[1],
+                head_width=0.05,
+                color=b_c,
+            )
+        )
         plots = self.common_draw(solution, None, b_c)
         if target is not None:
             plots_target = self.common_draw(target, None, "green")
@@ -104,7 +116,6 @@ class Graph(AbstractGraph):
         if target is not None:
             self.common_remove(plots_target)
 
-
     def refresh_path(self):
         for arrow in self.path:
             try:
@@ -113,8 +124,9 @@ class Graph(AbstractGraph):
                 pass
         self.path = []
 
-
-    def draw_extra_population(self, best, population=None, b_c="yellow", delayed_remove=None):
+    def draw_extra_population(
+        self, best, population=None, b_c="yellow", delayed_remove=None
+    ):
         if delayed_remove is not None and delayed_remove in self.delayed_remove:
             self.common_remove(self.delayed_remove[delayed_remove])
         p_c = "green"
@@ -184,7 +196,7 @@ class TSPGraph(AbstractGraph):
                 self.plot.plot(x, y, "go-", markersize=15)
             text = ""
             if trajectory is not None:
-                text =  trajectory[index]
+                text = trajectory[index]
             else:
                 text = index
             self.plot.text(x, y, s=text, fontsize=30)

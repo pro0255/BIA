@@ -143,7 +143,6 @@ ant_colony_optimization = {
 }
 
 
-
 firefly = {
     "absorption_coefficient": {
         "text": "Absorption coefficient",
@@ -159,5 +158,5 @@ firefly = {
         "text": "Alpha",
         "convert": lambda a: float(a.get().strip()),
         "initial_value": 0.3,
-    }
+    },
 }

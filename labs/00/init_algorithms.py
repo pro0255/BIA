@@ -17,7 +17,7 @@ algs = {
     "ParticleSwarmOptimization": ParticleSwarmOptimizationAlgorithm(),  # * cv6
     "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm(),  # * cv7
     "AntColonyOptimization": AntColonyOptimizationAlgorithm(),  # * cv8
-    "FireflyAlgorithm": FireflyAlgorithm() # * cv9
+    "FireflyAlgorithm": FireflyAlgorithm(),  # * cv9
 }
 
 algorithms_functions_blacklist = [
