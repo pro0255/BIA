@@ -26,14 +26,21 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         ]
 
     def generate_random_distribution_vector(self):
+        """ Generates random movement according to gaussian distribution. (Hill Climb)
+        Returns:
+            [float[]]: Vector with filled values according to gaussian distribution with u0,sigma1.
+        """
         return np.random.normal(0,1,size=self.dimension)
 
-    def generate_random_movement(self): 
+    def generate_random_movement(self):
+        """ Generates part of calculation for new position of firefly.
+        Returns:
+            [float[]]: Vector filled with gaussian distribution numbers multiplied by constant.
+        """
         return self.alpha*self.generate_random_distribution_vector()
 
     def generate_individual(self, Function):
-        """ TODO: 
-            Function (Function): One of the cost function. (Sphere, Ackley..)
+        """ Function (Function): One of the cost function. (Sphere, Ackley..)
         Returns:
             [Solution]: Returns individual from population. In PSO it is called particle.
         """
@@ -41,13 +48,34 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         return solution
 
     def calculate_light_intensity(self, individual, distance=1):
+        """ Calculates light intenstity according to formula.
+        Args:
+            individual (Solution): Current individual (firefly).
+            distance (int, optional): Eucladian. Defaults to 1.
+        Returns:
+            [float]: Light intensity of firefly.
+        """
         new_light_intensity = individual.fitness_value * math.exp(-self.absorption_coefficient*distance)
         return new_light_intensity
 
     def calculate_attractivness(self, a, b, distance):
+        """ Calculates attractivnes for firefly a and b. Uses formula without absoption.
+        Args:
+            a (Solution): Firefly 1.
+            b (Solution):  Firefly 2.
+            distance (float): Distance between f1 and f2, calculated according to ed.
+        Returns:
+            [float]: Attractivnes.
+        """
         return self.attractivness_coefficient/(1+distance)
 
     def calculate_new_random_position(self, individual, Function):
+        """ Calcualted new position for best firefly in pop.
+            If new position is not better, then position of best firefly is not changed.
+        Args:
+            individual (Solution): Current best value.
+            Function (Function): One of the cost function. (Sphere, Ackley..)
+        """
         new_position = individual.vector + self.generate_random_movement()
         new_position = np.clip(new_position, Function.left, Function.right)
         possible_fitness = Function.run(new_position)
@@ -57,6 +85,13 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         
 
     def calculate_new_position(self, individual, towards_individual, distance, Function):
+        """ Calculates new position for fireflies which are not best.
+        Args:
+            individual (Solution): Firefly which will be moved.
+            towards_individual (Solution): Parametr individual will be moved towards this one. 
+            distance (float): Distance between f1 and f2, calculated according to ed.
+            Function (Function): One of the cost function. (Sphere, Ackley..)
+        """
         new_position = individual.vector + self.calculate_attractivness(individual, towards_individual, distance) * (towards_individual.vector - individual.vector) + self.generate_random_movement()
         new_position = np.clip(new_position, Function.left, Function.right)
         individual.vector = new_position
