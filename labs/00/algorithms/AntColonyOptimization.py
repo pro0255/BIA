@@ -28,7 +28,7 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         Args:
             individual (Solution): Current individual to update.
         """
-        individual.vector = individual.vector[individual.trajectory]
+        individual.vector = self.cities[individual.trajectory]
 
 
     def generate_population(self, cities):
@@ -196,11 +196,9 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
     def construct_solution_according_to_pheromone_matrix(self, Function):
         sol = Solution()
         path = []
-        print(pd.DataFrame(self.pheromone_matrix))
         for row in self.pheromone_matrix:
             max_index = np.argmax(row)
             path.append(max_index)
-        print(path)
         sol.vector = copy.deepcopy(self.cities)
         sol.trajectory = np.array(path)
         sol.vector = sol.vector[sol.trajectory]
@@ -229,13 +227,13 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
             for k, ant in enumerate(colony):
                 self.ant_move(ant, ant.trajectory[0], EucladianDistance)
             self.update_pheromone(colony)
-
             self.best_solution = self.select_best_solution(colony)
             if self.graph:
-                self.graph.draw(self.construct_solution_according_to_pheromone_matrix(EucladianDistance))
+                self.graph.draw(self.best_solution, "black")
+
             self.index_of_generation += 1
 
         if self.graph:
             self.graph.draw(self.best_solution, "g")
 
-        self.close_plot()
+        # self.close_plot()

@@ -173,7 +173,8 @@ class TSPGraph(AbstractGraph):
         super().__init__()
         self.plot = self.fig.add_subplot(111, title="Traveling salesman problem")
 
-    def draw_cities(self, cities):
+    def draw_cities(self, cities, trajectory=None):
+        print(trajectory)
         for index, city in enumerate(cities):
             x = city[0]
             y = city[1]
@@ -182,7 +183,12 @@ class TSPGraph(AbstractGraph):
                 self.plot.plot(x, y, "bo", markersize=20)
             else:
                 self.plot.plot(x, y, "go-", markersize=15)
-            self.plot.text(x, y, s=index, fontsize=30)
+            text = ""
+            if trajectory is not None:
+                text =  trajectory[index]
+            else:
+                text = index
+            self.plot.text(x, y, s=text, fontsize=30)
 
     def draw_connections(self, cities, c):
         length = len(cities)
@@ -195,7 +201,7 @@ class TSPGraph(AbstractGraph):
         self.plot.clear()
         plt.title(f"Traveling salesman problem {best_solution.fitness_value}")
         cities = best_solution.vector
-        self.draw_cities(cities)
+        self.draw_cities(cities, best_solution.trajectory)
         self.draw_connections(cities, c)
         plt.draw()
         plt.pause(GLOBAL_PAUSE_TIME)
