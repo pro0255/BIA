@@ -174,7 +174,6 @@ class TSPGraph(AbstractGraph):
         self.plot = self.fig.add_subplot(111, title="Traveling salesman problem")
 
     def draw_cities(self, cities, trajectory=None):
-        print(trajectory)
         for index, city in enumerate(cities):
             x = city[0]
             y = city[1]

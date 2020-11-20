@@ -236,4 +236,4 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         if self.graph:
             self.graph.draw(self.best_solution, "g")
 
-        # self.close_plot()
+        self.close_plot()
