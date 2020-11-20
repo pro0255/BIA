@@ -47,6 +47,14 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
     def calculate_attractivness(self, a, b, distance):
         return self.attractivness_coefficient/(1+distance)
 
+    def calculate_new_random_position(self, individual, Function):
+        new_position = individual.vector + self.generate_random_movement()
+        new_position = np.clip(new_position, Function.left, Function.right)
+        possible_fitness = Function.run(new_position)
+        if individual.fitness_value > possible_fitness:
+            individual.vector = new_position
+            individual.fitness_value = possible_fitness  
+        
 
     def calculate_new_position(self, individual, towards_individual, distance, Function):
         new_position = individual.vector + self.calculate_attractivness(individual, towards_individual, distance) * (towards_individual.vector - individual.vector) + self.generate_random_movement()
@@ -63,27 +71,34 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         fireflies = self.generate_population(Function)
         self.dimension = fireflies[0].dimension
         self.evalute_population(fireflies, Function)
+        self.best_solution = self.select_best_solution(fireflies)
 
         while self.index_of_generation < self.max_generation:
-            self.best_solution = self.select_best_solution(fireflies)
-            for i in range(self.size_of_population): # projde vsechny a pak vzhledem ke vsem se pohybuje
+            for i in range(self.size_of_population):
                 fireflyI = fireflies[i]
+
+                if fireflyI.key == self.best_solution.key:
+                    beforeMoveSolution = copy.deepcopy(fireflyI)
+                    self.calculate_new_random_position(fireflyI, Function)
+                    if self.graph:
+                        self.graph.draw_with_vector(fireflyI, beforeMoveSolution, None, False)
+                        self.graph.draw(self.best_solution, fireflies)
+                    continue
+
                 savedfireflyI = copy.deepcopy(fireflyI)
                 if self.graph:
                     self.graph.refresh_path()
                     self.graph.draw_extra_population(savedfireflyI, None, "black", "start_position")
-
-                for j in range(self.size_of_population): # posouva i vzhledem ke vsem
-                    if self.graph:
-                        self.graph.draw(self.best_solution, fireflies)
+                    
+                for j in range(self.size_of_population):
                     fireflyJ = fireflies[j]
                     distance = np.linalg.norm(fireflyI.vector-fireflyJ.vector)
-
                     if self.calculate_light_intensity(fireflyI, distance) > self.calculate_light_intensity(fireflyJ, distance):
                         beforeMoveSolution = copy.deepcopy(fireflyI)
                         self.calculate_new_position(fireflyI, fireflyJ, distance, Function)
+                        self.best_solution = self.select_best_solution(fireflies)
                         if self.graph:
                             self.graph.draw_with_vector(fireflyI, beforeMoveSolution, fireflyJ, True)
-                        #Move firefly i towards j in all d dimensions
+                            self.graph.draw(self.best_solution, fireflies)
                     self.evaluate(fireflyI, Function)
         self.close_plot()

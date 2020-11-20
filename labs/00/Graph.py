@@ -9,7 +9,7 @@ Classes which take care of vizualization
 
 Graphs created for specific tasks [TSP{2d vizualization}, Other{3d vizualization}]
 """
-
+GLOBAL_PAUSE_TIME = 0.02
 
 class AbstractGraph:
     def __init__(self):
@@ -91,21 +91,26 @@ class Graph(AbstractGraph):
             marker="o",
         )
 
-    def draw_with_vector(self, solution, old_solution, target, memorize_path=False, b_c = "yellow"):
+    def draw_with_vector(self, solution, old_solution, target=None, memorize_path=False, b_c = "yellow"):
         move =  solution.vector - old_solution.vector
         self.path.append(self.heat_map.arrow(x=old_solution.vector[0], y=old_solution.vector[1], dx=move[0], dy=move[1], head_width=0.05, color=b_c))
         plots = self.common_draw(solution, None, b_c)
-        plots_target = self.common_draw(target, None, "green")
+        if target is not None:
+            plots_target = self.common_draw(target, None, "green")
         self.common_lib_middeware_draw()
         if not memorize_path:
             self.path[0].remove()
         self.common_remove(plots)
-        self.common_remove(plots_target)
+        if target is not None:
+            self.common_remove(plots_target)
 
 
     def refresh_path(self):
         for arrow in self.path:
-            arrow.remove()
+            try:
+                arrow.remove()
+            except:
+                pass
         self.path = []
 
 
@@ -122,7 +127,7 @@ class Graph(AbstractGraph):
 
     def common_lib_middeware_draw(self):
         plt.draw()
-        plt.pause(0.002)
+        plt.pause(GLOBAL_PAUSE_TIME)
 
     def common_remove(self, plots):
         if plots:
@@ -193,4 +198,4 @@ class TSPGraph(AbstractGraph):
         self.draw_cities(cities)
         self.draw_connections(cities, c)
         plt.draw()
-        plt.pause(0.002)
+        plt.pause(GLOBAL_PAUSE_TIME)

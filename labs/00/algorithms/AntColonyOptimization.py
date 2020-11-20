@@ -192,6 +192,21 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
         self.update_individual(ant)
         self.evaluate(ant, Function)
 
+
+    def construct_solution_according_to_pheromone_matrix(self, Function):
+        sol = Solution()
+        path = []
+        print(pd.DataFrame(self.pheromone_matrix))
+        for row in self.pheromone_matrix:
+            max_index = np.argmax(row)
+            path.append(max_index)
+        print(path)
+        sol.vector = copy.deepcopy(self.cities)
+        sol.trajectory = np.array(path)
+        sol.vector = sol.vector[sol.trajectory]
+        self.evaluate(sol, Function)
+        return sol
+
     def start(self, EucladianDistance):
         """Generates important variables.
             Moves colony, update trajectory for every ant, evaluates popultion, update pheromone according to evaluted fitness value of colony and draws graph with best solution.
@@ -215,14 +230,12 @@ class AntColonyOptimizationAlgorithm(GeneticAlgorithmTSP):
                 self.ant_move(ant, ant.trajectory[0], EucladianDistance)
             self.update_pheromone(colony)
 
-            # print(pd.DataFrame(self.pheromone_matrix))
-
             self.best_solution = self.select_best_solution(colony)
             if self.graph:
-                self.graph.draw(self.best_solution)
+                self.graph.draw(self.construct_solution_according_to_pheromone_matrix(EucladianDistance))
             self.index_of_generation += 1
 
         if self.graph:
             self.graph.draw(self.best_solution, "g")
 
-        # self.close_plot()
+        self.close_plot()
