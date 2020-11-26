@@ -31,11 +31,12 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
     def learning_phase(self, Function, students):
         self.evalute_population(students, Function)
         self.best_solution = self.select_best_solution(students)
-        new_position = Solution()
-        new_position.vector = self.calculate_difference(Function, students)
-        self.evaluate(new_position, Function)
-        if new_position.fitness_value < self.best_solution.fitness_value:
-            self.best_solution = new_position 
+        new_position = np.zeros(self.best_solution.dimension)
+        new_position = self.calculate_difference(Function, students)
+        new_position = np.clip(new_position, Function.left, Function.right)
+        fV = Function.run(new_position)
+        if fV < self.best_solution.fitness_value:
+            self.best_solution.vector = new_position 
 
     def get_random_number(self):
         return np.random.uniform()     
@@ -58,8 +59,10 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
             new_vector = np.zeros(student.dimension)
             if student.fitness_value < random_s.fitness_value:
                 new_vector = student.vector + self.get_random_number() * (student.vector - random_s.vector)
+                new_vector = np.clip(new_vector, Function.left, Function.right)
             else:
                 new_vector = student.vector + self.get_random_number() * (random_s.vector - student.vector)
+                new_vector = np.clip(new_vector, Function.left, Function.right)
             fV = Function.run(new_vector)
             if fV < student.fitness_value:
                 student.vector = new_vector
@@ -76,8 +79,6 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
-
-
         students = self.generate_population(Function)
         while self.index_of_generation < self.max_generation:
             self.learning_phase(Function, students)
