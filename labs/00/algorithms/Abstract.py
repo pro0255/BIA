@@ -127,7 +127,8 @@ class AbstractAlgorithm:
 
     def start(self):
         self.index_of_generation = 0
-        print(self)
+        if VERBOSE:
+            print(self)
 
     def __iter__(self):
         for attr, value in self.__dict__.items():

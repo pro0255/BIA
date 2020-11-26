@@ -5,4 +5,4 @@ from experiments.ExperimentsRunner import ExperimentsRunner
 # app.start(False)
 
 exp = ExperimentsRunner()
-exp.start_experiments()
+exp.start_experiments_for_functions()
