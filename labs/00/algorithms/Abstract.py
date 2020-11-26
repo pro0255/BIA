@@ -32,6 +32,9 @@ class AbstractAlgorithm:
             print("Closing!!")
             plt.close("all")
 
+    def print_best_solution(self):
+        print(f'{self.index_of_generation}-\t{self.best_solution.vector}')
+
     def evaluate(self, solution, Function):
         """Sets z (fitness) value according to Function
 

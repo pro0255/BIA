@@ -67,6 +67,7 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
+        self.index_of_generation = 0
         pop = self.generate_population(Function)
         self.evalute_population(pop, Function)
 
@@ -88,7 +89,7 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
 
                 if trial_solution.fitness_value <= individual.fitness_value:
                     new_population[i] = trial_solution
-
+            self.print_best_solution()
             self.index_of_generation += 1
             pop = new_population
         self.close_plot()

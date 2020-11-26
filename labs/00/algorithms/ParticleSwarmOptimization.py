@@ -5,7 +5,7 @@ from solution.Solution import Solution
 
 
 class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
-    def __init__(self, c1=0, c2=0, v_min=0, v_max=0, **kwds):
+    def __init__(self, c1=2, c2=2, v_min=-1, v_max=1, **kwds):
         """pop_size = size_of_population [number of individuals]
         M_max = max_generation [number of migration cycles]
         c_1, c_2 = new parametr, [learning constants]

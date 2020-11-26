@@ -4,7 +4,7 @@ import copy
 
 
 class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
-    def __init__(self, path_length=3, step=0.11, PRT=0.1, min_div=0.001, **kwds):
+    def __init__(self, path_length=3, step=0.11, PRT=0.1, min_div=0, **kwds):
         self.path_length = path_length
         self.step = step
         self.PRT = PRT
@@ -129,7 +129,6 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
         self.evalute_population(population, Function)
 
         while self.index_of_generation < self.max_generation:
-            print(self.index_of_generation)
             new_population = copy.deepcopy(population)
             self.best_solution = self.select_best_solution(population)
 
