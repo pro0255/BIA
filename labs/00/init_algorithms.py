@@ -7,6 +7,7 @@ from algorithms.ParticleSwarmOptimization import ParticleSwarmOptimizationAlgori
 from algorithms.SelfOrganizingMigrationAlgorithm import SelfOrganizingMigrationAlgorithm
 from algorithms.AntColonyOptimization import AntColonyOptimizationAlgorithm
 from algorithms.FireflyAlgorithm import FireflyAlgorithm
+from algorithms.TeachingLearningBasedOptimization import TeachingLearningBasedAlgorithm
 
 algs = {
     "Blind": BlindAgorithm(),  # * cv1
@@ -17,7 +18,8 @@ algs = {
     "ParticleSwarmOptimization": ParticleSwarmOptimizationAlgorithm(),  # * cv6
     "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm(),  # * cv7
     "AntColonyOptimization": AntColonyOptimizationAlgorithm(),  # * cv8
-    "FireflyAlgorithm": FireflyAlgorithm(),  # * cv9
+    "FireflyAlgorithm": FireflyAlgorithm(),  # * cv9,
+    "TeachingLearningBased": TeachingLearningBasedAlgorithm() # * cv10
 }
 
 algorithms_functions_blacklist = [
