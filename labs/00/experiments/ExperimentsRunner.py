@@ -47,7 +47,8 @@ class ExperimentsRunner():
             new_df.loc['mean'] = list(means.values())
             new_df.loc['std_dev'] = list(std_devs.values()) 
             self.results[k] = new_df
-            print(self.results[k])
+
+            
     def save_to_xls(self, name):
         self.check_save()
         file_name = f'{EXPERIMENTS_PATH}//{name}.xlsx'
