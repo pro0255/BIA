@@ -5,13 +5,13 @@ from algorithms.SelfOrganizingMigrationAlgorithm import SelfOrganizingMigrationA
 from algorithms.FireflyAlgorithm import FireflyAlgorithm
 from algorithms.TeachingLearningBasedOptimization import TeachingLearningBasedAlgorithm
 from Graph import Graph
+from experiments.DELIMITER import DELIMITER
 
 
-#TODO!: dimension check
-#TODO!: return best_solution and description
 #TODO!: save to excel#
 
  
+
 
 #DE, PSO, SOMA, FA, TLBO
 
@@ -28,7 +28,6 @@ class ExperimentsRunner():
 
     def set_properties(self, algorithms):
         # g = Graph(self.oF.left, self.oF.right, self.oF)
-
         for a in algorithms:
             a.size_of_population = self.NP
             a.max_generation = self.MAX_G
@@ -46,15 +45,28 @@ class ExperimentsRunner():
         self.set_properties(algorithms)
         return algorithms
 
-        
-
-
     def start_experiments(self):
-        print('Starting experiments')
-        
-        
+        read_me = ""
+        csv = ""
+        for i in range(self.N_O_G):
+            fV, desription = self.start_experiment()
+            if not i:
+                read_me = DELIMITER.join(desription)
+            csv += f'Experiment {i}{DELIMITER}{DELIMITER.join([str(f) for f in fV])}'
+
+    def start_experiment(self):
+        description_algorithms = []
+        fV_algoritms = []
         for algorithm in self.build():
-            output = algorithm.start(self.oF)
-            print(output)
+            fV, description = algorithm.start(self.oF)
+            description_algorithms.append(description)
+            fV_algoritms.append(fV)
+        return (fV_algoritms, description_algorithms)
+
+
+    def save_experiment(self, path):
+        pass
+        
+
 
 
