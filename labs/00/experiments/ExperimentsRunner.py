@@ -5,6 +5,7 @@ import os
 import time
 import pandas as pd
 import numpy as np
+from STAR import get_my_info
 
 SAVE = True
 
@@ -78,16 +79,16 @@ class ExperimentsRunner():
             output_dic = self.start_experiments(f)
             self.create_experiment_dataframe(output_dic, type(f).__name__)
         print('Thanks for your time experiments finished :-].')
+        print(get_my_info())
 
         end = time.time()
         how_many = str(end - start)
 
-        self.save_read_me()
         self.make_df_calculations()
-        exit()
         if SAVE:
-            self.save_to_file(f"Time to calculate {how_many}", "INFO", ".txt")
+            self.save_to_file(f"Run whole experiments took {how_many} seconds.\nThanks for your time again.{get_my_info()}", "INFO", ".txt")
             self.save_to_xls("experiments")
+            self.save_read_me()
             
 
     def start_experiments(self, function):
