@@ -37,11 +37,11 @@ class ExperimentsRunner():
 
     def build(self):
         de = DifferentialEvolutionAlgorithm() #it is ok
-        # pso = ParticleSwarmOptimizationAlgorithm() #it is ok
+        pso = ParticleSwarmOptimizationAlgorithm() #it is ok
         # fa = FireflyAlgorithm() #it is ok
         # soma = SelfOrganizingMigrationAlgorithm() #it is ok
         # tlbo = TeachingLearningBasedAlgorithm()
-        tmp = de
+        tmp = pso
 
         algorithms = [tmp]
         self.set_properties(algorithms)

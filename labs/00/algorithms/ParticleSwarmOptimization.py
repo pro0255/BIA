@@ -57,7 +57,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         Returns:
             [Solution]: Returns individual from population. In PSO it is called particle.
         """
-        solution = self.generate_random_solution(Function.left, Function.right)
+        solution = self.generate_random_solution(Function.left, Function.right, self.D)
         solution.personal_best = copy.deepcopy(solution)
         return solution
 
@@ -166,6 +166,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
                 self.evaluate(particle, Function)
                 self.check_state_of_particle(particle)
 
+            self.print_best_solution()
             self.index_of_generation += 1
 
         self.close_plot()
