@@ -27,7 +27,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         Returns:
             [Solution]: Generated Solution class, where vector of parameters is populated with random uniform values in bounderies.
         """
-        return self.generate_random_solution(Function.left, Function.right)
+        return self.generate_random_solution(Function.left, Function.right, self.D)
 
     def learning_phase(self, Function, students):
         """Represents learning phase in algorithm, where teachers ala best solution moves mean forward.
@@ -124,3 +124,4 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
             if self.graph:
                 self.graph.draw(self.best_solution, students)
             self.index_of_generation += 1
+            self.print_best_solution()

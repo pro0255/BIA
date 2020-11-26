@@ -45,7 +45,7 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         Returns:
             [Solution]: Returns individual from population. In PSO it is called particle.
         """
-        solution = self.generate_random_solution(Function.left, Function.right)
+        solution = self.generate_random_solution(Function.left, Function.right, self.D)
         return solution
 
     def calculate_light_intensity(self, individual, distance=1):
@@ -98,8 +98,7 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         """
         new_position = (
             individual.vector
-            + self.calculate_attractivness(individual, towards_individual, distance)
-            * (towards_individual.vector - individual.vector)
+            + self.calculate_attractivness(individual, towards_individual, distance) * (towards_individual.vector - individual.vector)
             + self.generate_random_movement()
         )
         new_position = np.clip(new_position, Function.left, Function.right)
@@ -113,7 +112,7 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         super().start()
         self.index_of_generation = 0
         fireflies = self.generate_population(Function)
-        self.dimension = fireflies[0].dimension
+        self.dimension = self.D
         self.evalute_population(fireflies, Function)
         self.best_solution = self.select_best_solution(fireflies)
 
@@ -155,4 +154,6 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
                             )
                             self.graph.draw(self.best_solution, fireflies)
                     self.evaluate(fireflyI, Function)
+            self.index_of_generation += 1
+            self.print_best_solution()
         self.close_plot()

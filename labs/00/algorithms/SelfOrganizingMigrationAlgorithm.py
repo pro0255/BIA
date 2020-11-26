@@ -29,7 +29,7 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
         Returns:
             [Solution]: Generated Solution class, where vector of parameters is populated with random uniform values in bounderies.
         """
-        return self.generate_random_solution(Function.left, Function.right)
+        return self.generate_random_solution(Function.left, Function.right, self.D)
 
     def generate_PRTVector(self, d=2):
         """It is kind of mutation.
@@ -150,5 +150,6 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
                 print("Found best enough!!")
                 break
 
+            self.print_best_solution()
             self.index_of_generation += 1
         self.close_plot()

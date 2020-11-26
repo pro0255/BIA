@@ -27,21 +27,21 @@ class ExperimentsRunner():
 
 
     def set_properties(self, algorithms):
-        g = Graph(self.oF.left, self.oF.right, self.oF)
+        # g = Graph(self.oF.left, self.oF.right, self.oF)
 
         for a in algorithms:
             a.size_of_population = self.NP
             a.max_generation = self.MAX_G
             a.D = self.D
-            a.graph = g
+            # a.graph = g
 
     def build(self):
         de = DifferentialEvolutionAlgorithm() #it is ok
         pso = ParticleSwarmOptimizationAlgorithm() #it is ok
-        # fa = FireflyAlgorithm() #it is ok
-        # soma = SelfOrganizingMigrationAlgorithm() #it is ok
-        # tlbo = TeachingLearningBasedAlgorithm()
-        tmp = pso
+        fa = FireflyAlgorithm() #it is ok
+        soma = SelfOrganizingMigrationAlgorithm() #it is ok
+        tlbo = TeachingLearningBasedAlgorithm()
+        tmp = tlbo
 
         algorithms = [tmp]
         self.set_properties(algorithms)
