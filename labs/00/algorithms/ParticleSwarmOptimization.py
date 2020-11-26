@@ -151,6 +151,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
+        self.index_of_generation = 0
         swarm = self.generate_population(Function)
         self.evalute_population(swarm, Function)
 

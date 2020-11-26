@@ -117,6 +117,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
+        self.index_of_generation = 0
         students = self.generate_population(Function)
         while self.index_of_generation < self.max_generation:
             self.learning_phase(Function, students)

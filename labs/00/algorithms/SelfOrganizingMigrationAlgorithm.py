@@ -125,6 +125,7 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
+        self.index_of_generation = 0
         population = self.generate_population(Function)
         self.evalute_population(population, Function)
 

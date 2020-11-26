@@ -24,14 +24,15 @@ class AbstractAlgorithm:
         return False
 
     def close_plot(self):
-        counter = 5
-        for i in range(counter):
-            time.sleep(1)
-            print(f"Closing in {i+1}-{counter}")
+        if VERBOSE:
+            counter = 5
+            for i in range(counter):
+                time.sleep(1)
+                print(f"Closing in {i+1}-{counter}")
 
-        if self.graph:
-            print("Closing!!")
-            plt.close("all")
+            if self.graph:
+                print("Closing!!")
+                plt.close("all")
 
     def print_best_solution(self):
         if VERBOSE:
