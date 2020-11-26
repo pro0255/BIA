@@ -1,8 +1,9 @@
 import numpy as np
-from algorithms.AbstractGenetic import  AbstractGeneticAlgorithm
+from algorithms.AbstractGenetic import AbstractGeneticAlgorithm
 import copy
 from solution.Solution import Solution
 import random
+
 
 class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
     def __init__(self, **kwds):
@@ -29,7 +30,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         return self.generate_random_solution(Function.left, Function.right)
 
     def learning_phase(self, Function, students):
-        """ Represents learning phase in algorithm, where teachers ala best solution moves mean forward.
+        """Represents learning phase in algorithm, where teachers ala best solution moves mean forward.
         Args:
             Function (Function): Sphere Ackley..
             students (Solution[]): Current population, group of students.
@@ -41,14 +42,14 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         new_position = np.clip(new_position, Function.left, Function.right)
         fV = Function.run(new_position)
         if fV < self.best_solution.fitness_value:
-            self.best_solution.vector = new_position 
+            self.best_solution.vector = new_position
 
     def get_random_number(self):
-        """ Generates random number in uniform distribution (0,1) interval.
+        """Generates random number in uniform distribution (0,1) interval.
         Returns:
             [float]: Random uniform values.
         """
-        return np.random.uniform()     
+        return np.random.uniform()
 
     def calculate_difference(self, Function, students):
         """Calculates difference according to mean, random value uniform and random value tf.
@@ -60,7 +61,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         """
         r = self.get_random_number()
         Tf = np.random.randint(1, 3)
-        return r * (self.best_solution.vector - Tf*self.calculate_mean(students))
+        return r * (self.best_solution.vector - Tf * self.calculate_mean(students))
 
     def get_random_student(self, to, students):
         """Get random student according to current one. Conditions is that i != j!
@@ -86,10 +87,14 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
             random_s = self.get_random_student(student, students)
             new_vector = np.zeros(student.dimension)
             if student.fitness_value < random_s.fitness_value:
-                new_vector = student.vector + self.get_random_number() * (student.vector - random_s.vector)
+                new_vector = student.vector + self.get_random_number() * (
+                    student.vector - random_s.vector
+                )
                 new_vector = np.clip(new_vector, Function.left, Function.right)
             else:
-                new_vector = student.vector + self.get_random_number() * (random_s.vector - student.vector)
+                new_vector = student.vector + self.get_random_number() * (
+                    random_s.vector - student.vector
+                )
                 new_vector = np.clip(new_vector, Function.left, Function.right)
             fV = Function.run(new_vector)
             if fV < student.fitness_value:
@@ -105,7 +110,6 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         """
         matrix = [student.vector for student in students]
         return np.mean(np.squeeze(matrix), axis=0)
-
 
     def start(self, Function):
         """Runs TeachingLearning Algorithm on specified Function, with specified args.

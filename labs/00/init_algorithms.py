@@ -19,7 +19,7 @@ algs = {
     "SelfOrganizingMigration": SelfOrganizingMigrationAlgorithm(),  # * cv7
     "AntColonyOptimization": AntColonyOptimizationAlgorithm(),  # * cv8
     "FireflyAlgorithm": FireflyAlgorithm(),  # * cv9,
-    "TeachingLearningBased": TeachingLearningBasedAlgorithm() # * cv10
+    "TeachingLearningBased": TeachingLearningBasedAlgorithm(),  # * cv10
 }
 
 algorithms_functions_blacklist = [
