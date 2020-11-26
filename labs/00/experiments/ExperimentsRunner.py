@@ -32,6 +32,7 @@ class ExperimentsRunner():
         for a in algorithms:
             a.size_of_population = self.NP
             a.max_generation = self.MAX_G
+            a.D = self.D
             a.graph = g
 
     def build(self):

@@ -7,12 +7,13 @@ import pandas as pd
 
 
 class AbstractAlgorithm:
-    def __init__(self, graph=None, size_of_population=1000, max_generation=20):
+    def __init__(self, graph=None, size_of_population=1000, max_generation=20, D=2):
         self.size_of_population = size_of_population
         self.max_generation = max_generation
         self.graph = graph
         self.index_of_generation = 0
         self.best_solution = Solution()
+        self.D = D
 
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
@@ -93,12 +94,10 @@ class AbstractAlgorithm:
 
     def generate_random_solution(self, lower_bound, upper_bound, dimension=2):
         """Generates random solution according to bounds
-
         Args:
             lower_bound (float)
             upper_bound (float)
             dimension (int, optional) Defaults to 2.
-
         Returns:
             Solution: generated Solution with inicialized random vector
         """

@@ -23,7 +23,7 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
         ]
 
     def generate_individual(self, Function):
-        return self.generate_random_solution(Function.left, Function.right)
+        return self.generate_random_solution(Function.left, Function.right, self.D)
 
     def get_random_indicies(self, black_list):
         r = random.randint(0, self.size_of_population - 1)
@@ -49,7 +49,7 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
         # TODO!: take care for boundaries!
 
     def crossover(self, iteration_individual, mutation_vector):
-        trial_solution = Solution()  # trial_vector
+        trial_solution = Solution(self.D)  # trial_vector
         dimension = len(trial_solution.vector)
         random_position_j = np.random.randint(0, dimension)
 
