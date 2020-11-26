@@ -9,6 +9,6 @@ from functions.Sphere import Sphere
 
 D = 30 #number of dimensions
 NP = 30 #size of populaiton
-Max_OFE = 3000 #maximal number of objectiive function evaluations 
+Max_OFE = 100 #maximal number of objectiive function evaluations #TODO!: HERE 3000 
 NUMBER_OF_EXPERIMENTS = 30 #number of experiments was specified as constant value 30
 FUNCTION_TO_RUN = Sphere()

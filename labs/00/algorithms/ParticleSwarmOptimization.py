@@ -170,3 +170,4 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             self.index_of_generation += 1
 
         self.close_plot()
+        return self.return_after_at_the_end()

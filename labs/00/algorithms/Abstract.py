@@ -37,6 +37,9 @@ class AbstractAlgorithm:
         if VERBOSE:
             print(f'{self.index_of_generation}-\t{self.best_solution.vector}')
 
+    def return_after_at_the_end(self):
+        return (self.best_solution.fitness_value, self.__str__())
+
     def evaluate(self, solution, Function):
         """Sets z (fitness) value according to Function
 

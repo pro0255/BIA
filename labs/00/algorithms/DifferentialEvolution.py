@@ -93,3 +93,4 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             self.index_of_generation += 1
             pop = new_population
         self.close_plot()
+        return self.return_after_at_the_end()

@@ -42,7 +42,6 @@ class ExperimentsRunner():
         soma = SelfOrganizingMigrationAlgorithm() #it is ok
         tlbo = TeachingLearningBasedAlgorithm()
         tmp = tlbo
-
         algorithms = [tmp]
         self.set_properties(algorithms)
         return algorithms
@@ -55,6 +54,7 @@ class ExperimentsRunner():
         
         
         for algorithm in self.build():
-            algorithm.start(self.oF)
+            output = algorithm.start(self.oF)
+            print(output)
 
 

@@ -125,3 +125,4 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
                 self.graph.draw(self.best_solution, students)
             self.index_of_generation += 1
             self.print_best_solution()
+        return self.return_after_at_the_end()
