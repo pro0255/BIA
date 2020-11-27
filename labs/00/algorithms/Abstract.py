@@ -6,6 +6,8 @@ import random
 import pandas as pd
 
 VERBOSE = False
+
+
 class AbstractAlgorithm:
     def __init__(self, graph=None, size_of_population=1000, max_generation=20, D=2):
         self.size_of_population = size_of_population
@@ -36,7 +38,7 @@ class AbstractAlgorithm:
 
     def print_best_solution(self):
         if VERBOSE:
-            print(f'{self.index_of_generation}-\t{self.best_solution.vector}')
+            print(f"{self.index_of_generation}-\t{self.best_solution.vector}")
 
     def return_after_at_the_end(self):
         return (self.best_solution.fitness_value, self.__str__())

@@ -98,7 +98,8 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         """
         new_position = (
             individual.vector
-            + self.calculate_attractivness(individual, towards_individual, distance) * (towards_individual.vector - individual.vector)
+            + self.calculate_attractivness(individual, towards_individual, distance)
+            * (towards_individual.vector - individual.vector)
             + self.generate_random_movement()
         )
         new_position = np.clip(new_position, Function.left, Function.right)
