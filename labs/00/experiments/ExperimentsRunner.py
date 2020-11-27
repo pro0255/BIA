@@ -1,6 +1,6 @@
 from experiments import EXPERIMENT_CONSTANTS
-from experiments.DELIMITER import DELIMITER, DELIMITER_README
-from experiments.EXPERIMENTS_OUTPUT import EXPERIMENTS_PATH
+from experiments.DELIMITER import DELIMITER, DELIMITER_README, READ_ME_HEADER
+from experiments.EXPERIMENTS_OUTPUT import EXPERIMENTS_PATH, EXPERIMENTS_FILE_NAME
 import os
 import time
 import pandas as pd
@@ -8,6 +8,12 @@ import numpy as np
 from STAR import get_my_info
 
 SAVE = True
+
+def THANKS(seconds):
+    return f'Run whole experiments took {seconds} seconds.\nThanks for your time again.\n{get_my_info()}'
+
+ 
+
 
 class ExperimentsRunner():
     """Class which takes care of running experiments with specified parameters.
@@ -48,7 +54,7 @@ class ExperimentsRunner():
             new_df.loc['std_dev'] = list(std_devs.values()) 
             self.results[k] = new_df
 
-            
+
     def save_to_xls(self, name):
         self.check_save()
         file_name = f'{EXPERIMENTS_PATH}//{name}.xlsx'
@@ -69,7 +75,9 @@ class ExperimentsRunner():
 
     def save_read_me(self):
         output = [f'{DELIMITER_README}{str(alg)}{DELIMITER_README}' for alg in EXPERIMENT_CONSTANTS.ALGORITHMS_TO_RUN]
-        self.save_to_file(f'\n'.join(output), "README", '.txt')
+        output_algorithms = f'\n'.join(output)
+        read_me = f'{READ_ME_HEADER}\n{output_algorithms}'
+        self.save_to_file(read_me, "README", '.txt')
 
     def start_experiments_for_functions(self, functions=EXPERIMENT_CONSTANTS.FUNCTION_TO_RUN):
         self.results = {}
@@ -87,8 +95,8 @@ class ExperimentsRunner():
 
         self.make_df_calculations()
         if SAVE:
-            self.save_to_file(f"Run whole experiments took {how_many} seconds.\nThanks for your time again.{get_my_info()}", "INFO", ".txt")
-            self.save_to_xls("experiments")
+            self.save_to_file(THANKS(how_many), "INFO", ".txt")
+            self.save_to_xls(EXPERIMENTS_FILE_NAME)
             self.save_read_me()
             
 

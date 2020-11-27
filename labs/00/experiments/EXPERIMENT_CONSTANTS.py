@@ -1,4 +1,5 @@
 from functions.Sphere import Sphere
+from functions.Levy import Levy
 from init_functions import functions
 from algorithms.DifferentialEvolution import DifferentialEvolutionAlgorithm
 from algorithms.ParticleSwarmOptimization import ParticleSwarmOptimizationAlgorithm
@@ -25,7 +26,7 @@ FUNCTION_TO_RUN_PRODUCTION = functions.values()
 ALGORITHMS_PRODUCTION = [DifferentialEvolutionAlgorithm(), ParticleSwarmOptimizationAlgorithm(), FireflyAlgorithm(), SelfOrganizingMigrationAlgorithm(), TeachingLearningBasedAlgorithm()]
 
 FUNCTION_TO_RUN_TEST = [Sphere()]
-ALGORITHMS_TEST = [DifferentialEvolutionAlgorithm()] 
+ALGORITHMS_TEST = [DifferentialEvolutionAlgorithm(), SelfOrganizingMigrationAlgorithm()] 
 
 
 FUNCTION_TO_RUN = FUNCTION_TO_RUN_PRODUCTION if IS_PRODUCTION else FUNCTION_TO_RUN_TEST

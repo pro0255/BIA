@@ -1,8 +1,23 @@
+These are outputs with attributes for every algorithm.
 
 ==========================================================================
 Starts algorithm DifferentialEvolutionAlgorithm with attributes:
 	crossover_range -- 0.5
 	mutation_constant -- 0.5
+	size_of_population -- 30
+	max_generation -- 100
+	graph -- None
+	index_of_generation -- 100
+	D -- 30
+==========================================================================
+
+
+==========================================================================
+Starts algorithm SelfOrganizingMigrationAlgorithm with attributes:
+	path_length -- 3
+	step -- 0.11
+	PRT -- 0.1
+	min_div -- 0
 	size_of_population -- 30
 	max_generation -- 100
 	graph -- None
