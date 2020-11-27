@@ -26,7 +26,7 @@ FUNCTION_TO_RUN_PRODUCTION = functions.values()
 ALGORITHMS_PRODUCTION = [DifferentialEvolutionAlgorithm(), ParticleSwarmOptimizationAlgorithm(), FireflyAlgorithm(), SelfOrganizingMigrationAlgorithm(), TeachingLearningBasedAlgorithm()]
 
 FUNCTION_TO_RUN_TEST = [Sphere()]
-ALGORITHMS_TEST = [DifferentialEvolutionAlgorithm(), SelfOrganizingMigrationAlgorithm()] 
+ALGORITHMS_TEST = [DifferentialEvolutionAlgorithm()] 
 
 
 FUNCTION_TO_RUN = FUNCTION_TO_RUN_PRODUCTION if IS_PRODUCTION else FUNCTION_TO_RUN_TEST
