@@ -1,5 +1,5 @@
 from experiments import EXPERIMENT_CONSTANTS
-from experiments.DELIMITER import DELIMITER, DELIMITER_README, READ_ME_HEADER
+from experiments.DELIMITER import DELIMITER, DELIMITER_README, READ_ME_HEADER, NAME_OF_MEAN, NAME_OF_STD
 from experiments.EXPERIMENTS_OUTPUT import EXPERIMENTS_PATH, EXPERIMENTS_FILE_NAME
 import os
 import time
@@ -21,20 +21,21 @@ class ExperimentsRunner:
         self,
         D=EXPERIMENT_CONSTANTS.D,
         NP=EXPERIMENT_CONSTANTS.NP,
-        MAX_G=EXPERIMENT_CONSTANTS.Max_OFE,
+        MAX_OFE=EXPERIMENT_CONSTANTS.Max_OFE,
         NUMBER_OF_EXPERIMENTS=EXPERIMENT_CONSTANTS.NUMBER_OF_EXPERIMENTS,
     ):
         self.D = D
         self.NP = NP
-        self.MAX_G = MAX_G
+        self.MAX_OFE = MAX_OFE
         self.N_O_G = NUMBER_OF_EXPERIMENTS
         self.results = {}
 
     def set_properties(self, algorithms):
         for a in algorithms:
             a.size_of_population = self.NP
-            a.max_generation = self.MAX_G
+            a.max_generation = float('inf')
             a.D = self.D
+            a.max_OFE = self.MAX_OFE
 
     def build(self, algs=EXPERIMENT_CONSTANTS.ALGORITHMS_TO_RUN):
         self.set_properties(algs)
@@ -54,8 +55,8 @@ class ExperimentsRunner:
                 means[column] = mean
                 std_devs[column] = std_dev
             new_df = v.copy()
-            new_df.loc["mean"] = list(means.values())
-            new_df.loc["std_dev"] = list(std_devs.values())
+            new_df.loc[NAME_OF_MEAN] = list(means.values())
+            new_df.loc[NAME_OF_STD] = list(std_devs.values())
             self.results[k] = new_df
 
     def save_to_xls(self, name):
@@ -123,6 +124,7 @@ class ExperimentsRunner:
 
     def start_experiment(self, function, dic):
         for algorithm in self.build():
+            print(type(algorithm).__name__)
             fV, description = algorithm.start(function)
             dic[self.get_algorithm_key(algorithm)].append(fV)
 

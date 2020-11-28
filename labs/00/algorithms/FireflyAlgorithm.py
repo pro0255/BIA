@@ -111,18 +111,18 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
-        self.index_of_generation = 0
+        self.reset_alg()
         fireflies = self.generate_population(Function)
         self.dimension = self.D
         self.evalute_population(fireflies, Function)
         self.best_solution = self.select_best_solution(fireflies)
 
-        while self.index_of_generation < self.max_generation:
+        while self.index_of_generation < self.max_generation and self.ofe_check():
             for i in range(self.size_of_population):
                 fireflyI = fireflies[i]
 
                 if fireflyI.key == self.best_solution.key:
-                    beforeMoveSolution = copy.deepcopy(fireflyI)
+                    # beforeMoveSolution = copy.deepcopy(fireflyI)
                     self.calculate_new_random_position(fireflyI, Function)
                     if self.graph:
                         self.graph.draw_with_vector(
@@ -131,7 +131,7 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
                         self.graph.draw(self.best_solution, fireflies)
                     continue
 
-                savedfireflyI = copy.deepcopy(fireflyI)
+                # savedfireflyI = copy.deepcopy(fireflyI)
                 if self.graph:
                     self.graph.refresh_path()
                     self.graph.draw_extra_population(
@@ -144,7 +144,7 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
                     if self.calculate_light_intensity(
                         fireflyI, distance
                     ) > self.calculate_light_intensity(fireflyJ, distance):
-                        beforeMoveSolution = copy.deepcopy(fireflyI)
+                        # beforeMoveSolution = copy.deepcopy(fireflyI)
                         self.calculate_new_position(
                             fireflyI, fireflyJ, distance, Function
                         )
@@ -158,4 +158,4 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
             self.index_of_generation += 1
             self.print_best_solution()
         self.close_plot()
-        return self.return_after_at_the_end()
+        return self.return_after_at_the_end(fireflies)

@@ -16,6 +16,8 @@ class AbstractAlgorithm:
         self.index_of_generation = 0
         self.best_solution = Solution()
         self.D = D
+        self.max_OFE = None
+        self.current_OFE = 0
 
     def __setitem__(self, key, value):
         self.__setattr__(key, value)
@@ -26,7 +28,7 @@ class AbstractAlgorithm:
         return False
 
     def close_plot(self):
-        if VERBOSE:
+        if VERBOSE and self.graph is not None:
             counter = 5
             for i in range(counter):
                 time.sleep(1)
@@ -38,10 +40,23 @@ class AbstractAlgorithm:
 
     def print_best_solution(self):
         if VERBOSE:
-            print(f"{self.index_of_generation}-\t{self.best_solution.vector}")
+            print(self.current_OFE)
+            # print(f"{self.index_of_generation}-\t{self.best_solution.vector}")
 
-    def return_after_at_the_end(self):
+    def return_after_at_the_end(self, population):
+        self.best_solution = self.select_best_solution(population)
+        if VERBOSE:
+            print(f'\nAlgorithm {type(self).__name__} {self.current_OFE}\n')
         return (self.best_solution.fitness_value, self.__str__())
+
+    def ofe_check(self):
+        if self.max_OFE is None:
+            return True
+        return self.current_OFE <= self.max_OFE
+
+    def reset_alg(self):
+        self.index_of_generation = 0
+        self.current_OFE = 0
 
     def evaluate(self, solution, Function):
         """Sets z (fitness) value according to Function
@@ -50,6 +65,7 @@ class AbstractAlgorithm:
             solution (class Solution): input with specified vector as prop
             Function (class Function): specific Function (Sphere || Ackley..)
         """
+        self.current_OFE += 1
         solution.fitness_value = Function.run(solution.vector)
 
     def evalute_population(self, population, Function):

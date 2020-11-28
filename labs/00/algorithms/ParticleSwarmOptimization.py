@@ -3,7 +3,6 @@ import numpy as np
 import copy
 from solution.Solution import Solution
 
-
 class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
     def __init__(self, c1=2, c2=2, v_min=-1, v_max=1, **kwds):
         """pop_size = size_of_population [number of individuals]
@@ -58,7 +57,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             [Solution]: Returns individual from population. In PSO it is called particle.
         """
         solution = self.generate_random_solution(Function.left, Function.right, self.D)
-        solution.personal_best = copy.deepcopy(solution)
+        solution.personal_best = copy.copy(solution)
         return solution
 
     def calculate_new_velocity(self, solution):
@@ -86,7 +85,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
         """
         new_position = solution.vector + solution.velocity_vector
         # solution.vector = np.clip(new_position, solution.lower_bound, solution.upper_bound) #!old one
-        #! new one
+        # #! new one
         for index, param in enumerate(new_position):
             if not Solution.is_in_bounderies(
                 param, solution.lower_bound, solution.upper_bound
@@ -141,7 +140,7 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             solution (Solution): Actual individual from population.
         """
         if self.is_better_then_personal_best(solution):
-            solution.personal_best = copy.deepcopy(solution)
+            solution.personal_best = copy.copy(solution)
             if self.is_better_then_global_best(solution):
                 self.best_solution = solution.personal_best
 
@@ -151,14 +150,14 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
-        self.index_of_generation = 0
+        self.reset_alg()
         swarm = self.generate_population(Function)
         self.evalute_population(swarm, Function)
 
         self.best_solution = self.select_best_solution(swarm)
         self.generate_velocity_vectors_for_particles(swarm)
 
-        while self.index_of_generation < self.max_generation:
+        while self.index_of_generation < self.max_generation and self.ofe_check():
             if self.graph:
                 self.graph.draw(self.best_solution, swarm)
             for particle in swarm:
@@ -171,4 +170,4 @@ class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
             self.index_of_generation += 1
 
         self.close_plot()
-        return self.return_after_at_the_end()
+        return self.return_after_at_the_end(swarm)

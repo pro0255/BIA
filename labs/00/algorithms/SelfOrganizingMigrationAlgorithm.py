@@ -82,7 +82,7 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
             new_position = np.clip(
                 new_position, solution.lower_bound, solution.upper_bound
             )
-            new_solution = copy.deepcopy(solution)
+            new_solution = copy.copy(solution)
             new_solution.vector = new_position
             path_solutions.append(new_solution)
             t += self.step
@@ -125,12 +125,12 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
-        self.index_of_generation = 0
+        self.reset_alg()
         population = self.generate_population(Function)
         self.evalute_population(population, Function)
 
-        while self.index_of_generation < self.max_generation:
-            new_population = copy.deepcopy(population)
+        while self.index_of_generation < self.max_generation and self.ofe_check():
+            new_population = copy.copy(population)
             self.best_solution = self.select_best_solution(population)
 
             if self.graph:
@@ -154,4 +154,4 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
             self.print_best_solution()
             self.index_of_generation += 1
         self.close_plot()
-        return self.return_after_at_the_end()
+        return self.return_after_at_the_end(population)

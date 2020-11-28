@@ -67,11 +67,10 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
-        self.index_of_generation = 0
+        self.reset_alg()
         pop = self.generate_population(Function)
         self.evalute_population(pop, Function)
-
-        while self.index_of_generation < self.max_generation:
+        while self.index_of_generation < self.max_generation and self.ofe_check():
             new_population = self.copy(
                 pop
             )  # class scoped function.., actually it is deepcopy
@@ -93,4 +92,4 @@ class DifferentialEvolutionAlgorithm(AbstractGeneticAlgorithm):
             self.index_of_generation += 1
             pop = new_population
         self.close_plot()
-        return self.return_after_at_the_end()
+        return self.return_after_at_the_end(pop)

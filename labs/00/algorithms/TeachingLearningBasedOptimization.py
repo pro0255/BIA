@@ -117,13 +117,13 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
             Function (class Function): specific Function (Sphere || Ackley..)
         """
         super().start()
-        self.index_of_generation = 0
+        self.reset_alg()
         students = self.generate_population(Function)
-        while self.index_of_generation < self.max_generation:
+        while self.index_of_generation < self.max_generation and self.ofe_check():
             self.learning_phase(Function, students)
             self.learners_phase(Function, students)
             if self.graph:
                 self.graph.draw(self.best_solution, students)
             self.index_of_generation += 1
             self.print_best_solution()
-        return self.return_after_at_the_end()
+        return self.return_after_at_the_end(students)
