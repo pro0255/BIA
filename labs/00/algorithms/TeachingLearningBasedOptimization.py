@@ -35,7 +35,6 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
             Function (Function): Sphere Ackley..
             students (Solution[]): Current population, group of students.
         """
-        self.evalute_population(students, Function)
         self.best_solution = self.select_best_solution(students)
         new_position = np.zeros(self.best_solution.dimension)
         new_position = self.calculate_difference(Function, students)
@@ -44,6 +43,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         self.current_OFE += 1
         if fV < self.best_solution.fitness_value:
             self.best_solution.vector = new_position
+            self.evaluate(self.best_solution, Function)
 
     def get_random_number(self):
         """Generates random number in uniform distribution (0,1) interval.
@@ -121,6 +121,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         super().start()
         self.reset_alg()
         students = self.generate_population(Function)
+        self.evalute_population(students, Function)
         while self.index_of_generation < self.max_generation and self.ofe_check():
             self.learning_phase(Function, students)
             self.learners_phase(Function, students)
