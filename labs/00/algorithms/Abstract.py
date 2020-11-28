@@ -46,7 +46,7 @@ class AbstractAlgorithm:
     def return_after_at_the_end(self, population):
         self.best_solution = self.select_best_solution(population)
         if VERBOSE:
-            print(f'\nAlgorithm {type(self).__name__} {self.current_OFE}\n')
+            print(f"\nAlgorithm {type(self).__name__} {self.current_OFE}\n")
         return (self.best_solution.fitness_value, self.__str__())
 
     def ofe_check(self):

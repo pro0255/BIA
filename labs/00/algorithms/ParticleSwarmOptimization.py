@@ -3,6 +3,7 @@ import numpy as np
 import copy
 from solution.Solution import Solution
 
+
 class ParticleSwarmOptimizationAlgorithm(AbstractGeneticAlgorithm):
     def __init__(self, c1=2, c2=2, v_min=-1, v_max=1, **kwds):
         """pop_size = size_of_population [number of individuals]

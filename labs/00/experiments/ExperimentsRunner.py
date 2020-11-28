@@ -1,5 +1,11 @@
 from experiments import EXPERIMENT_CONSTANTS
-from experiments.DELIMITER import DELIMITER, DELIMITER_README, READ_ME_HEADER, NAME_OF_MEAN, NAME_OF_STD
+from experiments.DELIMITER import (
+    DELIMITER,
+    DELIMITER_README,
+    READ_ME_HEADER,
+    NAME_OF_MEAN,
+    NAME_OF_STD,
+)
 from experiments.EXPERIMENTS_OUTPUT import EXPERIMENTS_PATH, EXPERIMENTS_FILE_NAME
 import os
 import time
@@ -33,7 +39,7 @@ class ExperimentsRunner:
     def set_properties(self, algorithms):
         for a in algorithms:
             a.size_of_population = self.NP
-            a.max_generation = float('inf')
+            a.max_generation = float("inf")
             a.D = self.D
             a.max_OFE = self.MAX_OFE
 
