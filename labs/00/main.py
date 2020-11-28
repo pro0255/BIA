@@ -5,8 +5,8 @@ from experiments.ExperimentsRunner import ExperimentsRunner
 """
 Starts GUI with selection of alg, function and hyperparameters.
 """
-# app = Application()
-# app.start(False)
+app = Application()
+app.start(False)
 
 
 """
