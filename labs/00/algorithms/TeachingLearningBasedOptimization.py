@@ -41,6 +41,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         new_position = self.calculate_difference(Function, students)
         new_position = np.clip(new_position, Function.left, Function.right)
         fV = Function.run(new_position)
+        self.current_OFE += 1
         if fV < self.best_solution.fitness_value:
             self.best_solution.vector = new_position
 
@@ -97,6 +98,7 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
                 )
                 new_vector = np.clip(new_vector, Function.left, Function.right)
             fV = Function.run(new_vector)
+            self.current_OFE += 1
             if fV < student.fitness_value:
                 student.vector = new_vector
                 self.evaluate(student, Function)

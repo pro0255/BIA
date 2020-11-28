@@ -82,6 +82,7 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
         new_position = individual.vector + self.generate_random_movement()
         new_position = np.clip(new_position, Function.left, Function.right)
         possible_fitness = Function.run(new_position)
+        self.current_OFE += 1
         if individual.fitness_value > possible_fitness:
             individual.vector = new_position
             individual.fitness_value = possible_fitness
