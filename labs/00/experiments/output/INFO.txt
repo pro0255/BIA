@@ -1,4 +1,4 @@
-Run whole experiments took 2.3636765480041504 seconds.
+Run whole experiments took 380.4477643966675 seconds.
 Thanks for your time again.
 
 	https://github.com/pro0255/BIA

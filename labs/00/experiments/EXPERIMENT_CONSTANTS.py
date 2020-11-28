@@ -19,16 +19,16 @@ IS_PRODUCTION = True
 
 D = 30  # number of dimensions
 NP = 30  # size of populaiton
-Max_OFE = 3000  # maximal number of objective function evaluations #TODO!: HERE 3000
+Max_OFE = 3000  # maximal number of objective function evaluations
 NUMBER_OF_EXPERIMENTS = 30
-# number of experiments was specified as constant value 30 #TODO!: HERE 30
+# number of experiments was specified as constant value 30
 
 FUNCTION_TO_RUN_PRODUCTION = functions.values()
 ALGORITHMS_PRODUCTION = [
-    ParticleSwarmOptimizationAlgorithm(),
     DifferentialEvolutionAlgorithm(),
-    FireflyAlgorithm(),
+    ParticleSwarmOptimizationAlgorithm(),
     SelfOrganizingMigrationAlgorithm(),
+    FireflyAlgorithm(),
     TeachingLearningBasedAlgorithm(),
 ]
 
