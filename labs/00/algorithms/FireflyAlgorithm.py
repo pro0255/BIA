@@ -122,17 +122,17 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
                 fireflyI = fireflies[i]
 
                 if fireflyI.key == self.best_solution.key:
-                    # beforeMoveSolution = copy.deepcopy(fireflyI)
                     self.calculate_new_random_position(fireflyI, Function)
                     if self.graph:
+                        beforeMoveSolution = copy.deepcopy(fireflyI)
                         self.graph.draw_with_vector(
                             fireflyI, beforeMoveSolution, None, False
                         )
                         self.graph.draw(self.best_solution, fireflies)
                     continue
 
-                # savedfireflyI = copy.deepcopy(fireflyI)
                 if self.graph:
+                    savedfireflyI = copy.deepcopy(fireflyI)
                     self.graph.refresh_path()
                     self.graph.draw_extra_population(
                         savedfireflyI, None, "black", "start_position"
@@ -144,7 +144,8 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
                     if self.calculate_light_intensity(
                         fireflyI, distance
                     ) > self.calculate_light_intensity(fireflyJ, distance):
-                        # beforeMoveSolution = copy.deepcopy(fireflyI)
+                        if self.graph:
+                            beforeMoveSolution = copy.deepcopy(fireflyI)
                         self.calculate_new_position(
                             fireflyI, fireflyJ, distance, Function
                         )

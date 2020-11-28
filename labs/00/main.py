@@ -2,12 +2,12 @@ from Application import Application
 from experiments.ExperimentsRunner import ExperimentsRunner
 
 
-# app = Application()
-# app.start(False)
+app = Application()
+app.start(False)
 
 
 """
 Class which start experiments and save them to file. It is possible to start it again with specified constants value. These are situated in experiments/EXPERIMENTS_CONSTANTS.py
 """
-exp = ExperimentsRunner()
-exp.start_experiments_for_functions()
+# exp = ExperimentsRunner()
+# exp.start_experiments_for_functions()
