@@ -2,8 +2,11 @@ from Application import Application
 from experiments.ExperimentsRunner import ExperimentsRunner
 
 
-app = Application()
-app.start(False)
+"""
+Starts GUI with selection of alg, function and hyperparameters.
+"""
+# app = Application()
+# app.start(False)
 
 
 """
