@@ -82,7 +82,7 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
             new_position = np.clip(
                 new_position, solution.lower_bound, solution.upper_bound
             )
-            new_solution = copy.copy(solution)
+            new_solution = copy.deepcopy(solution)
             new_solution.vector = new_position
             path_solutions.append(new_solution)
             t += self.step
@@ -130,7 +130,7 @@ class SelfOrganizingMigrationAlgorithm(AbstractGeneticAlgorithm):
         self.evalute_population(population, Function)
 
         while self.index_of_generation < self.max_generation and self.ofe_check():
-            new_population = copy.copy(population)
+            new_population = copy.deepcopy(population)
             self.best_solution = self.select_best_solution(population)
 
             if self.graph:

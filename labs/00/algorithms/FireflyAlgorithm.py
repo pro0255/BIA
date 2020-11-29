@@ -156,7 +156,7 @@ class FireflyAlgorithm(AbstractGeneticAlgorithm):
                                 fireflyI, beforeMoveSolution, fireflyJ, True
                             )
                             self.graph.draw(self.best_solution, fireflies)
-                    self.evaluate(fireflyI, Function)
+                        self.evaluate(fireflyI, Function)
             self.index_of_generation += 1
             self.print_best_solution()
         self.close_plot()

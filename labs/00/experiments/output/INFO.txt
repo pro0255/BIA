@@ -1,4 +1,4 @@
-Run whole experiments took 356.2095968723297 seconds.
+Run whole experiments took 1749.07728266716 seconds.
 Thanks for your time again.
 
 	

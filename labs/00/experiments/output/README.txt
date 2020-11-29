@@ -54,10 +54,10 @@ Starts algorithm FireflyAlgorithm with attributes:
 	size_of_population -- 30
 	max_generation -- inf
 	graph -- None
-	index_of_generation -- 4
+	index_of_generation -- 8
 	D -- 30
 	max_OFE -- 3000
-	current_OFE -- 3601
+	current_OFE -- 3327
 	dimension -- 30
 ==========================================================================
 
@@ -67,8 +67,8 @@ Starts algorithm TeachingLearningBasedAlgorithm with attributes:
 	size_of_population -- 30
 	max_generation -- inf
 	graph -- None
-	index_of_generation -- 57
+	index_of_generation -- 58
 	D -- 30
 	max_OFE -- 3000
-	current_OFE -- 3015
+	current_OFE -- 3007
 ==========================================================================
