@@ -1,0 +1,3 @@
+In TLBO was new position of teacher calculated with straight forward new_pos = diff.
+
+Results was better in this kind of approach? Why?

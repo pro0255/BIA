@@ -37,7 +37,9 @@ class TeachingLearningBasedAlgorithm(AbstractGeneticAlgorithm):
         """
         self.best_solution = self.select_best_solution(students)
         new_position = np.zeros(self.best_solution.dimension)
-        new_position = self.calculate_difference(Function, students)
+        # TODO!: check this, better results? 
+        # new_position = self.calculate_difference(Function, students)
+        new_position = self.best_solution.vector + self.calculate_difference(Function, students)
         new_position = np.clip(new_position, Function.left, Function.right)
         fV = Function.run(new_position)
         self.current_OFE += 1
