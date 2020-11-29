@@ -67,8 +67,8 @@ Starts algorithm TeachingLearningBasedAlgorithm with attributes:
 	size_of_population -- 30
 	max_generation -- inf
 	graph -- None
-	index_of_generation -- 58
+	index_of_generation -- 57
 	D -- 30
 	max_OFE -- 3000
-	current_OFE -- 3003
+	current_OFE -- 3015
 ==========================================================================
