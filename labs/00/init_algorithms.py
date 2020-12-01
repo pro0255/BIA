@@ -8,6 +8,7 @@ from algorithms.SelfOrganizingMigrationAlgorithm import SelfOrganizingMigrationA
 from algorithms.AntColonyOptimization import AntColonyOptimizationAlgorithm
 from algorithms.FireflyAlgorithm import FireflyAlgorithm
 from algorithms.TeachingLearningBasedOptimization import TeachingLearningBasedAlgorithm
+from algorithms.NonDominatedSortingGeneticAlgorithm import NonDominatedGeneticAlgorithm
 
 algs = {
     "Blind": BlindAgorithm(),  # * cv1
@@ -20,9 +21,11 @@ algs = {
     "AntColonyOptimization": AntColonyOptimizationAlgorithm(),  # * cv8
     "FireflyAlgorithm": FireflyAlgorithm(),  # * cv9,
     "TeachingLearningBased": TeachingLearningBasedAlgorithm(),  # * cv10
+    "NonDominatedGeneticAlgorithm": NonDominatedGeneticAlgorithm() # * cv11
 }
 
 algorithms_functions_blacklist = [
     GeneticAlgorithmTSP.__name__,
     AntColonyOptimizationAlgorithm.__name__,
+    NonDominatedGeneticAlgorithm.__name__
 ]

@@ -140,6 +140,10 @@ class AbstractAlgorithm:
         vectors = [individual.vector for individual in population]
         print(pd.DataFrame(vectors))
 
+    def print_multifitness(self, population):
+        fitnesses = [individual.fitness_value for individual in population]
+        print(pd.DataFrame(vectors))
+
     def print_population_fitness(self, population):
         f = [individual.fitness_value for individual in population]
         print(pd.DataFrame(f))

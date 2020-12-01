@@ -9,6 +9,8 @@ import converters.Converters as converters
 import WINDOW_VALUES as WV
 import time
 from init_algorithms import algorithms_functions_blacklist
+from algorithms.NonDominatedSortingGeneticAlgorithm import NonDominatedGeneticAlgorithm
+from constants.MULTI_OPTIMIZATION_OBJECTIVE import MULTI_OBJECTIVE
 
 # TODO!: TERRIBLE REFACTOR! -> TYPO
 # algorithms_functions_blacklist = ["GeneticAlgorithmTSP", "AntColonyOptimizationAlgorithm"]
@@ -198,23 +200,28 @@ class Application:
 
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
-        if type(self.selected_algorithm).__name__ in algorithms_functions_blacklist:
-            ed = EucladianDistance()
-            converter1 = merged_args["low"]["convert"]
-            low = converter1(self.algorithms_args["low"])
-            converter2 = merged_args["high"]["convert"]
-            high = converter2(self.algorithms_args["high"])
-            graph = TSPGraph(low, high)
-            algorithm = self.build_algorithm(graph)
-            self.start_action_production(algorithm, ed)
+        if type(self.selected_algorithm).__name__ == "NonDominatedGeneticAlgorithm":
+            algorithm = self.build_algorithm(None)
+            algorithm.D = 2
+            self.start_action_production(algorithm, MULTI_OBJECTIVE)
         else:
-            graph = Graph(
-                self.selected_function.left,
-                self.selected_function.right,
-                self.selected_function,
-            )
-            algorithm = self.build_algorithm(graph)
-            self.start_action_production(algorithm, self.selected_function)
+            if type(self.selected_algorithm).__name__ in algorithms_functions_blacklist:
+                ed = EucladianDistance()
+                converter1 = merged_args["low"]["convert"]
+                low = converter1(self.algorithms_args["low"])
+                converter2 = merged_args["high"]["convert"]
+                high = converter2(self.algorithms_args["high"])
+                graph = TSPGraph(low, high)
+                algorithm = self.build_algorithm(graph)
+                self.start_action_production(algorithm, ed)
+            else:
+                graph = Graph(
+                    self.selected_function.left,
+                    self.selected_function.right,
+                    self.selected_function,
+                )
+                algorithm = self.build_algorithm(graph)
+                self.start_action_production(algorithm, self.selected_function)
 
     def build_algorithm(self, graph):
         """Function which sets all args to selected algorithm
