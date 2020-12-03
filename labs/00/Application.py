@@ -4,6 +4,7 @@ from init_algorithms import algs
 from init_functions import functions
 from Graph import Graph
 from Graph import TSPGraph
+from Graph import ParetoRankGraph
 import matplotlib.pyplot as plt
 import converters.Converters as converters
 import WINDOW_VALUES as WV
@@ -201,7 +202,7 @@ class Application:
     def run_action(self):
         """Actions binded to click on start algorithm with specified args"""
         if type(self.selected_algorithm).__name__ == "NonDominatedGeneticAlgorithm":
-            algorithm = self.build_algorithm(None)
+            algorithm = self.build_algorithm(ParetoRankGraph())
             algorithm.D = 2
             self.start_action_production(algorithm, MULTI_OBJECTIVE)
         else:

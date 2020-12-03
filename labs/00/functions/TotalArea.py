@@ -1,12 +1,10 @@
 import math
 import numpy as np
+from functions.ConeFunc import ConeFunc
 
-class TotalArea:
+class TotalArea(ConeFunc):
     def __init__(self):
         pass
-
-    def sub_calculation(self, vector):
-        return np.sqrt(np.sum(np.power(vector, 2)))
-
+    
     def run(self, vector):
         return math.pi*vector[0]*(vector[0]+self.sub_calculation(vector))

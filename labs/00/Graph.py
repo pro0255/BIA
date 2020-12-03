@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import seaborn as sns
 import matplotlib.lines as mlines
+import pandas as pd
 
 """
 Classes which take care of vizualization
@@ -216,3 +217,27 @@ class TSPGraph(AbstractGraph):
         self.draw_connections(cities, c)
         plt.draw()
         plt.pause(GLOBAL_PAUSE_TIME)
+
+class ParetoRankGraph(AbstractGraph):
+    def __init__(self):
+        super().__init__()
+        self.plot = self.fig.add_subplot(111, title="Pareto rank")
+
+    def draw(self, solutions, paretoQ1):
+        fV = [s.fitness_value for s in solutions]
+
+        print(pd.DataFrame(fV))
+        fV_squeezed = np.squeeze(fV)
+        X = fV_squeezed[:, 0]
+        Y = fV_squeezed[:, 1]
+        self.plot.scatter(
+            X,
+            Y,
+            s=5,
+            alpha=1,
+            c='blue',
+            marker="o",
+        )
+        plt.draw()
+        plt.pause(GLOBAL_PAUSE_TIME)
+        

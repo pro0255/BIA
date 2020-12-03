@@ -70,12 +70,10 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
                 child = self.construct_solution(vector, Functions)
                 new_generated.append(child)
 
+
             new_population += new_generated
-            self.print_population(new_generated)
             self.evalute_population(new_generated, Functions)
-            self.print_population_fitness(new_population)
-            exit()
-            dominated_sorting(new_population, Functions, TASK_APPROACHES)
-            ##make a pareto rank on pop
-            ##save NP to pop
-            #...run again
+            Qs, new_population_selected = dominated_sorting(new_population, Functions, TASK_APPROACHES, self.size_of_population)
+            population = new_population_selected
+            if self.graph:
+                self.graph.draw(new_population, None)
