@@ -29,6 +29,7 @@ def check_fitness_according_to_approach(current, other, approaches):
     dominating = 0  # better
     for fI, approach in enumerate(approaches):
         result = compare(current.fitness_value[fI], other.fitness_value[fI], approach)
+
         if result == Compare.Better:
             dominating += 1
         elif result == Compare.Worse:

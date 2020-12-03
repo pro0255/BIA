@@ -224,20 +224,30 @@ class ParetoRankGraph(AbstractGraph):
         super().__init__()
         self.plot = self.fig.add_subplot(111, title="Pareto rank")
 
-    def draw(self, solutions, paretoQ1):
-        fV = [s.fitness_value for s in solutions]
+    def plot_batch(self, solutions, c="blue", s=5):
+        try:
+            fV = [s.fitness_value for s in solutions]
+            fV_squeezed = np.squeeze(fV)
+            X = fV_squeezed[:, 0]
+            Y = fV_squeezed[:, 1]
+            self.plot.scatter(
+                X,
+                Y,
+                s=s,
+                alpha=1,
+                c=c,
+                marker="o",
+            )
+        except:
+            pass
 
-        print(pd.DataFrame(fV))
-        fV_squeezed = np.squeeze(fV)
-        X = fV_squeezed[:, 0]
-        Y = fV_squeezed[:, 1]
-        self.plot.scatter(
-            X,
-            Y,
-            s=5,
-            alpha=1,
-            c="blue",
-            marker="o",
-        )
+
+
+    def draw(self, solutions, paretoQ1):
+        plt.xlim(0, 40)
+        plt.ylim(0, 40)
+        self.plot_batch(solutions)
+        if paretoQ1 is not None:
+            self.plot_batch(paretoQ1, "red", 5)
         plt.draw()
         plt.pause(GLOBAL_PAUSE_TIME)
