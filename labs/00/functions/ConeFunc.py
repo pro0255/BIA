@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class ConeFunc:
     def __init__(self):
         pass

@@ -218,6 +218,7 @@ class TSPGraph(AbstractGraph):
         plt.draw()
         plt.pause(GLOBAL_PAUSE_TIME)
 
+
 class ParetoRankGraph(AbstractGraph):
     def __init__(self):
         super().__init__()
@@ -235,9 +236,8 @@ class ParetoRankGraph(AbstractGraph):
             Y,
             s=5,
             alpha=1,
-            c='blue',
+            c="blue",
             marker="o",
         )
         plt.draw()
         plt.pause(GLOBAL_PAUSE_TIME)
-        

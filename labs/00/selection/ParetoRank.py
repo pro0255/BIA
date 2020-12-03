@@ -4,25 +4,29 @@ from selection.MaxMinEnum import Approach
 import math
 import numpy as np
 
+
 def naive_check(Functions, approaches):
     return len(Functions) == len(approaches)
+
 
 def compare(current, other, approach):
     if current == other:
         return Compare.Balance
     if approach == Approach.Minimazation:
-        return Compare.Better if other < current else Compare.Worse 
+        return Compare.Better if other < current else Compare.Worse
     else:
         return Compare.Better if other > current else Compare.Worse
+
 
 def get_result_according_to_dd(dominating, dominated):
     if dominated == dominating:
         return Compare.Balance
     return Compare.Better if dominating > dominated else Compare.Worse
 
+
 def check_fitness_according_to_approach(current, other, approaches):
-    dominated = 0 #worse
-    dominating = 0 #better
+    dominated = 0  # worse
+    dominating = 0  # better
     for fI, approach in enumerate(approaches):
         result = compare(current.fitness_value[fI], other.fitness_value[fI], approach)
         if result == Compare.Better:
@@ -42,12 +46,14 @@ def create_array_to_indicies(pop, indicies):
         res.append(pop[indicies])
     return res
 
+
 def according_to_n_get_Qn_indicies(n, ignore_indicies):
     tranformed = np.squeeze(np.argwhere(np.array(n) == 0))
     try:
         return list(filter(lambda x: x not in ignore_indicies, tranformed))
     except:
         return tranformed
+
 
 def dominate_n_according_to_Qn_indicies(n, Q_inidicies, S):
     dominated_lists = create_array_to_indicies(S, Q_inidicies)
@@ -57,8 +63,9 @@ def dominate_n_according_to_Qn_indicies(n, Q_inidicies, S):
                 n[index] -= 1
     except:
         for index in dominated_lists:
-            n[index] -= 1    
+            n[index] -= 1
     return n
+
 
 def create_Qs(n, S, population):
     Q = []
@@ -78,11 +85,14 @@ def create_Qs(n, S, population):
         dominate_n_according_to_Qn_indicies(n, indicies, S)
     return (Q, merged)
 
+
 def dominated_sorting(population, Functions, approaches, NP):
     if not naive_check(Functions, approaches):
-        raise Exception('Oops u should probably use same number of approaches as Functions :-)')
-    S = [] #dominated
-    n = [] #dominating,
+        raise Exception(
+            "Oops u should probably use same number of approaches as Functions :-)"
+        )
+    S = []  # dominated
+    n = []  # dominating,
     size = len(population)
     for i in range(size):
         current = population[i]
@@ -101,4 +111,4 @@ def dominated_sorting(population, Functions, approaches, NP):
         n.append(n_i)
 
     Qs, merged = create_Qs(n, S, population)
-    return (Qs, merged[0: NP])
+    return (Qs, merged[0:NP])

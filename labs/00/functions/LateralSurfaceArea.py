@@ -1,5 +1,7 @@
 import math
 from functions.ConeFunc import ConeFunc
+
+
 class LateralSurfaceArea(ConeFunc):
     def __init__(self):
         pass

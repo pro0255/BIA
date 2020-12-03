@@ -12,18 +12,21 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
         super().__init__(**kwds)
 
     def generate_population(self, Functions):
-        return [self.generate_individual_for_specific_task(Functions) for _ in range(self.size_of_population)]
+        return [
+            self.generate_individual_for_specific_task(Functions)
+            for _ in range(self.size_of_population)
+        ]
 
     def evalute_population(self, population, Functions):
         for individual in population:
             for index, func in enumerate(Functions):
-                individual.fitness_value[index] = func.run(individual.vector)            
+                individual.fitness_value[index] = func.run(individual.vector)
 
     def generate_individual_for_specific_task(self, Functions):
         individual = MultiSolution(len(Functions), dimension=2)
         r = np.random.uniform(low=RADIUS.RADIUS_LOW, high=RADIUS.RADIUS_HIGH)
         h = np.random.uniform(low=HEIGHT.HEIGHT_LOW, high=HEIGHT.HEIGHT_HIGH)
-        individual.vector = np.array([r,h])
+        individual.vector = np.array([r, h])
         return individual
 
     def make_specific_clip(self, cross):
@@ -34,9 +37,9 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
     def crossover(self, a, b):
         r = np.random.uniform()
         if r < 0.5:
-            return (a.vector + b.vector)/2
+            return (a.vector + b.vector) / 2
         else:
-            return (a.vector - b.vector)/2
+            return (a.vector - b.vector) / 2
 
     def mutate(self, cross):
         r = np.random.uniform()
@@ -66,14 +69,15 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
             for j in range(len(population)):
                 a = population[j]
                 b = self.get_different_individual_then_input(population, a)
-                vector = self.make_specific_clip(self.mutate(self.crossover(a,b)))
+                vector = self.make_specific_clip(self.mutate(self.crossover(a, b)))
                 child = self.construct_solution(vector, Functions)
                 new_generated.append(child)
 
-
             new_population += new_generated
             self.evalute_population(new_generated, Functions)
-            Qs, new_population_selected = dominated_sorting(new_population, Functions, TASK_APPROACHES, self.size_of_population)
+            Qs, new_population_selected = dominated_sorting(
+                new_population, Functions, TASK_APPROACHES, self.size_of_population
+            )
             population = new_population_selected
             if self.graph:
                 self.graph.draw(new_population, None)
