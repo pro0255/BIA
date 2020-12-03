@@ -81,3 +81,4 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
             population = new_population_selected
             if self.graph:
                 self.graph.draw(new_population, Qs[0])
+# 
