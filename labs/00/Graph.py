@@ -224,7 +224,7 @@ class ParetoRankGraph(AbstractGraph):
         super().__init__()
         self.plot = self.fig.add_subplot(111, title="Pareto rank")
 
-    def plot_batch(self, solutions, c="blue", s=5):
+    def plot_batch(self, solutions, c="blue", s=5, a=0.5):
         try:
             fV = [s.fitness_value for s in solutions]
             fV_squeezed = np.squeeze(fV)
@@ -234,7 +234,7 @@ class ParetoRankGraph(AbstractGraph):
                 X,
                 Y,
                 s=s,
-                alpha=1,
+                alpha=a,
                 c=c,
                 marker="o",
             )
@@ -246,8 +246,10 @@ class ParetoRankGraph(AbstractGraph):
     def draw(self, solutions, paretoQ1):
         plt.xlim(0, 40)
         plt.ylim(0, 40)
+        plt.xlabel('Lateral')
+        plt.ylabel('Total')
         self.plot_batch(solutions)
         if paretoQ1 is not None:
-            self.plot_batch(paretoQ1, "red", 5)
+            self.plot_batch(paretoQ1, "red", 20, 1)
         plt.draw()
         plt.pause(GLOBAL_PAUSE_TIME)
