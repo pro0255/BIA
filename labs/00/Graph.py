@@ -244,12 +244,12 @@ class ParetoRankGraph(AbstractGraph):
 
 
     def draw(self, solutions, paretoQ1):
-        plt.xlim(0, 40)
-        plt.ylim(0, 40)
+        plt.xlim(0, 5)
+        plt.ylim(0, 10)
         plt.xlabel('Lateral')
         plt.ylabel('Total')
         self.plot_batch(solutions)
         if paretoQ1 is not None:
-            self.plot_batch(paretoQ1, "red", 20, 1)
+            self.plot_batch(paretoQ1, "red", 100, 1)
         plt.draw()
         plt.pause(GLOBAL_PAUSE_TIME)
