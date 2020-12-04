@@ -12,17 +12,34 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
         super().__init__(**kwds)
 
     def generate_population(self, Functions):
+        """Generates population in range.
+        Args:
+            Functions (Objective function)
+        Returns:
+            [MultiSolution[]]: Populated array.
+        """
         return [
             self.generate_individual_for_specific_task(Functions)
             for _ in range(self.size_of_population)
         ]
 
     def evalute_population(self, population, Functions):
+        """Evaluates population accroding to array of objective Functions.
+        Args:
+            population (MultiSolution[]): Current population.
+            Functions (Function[]): Function which is min or max.
+        """
         for individual in population:
             for index, func in enumerate(Functions):
                 individual.fitness_value[index] = func.run(individual.vector)
 
     def generate_individual_for_specific_task(self, Functions):
+        """Creates inidividual with specified borders.
+        Args:
+            Functions (Function[]): Objective functions.
+        Returns:
+            [MultiSolution]: Soluion with array of fitness values.
+        """
         individual = MultiSolution(len(Functions), dimension=2)
         r = np.random.uniform(low=RADIUS.RADIUS_LOW, high=RADIUS.RADIUS_HIGH)
         h = np.random.uniform(low=HEIGHT.HEIGHT_LOW, high=HEIGHT.HEIGHT_HIGH)
@@ -30,6 +47,12 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
         return individual
 
     def make_specific_clip(self, cross):
+        """Makes specific clip according to specified borders.
+        Args:
+            cross (float[]): Vector.
+        Returns:
+            [float[]]: Cliped to borders vector.
+        """
         # if not (cross[0] > RADIUS.RADIUS_LOW and cross[0] <  RADIUS.RADIUS_HIGH):
         #     cross[0] =  np.random.uniform(low=RADIUS.RADIUS_LOW, high=RADIUS.RADIUS_HIGH)
         # if not (cross[1] > HEIGHT.HEIGHT_LOW and cross[0] <  HEIGHT.HEIGHT_HIGH):
@@ -39,6 +62,13 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
         return cross
 
     def crossover(self, a, b):
+        """Makes cross over where a != b.
+        Args:
+            a (Multisoluton[]): Solution i.
+            b (Multisoluton[]): Solution j.
+        Returns:
+            [float[]]: Created vector.
+        """
         r = np.random.uniform()
         if r < 0.5:
             return (a.vector + b.vector) / 2
@@ -46,6 +76,12 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
             return (a.vector - b.vector) / 2
 
     def mutate(self, cross):
+        """Makes mutation of cross vector.
+        Args:
+            cross (float[]): Calculated cross vector with a and b.
+        Returns:
+            [float[]]: Mutated vector.
+        """
         r = np.random.uniform()
         if r < 0.5:
             return cross + np.random.uniform(0, 1, self.D)
@@ -53,6 +89,8 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
             return cross
 
     def construct_solution(self, cross, Functions):
+        """Helper method which construct Multisolution according to len of input Functions.
+        """
         individual = MultiSolution(len(Functions))
         individual.vector = cross
         return individual
