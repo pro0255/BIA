@@ -30,6 +30,10 @@ class NonDominatedGeneticAlgorithm(AbstractGeneticAlgorithm):
         return individual
 
     def make_specific_clip(self, cross):
+        # if not (cross[0] > RADIUS.RADIUS_LOW and cross[0] <  RADIUS.RADIUS_HIGH):
+        #     cross[0] =  np.random.uniform(low=RADIUS.RADIUS_LOW, high=RADIUS.RADIUS_HIGH)
+        # if not (cross[1] > HEIGHT.HEIGHT_LOW and cross[0] <  HEIGHT.HEIGHT_HIGH):
+        #     cross[0] = np.random.uniform(low=HEIGHT.HEIGHT_LOW, high=HEIGHT.HEIGHT_HIGH)
         cross[0] = np.clip(cross[0], RADIUS.RADIUS_LOW, RADIUS.RADIUS_HIGH)
         cross[1] = np.clip(cross[1], HEIGHT.HEIGHT_LOW, HEIGHT.HEIGHT_HIGH)
         return cross

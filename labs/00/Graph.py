@@ -244,8 +244,8 @@ class ParetoRankGraph(AbstractGraph):
 
 
     def draw(self, solutions, paretoQ1):
-        plt.xlim(0, 5)
-        plt.ylim(0, 10)
+        # plt.xlim(0, 5)
+        # plt.ylim(0, 10)
         plt.xlabel('Lateral')
         plt.ylabel('Total')
         self.plot_batch(solutions)

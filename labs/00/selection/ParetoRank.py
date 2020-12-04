@@ -6,10 +6,27 @@ import numpy as np
 
 
 def naive_check(Functions, approaches):
+    """Naive which determines if input is ok.
+
+    Args:
+        Functions (Objective functions): Function correlated with approach.
+        approaches (Approaches): Approach which will be applicated for Function xi.
+
+    Returns:
+        [boolean]: Result of check.
+    """
     return len(Functions) == len(approaches)
 
 
 def compare(current, other, approach):
+    """Comparison of xi and xj.
+    Args:
+        current (float): Fitness xi.
+        other (float): Fitness xj.
+        approach (enum Approach): Apporach which determines logic.
+    Returns:
+        [enum Compare]: Represents result of comparsion.
+    """
     if current == other:
         return Compare.Balance
     if approach == Approach.Minimazation:
@@ -19,12 +36,27 @@ def compare(current, other, approach):
 
 
 def get_result_according_to_dd(dominating, dominated):
+    """Helper method which determines what kind of result is it.
+    Args:
+        dominating (int): Number of dominating.
+        dominated (int): Number of dominated.
+    Returns:
+        [enum Compare]: Result of calculation.
+    """
     if dominated == dominating:
         return Compare.Balance
     return Compare.Better if dominating > dominated else Compare.Worse
 
 
 def check_fitness_according_to_approach(current, other, approaches):
+    """Method calculates how many fitness values are dominated and dominating.
+    Args:
+        current (float[]): Solution fitness vector.
+        other (float[]): Solution fitness vector.
+        approaches (enum Approach): Approaches applicated of specific fi.
+    Returns:
+        [enum Compare]: Result of comparison.
+    """
     dominated = 0  # worse
     dominating = 0  # better
     for fI, approach in enumerate(approaches):
@@ -39,6 +71,8 @@ def check_fitness_according_to_approach(current, other, approaches):
 
 
 def create_array_to_indicies(pop, indicies):
+    """Helper method which return desired result with populated array.
+    """
     res = []
     try:
         for i in indicies:
@@ -49,6 +83,13 @@ def create_array_to_indicies(pop, indicies):
 
 
 def according_to_n_get_Qn_indicies(n, ignore_indicies):
+    """Filter indicies according to black list.
+    Args:
+        n (int[]): Vector n.
+        ignore_indicies (int[]): Indicies which will be ignored.
+    Returns:
+        [int[]]: Vector of filtered indicies.
+    """
     tranformed = np.squeeze(np.argwhere(np.array(n) == 0))
     try:
         return list(filter(lambda x: x not in ignore_indicies, tranformed))
@@ -57,6 +98,8 @@ def according_to_n_get_Qn_indicies(n, ignore_indicies):
 
 
 def dominate_n_according_to_Qn_indicies(n, Q_inidicies, S):
+    """Correct subtraction of n of indicies.
+    """
     dominated_lists = create_array_to_indicies(S, Q_inidicies)
     try:
         for l in dominated_lists:
@@ -69,6 +112,8 @@ def dominate_n_according_to_Qn_indicies(n, Q_inidicies, S):
 
 
 def create_Qs(n, S, population):
+    """Method make soring Q1..Qn, with n ranks.
+    """
     Q = []
     merged = []
     ignore_indicies = []
@@ -88,6 +133,8 @@ def create_Qs(n, S, population):
 
 
 def dominated_sorting(population, Functions, approaches, NP):
+    """Method check if input of correct and then calculates pareto sets and from 2NP make NP.
+    """
     if not naive_check(Functions, approaches):
         raise Exception(
             "Oops u should probably use same number of approaches as Functions :-)"
